@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+ 
+    <fragment
+        android:id="@+id/country_fragment"
+        android:name="in.wptrafficanalyzer.listfragmentdemo.CountryList"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+   />
+ 
+</LinearLayout>
+<!-- 
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" 
+    android:background="#AA1111">
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="This is Tab 1" 
+        android:textSize="20sp"
+        android:textColor="#dddddd"
+        android:layout_centerInParent="true"
+        />
+</RelativeLayout>
+ -->
+ 
