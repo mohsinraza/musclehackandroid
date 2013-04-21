@@ -1,18 +1,33 @@
 package com.musclehack.musclehack;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
+
+import org.xmlpull.v1.XmlPullParserException;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.ListFragment;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
+
+import com.musclehack.musclehack.rss.StackOverflowXmlParser;
+import com.musclehack.musclehack.rss.StackOverflowXmlParser.RssItem;
 
 public class Fragment1rss extends ListFragment {
 	
@@ -68,12 +83,10 @@ public class Fragment1rss extends ListFragment {
         			                            new int[] { R.id.title, R.id.text });
         setListAdapter(adapter);
  
+        new DownloadXmlTask().execute("http://feeds.feedburner.com/MuscleHack");
+        
         return super.onCreateView(inflater, container, savedInstanceState);
     
-        
-        //View view = inflater.inflate(R.layout.fragment1rss, container, false);
-        
-        //return view;
     }
     
     @Override
@@ -81,5 +94,78 @@ public class Fragment1rss extends ListFragment {
     	Uri uri = Uri.parse("http://www.musclehack.com");
     	Intent intent = new Intent(Intent.ACTION_VIEW, uri);
     	startActivity(intent);
+    }
+    
+////////////////////////////////////////////////
+////////////////////////////////////////////////
+////////////////////////////////////////////////
+////////////////////////////////////////////////
+    private class DownloadXmlTask extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... urls) {
+            try {
+                return loadXmlFromNetwork(urls[0]);
+            } catch (IOException e) {
+                return "connection_error";
+            } catch (XmlPullParserException e) {
+                return "xml_error";
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String result) {  
+            //setContentView(R.layout.main);
+            // Displays the HTML string in the UI via a WebView
+            //WebView myWebView = (WebView) findViewById(R.id.webview);
+            //myWebView.loadData(result, "text/html", null);
+        	int a = 10;
+        }
+    }
+    
+    private String loadXmlFromNetwork(String urlString) throws XmlPullParserException, IOException {
+        InputStream stream = null;
+        // Instantiate the parser
+        StackOverflowXmlParser stackOverflowXmlParser = new StackOverflowXmlParser();
+        List<RssItem> entries = null;
+        String title = null;
+        String url = null;
+        String description = null;
+
+
+            
+        try {
+            stream = downloadUrl(urlString);        
+            entries = stackOverflowXmlParser.parse(stream);
+        // Makes sure that the InputStream is closed after the app is
+        // finished using it.
+        } finally {
+            if (stream != null) {
+                stream.close();
+            } 
+         }
+        
+        // StackOverflowXmlParser returns a List (called "entries") of Entry objects.
+        // Each Entry object represents a single post in the XML feed.
+        // This section processes the entries list to combine each entry with HTML markup.
+        // Each entry is displayed in the UI as a link that optionally includes
+        // a text summary.
+        for (RssItem entry : entries) {       
+            int a = 10;
+        }
+        return "";
+    }
+
+    // Given a string representation of a URL, sets up a connection and gets
+    // an input stream.
+    private InputStream downloadUrl(String urlString) throws IOException {
+        URL url = new URL(urlString);
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setReadTimeout(10000 /* milliseconds */);
+        conn.setConnectTimeout(15000 /* milliseconds */);
+        conn.setRequestMethod("GET");
+        conn.setDoInput(true);
+        // Starts the query
+        conn.connect();
+        return conn.getInputStream();
     }
 }
