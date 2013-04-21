@@ -3,13 +3,15 @@ package com.musclehack.musclehack;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
 public class Fragment1rss extends ListFragment {
@@ -75,5 +77,12 @@ public class Fragment1rss extends ListFragment {
         //View view = inflater.inflate(R.layout.fragment1rss, container, false);
         
         //return view;
+    }
+    
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id){
+    	Uri uri = Uri.parse("http://www.musclehack.com");
+    	Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+    	startActivity(intent);
     }
 }

@@ -34,7 +34,7 @@ public class MainActivity extends FragmentActivity {
         this.fragment3cart = new Fragment3cart();
         
         this.mTabHost = (TabHost)findViewById(android.R.id.tabhost);
-        this.mTabHost.setOnTabChangedListener(listener);
+        this.mTabHost.setOnTabChangedListener(this.listener);
         this.mTabHost.setup();
         
         this.initializeTab();
