@@ -30,63 +30,67 @@ import com.musclehack.musclehack.rss.StackOverflowXmlParser;
 import com.musclehack.musclehack.rss.StackOverflowXmlParser.RssItem;
 
 public class Fragment1rss extends ListFragment {
-	
-	String[] countries = new String[] {
-	        "India",
-	        "Pakistan",
-	        "Sri Lanka",
-	        "China",
-	        "Bangladesh",
-	        "Nepal",
-	        "Afghanistan",
-	        "North Korea",
-	        "South Korea",
-	        "Japan"
-	    };
+	protected List<RssItem> entries = null;
 	
     public static String TAG_TITLE = "title";
     public static String TAG_TEXT = "text";
 	ArrayList<HashMap<String, String>> rssFeedList;
 	
+	
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-    	/** Creating an array adapter to store the list of countries **/
+    	/**/
     	rssFeedList = new ArrayList<HashMap<String, String>>();
     	HashMap<String, String> map = new HashMap<String, String>();
     	 
         // adding each child node to HashMap key => value
-        
         map.put(TAG_TITLE, "Article title");
         map.put(TAG_TEXT, "<a href=\"http://www.musclehack.com/stoopid-emails-april-2013/\"><img align=\"left\" hspace=\"5\" width=\"150\" height=\"150\" src=\"http://www.musclehack.com/wp-content/uploads/2013/04/Stupid-Emails-150x150.jpg\" class=\"alignleft wp-post-image tfe\" alt=\"Stupid Emails\" title=\"\" /></a>I decided to publish a selection of the craziest/weirdest/funniest emails I get on a monthly basis. They&amp;#8217;re just too too hilarious not to share. So here is the latest batch. Note: If you happen to see an email you sent here, sorry, but it was either daft, funny, or both. And we all need a [...]<img src=\"http://feeds.feedburner.com/~r/MuscleHack/~4/y1I-gJyu8iA\" height=\"1\" width=\"1\"/>");
         rssFeedList.add(map);
-
-        // adding HashList to ArrayList
         for(int i=0; i< 8; i++){
             map = new HashMap<String, String>();
             // adding each child node to HashMap key => value
             map.put(TAG_TITLE, "Article title 2");
-            map.put(TAG_TEXT, "<h1>This is the text of the article...</h1>");
+            map.put(TAG_TEXT, "<p>This is the text of the article...</p>");
             rssFeedList.add(map);
         }
-
-
-        // adding HashList to ArrayList
         rssFeedList.add(map);
-        //ArrayAdapter<String> adapter = new ArrayAdapter<String>(inflater.getContext(), android.R.layout.simple_list_item_1,countries);
- 
-        /** Setting the list adapter for the ListFragment */
+
         ListAdapter adapter = new SimpleHtmlAdapter(this.getActivity(),
         										rssFeedList,
         										R.layout.fragment1rss_row,
         										new String[] { TAG_TITLE, TAG_TEXT },
         			                            new int[] { R.id.title, R.id.text });
         setListAdapter(adapter);
+        /**/
  
         new DownloadXmlTask().execute("http://feeds.feedburner.com/MuscleHack");
         
+        
         return super.onCreateView(inflater, container, savedInstanceState);
     
+    }
+    
+    public void setEntries(List<RssItem> entries){
+        this.entries = entries;
+        rssFeedList = new ArrayList<HashMap<String, String>>();
+        HashMap<String, String> map = new HashMap<String, String>();
+        
+        // adding each child node to HashMap key => value
+        for (RssItem entry : entries) {
+            map.put(TAG_TITLE, entry.title);
+            map.put(TAG_TEXT, entry.description);
+            rssFeedList.add(map);
+        }
+
+
+        ListAdapter adapter = new SimpleHtmlAdapter(this.getActivity(),
+				rssFeedList,
+				R.layout.fragment1rss_row,
+				new String[] { TAG_TITLE, TAG_TEXT },
+                new int[] { R.id.title, R.id.text });
+        setListAdapter(adapter);
     }
     
     @Override
@@ -101,6 +105,7 @@ public class Fragment1rss extends ListFragment {
 ////////////////////////////////////////////////
 ////////////////////////////////////////////////
     private class DownloadXmlTask extends AsyncTask<String, Void, String> {
+        //protected List<RssItem> entries = null;
         @Override
         protected String doInBackground(String... urls) {
             try {
@@ -114,11 +119,11 @@ public class Fragment1rss extends ListFragment {
 
         @Override
         protected void onPostExecute(String result) {  
-            //setContentView(R.layout.main);
+            //setContentView(R.layout.activity_main);
             // Displays the HTML string in the UI via a WebView
             //WebView myWebView = (WebView) findViewById(R.id.webview);
             //myWebView.loadData(result, "text/html", null);
-        	int a = 10;
+        	//setEntries(this.entries);
         }
     }
     
@@ -126,7 +131,7 @@ public class Fragment1rss extends ListFragment {
         InputStream stream = null;
         // Instantiate the parser
         StackOverflowXmlParser stackOverflowXmlParser = new StackOverflowXmlParser();
-        List<RssItem> entries = null;
+        
         String title = null;
         String url = null;
         String description = null;
@@ -136,6 +141,7 @@ public class Fragment1rss extends ListFragment {
         try {
             stream = downloadUrl(urlString);        
             entries = stackOverflowXmlParser.parse(stream);
+            setEntries(entries);
         // Makes sure that the InputStream is closed after the app is
         // finished using it.
         } finally {
@@ -149,9 +155,8 @@ public class Fragment1rss extends ListFragment {
         // This section processes the entries list to combine each entry with HTML markup.
         // Each entry is displayed in the UI as a link that optionally includes
         // a text summary.
-        for (RssItem entry : entries) {       
-            int a = 10;
-        }
+        
+        
         return "";
     }
 
