@@ -3,8 +3,8 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="5dip">
- 
+    android:padding="5dip"
+    android:descendantFocusability="blocksDescendants">
 
  
     <!-- web site title -->
@@ -15,30 +15,10 @@
         android:paddingTop="8dip"
         android:paddingLeft="8dip"
         android:paddingBottom="4dip"
-        android:textSize="18dip"
-        android:textColor="#111111" />
-    
-     <!-- 
- 	<TextView android:id="@+id/image_rss_article"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"/>
-     -->
+        android:textSize="22dip"
+        android:ems="3"
+        android:textColor="#0B0A32" />
 
-
-    
-    <!-- 
-    <TextView android:id="@+id/text"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:paddingLeft="8dip"
-        android:paddingBottom="6dip"
-        android:textSize="15dip"
-        android:textColor="#888888"
-        android:text="this is some demonstration text"
-        android:layout_below="@id/title"
-        />
-      -->
     
     <!-- --> 
     <WebView
@@ -48,6 +28,8 @@
         android:paddingLeft="8dip"
         android:paddingBottom="6dip"
         android:layout_below="@id/title"
+    android:focusable="false"
+    android:focusableInTouchMode="false"
     />
     <!--  -->
 

@@ -34,13 +34,14 @@ public class Fragment1rss extends ListFragment {
 	
     public static String TAG_TITLE = "title";
     public static String TAG_TEXT = "text";
-	ArrayList<HashMap<String, String>> rssFeedList;
+	protected ArrayList<HashMap<String, String>> rssFeedList;
+	protected ListAdapter adapter;
 	
 	
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-    	/**/
+    	/*
     	rssFeedList = new ArrayList<HashMap<String, String>>();
     	HashMap<String, String> map = new HashMap<String, String>();
     	 
@@ -57,12 +58,12 @@ public class Fragment1rss extends ListFragment {
         }
         rssFeedList.add(map);
 
-        ListAdapter adapter = new SimpleHtmlAdapter(this.getActivity(),
+        this.adapter = new SimpleHtmlAdapter(this.getActivity(),
         										rssFeedList,
         										R.layout.fragment1rss_row,
         										new String[] { TAG_TITLE, TAG_TEXT },
         			                            new int[] { R.id.title, R.id.text });
-        setListAdapter(adapter);
+        setListAdapter(this.adapter);
         /**/
  
         new DownloadXmlTask().execute("http://feeds.feedburner.com/MuscleHack");
@@ -75,15 +76,14 @@ public class Fragment1rss extends ListFragment {
     public void setEntries(List<RssItem> entries){
         this.entries = entries;
         rssFeedList = new ArrayList<HashMap<String, String>>();
-        HashMap<String, String> map = new HashMap<String, String>();
         
         // adding each child node to HashMap key => value
         for (RssItem entry : entries) {
+            HashMap<String, String> map = new HashMap<String, String>();
             map.put(TAG_TITLE, entry.title);
             map.put(TAG_TEXT, entry.description);
             rssFeedList.add(map);
         }
-
 
         ListAdapter adapter = new SimpleHtmlAdapter(this.getActivity(),
 				rssFeedList,
@@ -91,11 +91,13 @@ public class Fragment1rss extends ListFragment {
 				new String[] { TAG_TITLE, TAG_TEXT },
                 new int[] { R.id.title, R.id.text });
         setListAdapter(adapter);
+        //((SimpleHtmlAdapter)adapter).notifyDataSetChanged();
     }
     
     @Override
     public void onListItemClick(ListView l, View v, int position, long id){
-    	Uri uri = Uri.parse("http://www.musclehack.com");
+    	RssItem item = this.entries.get((int)id);
+    	Uri uri = Uri.parse(item.link);
     	Intent intent = new Intent(Intent.ACTION_VIEW, uri);
     	startActivity(intent);
     }
@@ -104,30 +106,31 @@ public class Fragment1rss extends ListFragment {
 ////////////////////////////////////////////////
 ////////////////////////////////////////////////
 ////////////////////////////////////////////////
-    private class DownloadXmlTask extends AsyncTask<String, Void, String> {
+    private class DownloadXmlTask extends AsyncTask<String, Void, List<RssItem>> {
         //protected List<RssItem> entries = null;
         @Override
-        protected String doInBackground(String... urls) {
+        protected List<RssItem> doInBackground(String... urls) {
             try {
                 return loadXmlFromNetwork(urls[0]);
             } catch (IOException e) {
-                return "connection_error";
+                return null;
             } catch (XmlPullParserException e) {
-                return "xml_error";
+                return null;
             }
         }
 
         @Override
-        protected void onPostExecute(String result) {  
+        protected void onPostExecute(List<RssItem> items) {  
             //setContentView(R.layout.activity_main);
             // Displays the HTML string in the UI via a WebView
             //WebView myWebView = (WebView) findViewById(R.id.webview);
             //myWebView.loadData(result, "text/html", null);
         	//setEntries(this.entries);
+        	setEntries(items);
         }
     }
     
-    private String loadXmlFromNetwork(String urlString) throws XmlPullParserException, IOException {
+    private List<RssItem> loadXmlFromNetwork(String urlString) throws XmlPullParserException, IOException {
         InputStream stream = null;
         // Instantiate the parser
         StackOverflowXmlParser stackOverflowXmlParser = new StackOverflowXmlParser();
@@ -141,7 +144,7 @@ public class Fragment1rss extends ListFragment {
         try {
             stream = downloadUrl(urlString);        
             entries = stackOverflowXmlParser.parse(stream);
-            setEntries(entries);
+            
         // Makes sure that the InputStream is closed after the app is
         // finished using it.
         } finally {
@@ -157,7 +160,7 @@ public class Fragment1rss extends ListFragment {
         // a text summary.
         
         
-        return "";
+        return entries;
     }
 
     // Given a string representation of a URL, sets up a connection and gets
