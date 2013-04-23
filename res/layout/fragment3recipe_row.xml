@@ -15,7 +15,8 @@
         android:paddingTop="8dip"
         android:paddingLeft="8dip"
         android:paddingBottom="4dip"
-        android:textSize="22dip"
+        android:textSize="22sp"
+        android:textStyle="bold"
         android:ems="3"
         android:textColor="#0B0A32" />
 
@@ -27,9 +28,9 @@
 	    android:layout_height="fill_parent" 
         android:paddingLeft="8dip"
         android:paddingBottom="6dip"
-        android:layout_below="@id/title"
-    android:focusable="false"
-    android:focusableInTouchMode="false"
+        android:layout_below="@id/titleRecipe"
+		android:focusable="false"
+		android:focusableInTouchMode="false"
     />
     <!--  -->
 

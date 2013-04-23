@@ -15,8 +15,8 @@
         android:paddingTop="8dip"
         android:paddingLeft="8dip"
         android:paddingBottom="4dip"
-        android:textSize="22dip"
-        android:ems="3"
+        android:textSize="22sp"
+        android:textStyle="bold"
         android:textColor="#0B0A32" />
 
     
@@ -28,8 +28,8 @@
         android:paddingLeft="8dip"
         android:paddingBottom="6dip"
         android:layout_below="@id/title"
-    android:focusable="false"
-    android:focusableInTouchMode="false"
+	    android:focusable="false"
+	    android:focusableInTouchMode="false"
     />
     <!--  -->
 
