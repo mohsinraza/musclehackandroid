@@ -4,22 +4,19 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
 import org.xmlpull.v1.XmlPullParserException;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.ListFragment;
-import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,22 +73,35 @@ public class Fragment1rss extends ListFragment {
     public void setEntries(List<RssItem> entries){
         this.entries = entries;
         rssFeedList = new ArrayList<HashMap<String, String>>();
-        
-        // adding each child node to HashMap key => value
-        for (RssItem entry : entries) {
-            HashMap<String, String> map = new HashMap<String, String>();
-            map.put(TAG_TITLE, entry.title);
-            map.put(TAG_TEXT, entry.description);
-            rssFeedList.add(map);
-        }
+        if(this.entries == null || this.entries.size() <= 0){
+        	new AlertDialog.Builder(this.getActivity())
+        	.setTitle("No data")
+        	.setMessage("No data could be retrieve. Please check your internet connection.")
+        	.setNeutralButton("Ok",
+        	new DialogInterface.OnClickListener() {
+	        	public void onClick(DialogInterface dialog, int which) {
+	        	}
+        	}).show();
+        }else{
+            
+            // adding each child node to HashMap key => value
+            for (RssItem entry : entries) {
+                HashMap<String, String> map = new HashMap<String, String>();
+                map.put(TAG_TITLE, entry.title);
+                map.put(TAG_TEXT, entry.description);
+                rssFeedList.add(map);
+            }
 
+
+            //((SimpleHtmlAdapter)adapter).notifyDataSetChanged();
+        }
         ListAdapter adapter = new SimpleHtmlAdapter(this.getActivity(),
 				rssFeedList,
 				R.layout.fragment1rss_row,
 				new String[] { TAG_TITLE, TAG_TEXT },
                 new int[] { R.id.title, R.id.text });
         setListAdapter(adapter);
-        //((SimpleHtmlAdapter)adapter).notifyDataSetChanged();
+
     }
     
     @Override
@@ -127,6 +137,9 @@ public class Fragment1rss extends ListFragment {
             //myWebView.loadData(result, "text/html", null);
         	//setEntries(this.entries);
         	setEntries(items);
+        	if(items == null){
+        		this.cancel(true);
+        	}
         }
     }
     

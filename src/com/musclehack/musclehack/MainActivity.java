@@ -18,20 +18,23 @@ public class MainActivity extends FragmentActivity {
 	/* Tab identifiers */
     static String TAB_A = "First Tab";
     static String TAB_B = "Second Tab";
-    static String TAB_C = "Cart Tab";
+    static String TAB_C = "Recipes Tab";
+    static String TAB_D = "Archives Tab";
 
     TabHost mTabHost;
     
     Fragment1rss fragment1rss;
     Fragment2worklog fragment2worklog;
-    Fragment3cart fragment3cart;
+    Fragment3recipe fragment3recipe;
+    Fragment4archives fragment4archives;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_main);
         this.fragment1rss = new Fragment1rss();
         this.fragment2worklog = new Fragment2worklog();
-        this.fragment3cart = new Fragment3cart();
+        this.fragment3recipe = new Fragment3recipe();
+        this.fragment4archives = new Fragment4archives();
         
         this.mTabHost = (TabHost)findViewById(android.R.id.tabhost);
         this.mTabHost.setOnTabChangedListener(this.listener);
@@ -79,7 +82,16 @@ public class MainActivity extends FragmentActivity {
                 return findViewById(android.R.id.tabcontent);
             }
         });
-        spec.setIndicator(createTabView(getString(R.string.cart), R.drawable.tab3_cart));
+        spec.setIndicator(createTabView(getString(R.string.recipes), R.drawable.tab3_cart)); //TODO change
+        mTabHost.addTab(spec);
+        
+        spec = mTabHost.newTabSpec(TAB_D);
+        spec.setContent(new TabHost.TabContentFactory() {
+            public View createTabContent(String tag) {
+                return findViewById(android.R.id.tabcontent);
+            }
+        });
+        spec.setIndicator(createTabView(getString(R.string.archives), R.drawable.tab3_cart)); //TODO change
         mTabHost.addTab(spec);
     }
     
@@ -93,7 +105,9 @@ public class MainActivity extends FragmentActivity {
               }else if(tabId.equals(TAB_B)){
                   pushFragments(getString(R.string.worklog), fragment2worklog);
               }else if(tabId.equals(TAB_C)){
-                  pushFragments(getString(R.string.cart), fragment3cart);
+                  pushFragments(getString(R.string.recipes), fragment3recipe);
+              }else if(tabId.equals(TAB_D)){
+                  pushFragments(getString(R.string.archives), fragment4archives);
               }
           }
         };
