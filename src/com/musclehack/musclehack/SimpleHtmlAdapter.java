@@ -16,12 +16,24 @@ package com.musclehack.musclehack;
  */
 
 
+import java.io.FilterInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.text.Html;
+import android.text.Html.ImageGetter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -295,8 +307,81 @@ public class SimpleHtmlAdapter extends BaseAdapter implements Filterable {
      * @param v TextView to receive text
      * @param text the text to be set for the TextView
      */
+    
+    /*
+    class FlushedInputStream extends FilterInputStream {
+    	  public FlushedInputStream(final InputStream inputStream) {
+    	    super(inputStream);
+    	  }
+
+    	  @Override
+    	  public long skip(final long n) throws IOException {
+    	    long totalBytesSkipped = 0L;
+
+    	    while (totalBytesSkipped < n) {
+    	      long bytesSkipped = in.skip(n - totalBytesSkipped);
+
+    	      if (bytesSkipped == 0L) {
+    	        int bytesRead = read();
+
+    	        if (bytesRead < 0) { // we reached EOF
+    	          break;
+    	        }
+
+    	        bytesSkipped = 1;
+    	      }
+
+    	      totalBytesSkipped += bytesSkipped;
+    	    }
+
+    	    return totalBytesSkipped;
+    	  }
+    	} 
+    //*/
     public void setViewText(TextView v, String text) {
-        v.setText(text);
+        //v.setText(text);
+    	if(v.getId() == R.id.text){
+    		v.setText(Html.fromHtml(text, new ImageGetter() {
+    			   @Override public Drawable getDrawable(String source) {
+    				      
+    				      Bitmap x;
+
+
+    				      Drawable drawableFromUrl = null;
+    				      drawableFromUrl = Drawable.createFromPath(source);
+    				      drawableFromUrl.setBounds(0, 0, drawableFromUrl.getIntrinsicWidth(), drawableFromUrl.getIntrinsicHeight());
+
+    				      return drawableFromUrl;
+    				      /*
+    				      try{
+        				      drawableFromUrl = Drawable.createFromStream((InputStream)new URL(source).getContent(), "src");
+    				    	  
+    				      } catch (MalformedURLException e1) {
+								e1.printStackTrace();
+    				      } catch (IOException e1) {
+								e1.printStackTrace();
+    				      }
+    				      //*/
+    				      /*
+							try {
+							    HttpURLConnection connection;
+								//connection = (HttpURLConnection) new URL(source).openConnection();
+								//connection.connect();
+		    				    //InputStream input = connection.getInputStream();
+		    				    x = BitmapFactory.decodeStream(new FlushedInputStream((InputStream) new URL(source).getContent()));
+		    				    drawableFromUrl = new BitmapDrawable(x);
+							} catch (MalformedURLException e1) {
+								e1.printStackTrace();
+							} catch (IOException e1) {
+								e1.printStackTrace();
+							}
+						//*/
+    				      
+    				  }
+    				}, null));
+    	}else{
+    		v.setText(text);
+    	}
     }
 
     public Filter getFilter() {

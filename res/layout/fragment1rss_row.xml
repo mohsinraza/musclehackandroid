@@ -22,11 +22,20 @@
         android:textIsSelectable="true"
         />
 
+    <!-- 
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dip"
+        android:paddingLeft="8dip"
+        android:paddingBottom="4dip"
+        android:layout_below="@id/title"
+        />
+      -->
     
-    <!-- --> 
     <WebView
 	    android:id="@+id/text"
-        android:width="880dp"
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent" 
         android:layout_marginLeft="1dip"
@@ -36,7 +45,6 @@
 	    android:focusable="false"
 	    android:focusableInTouchMode="false"
     />
-    <!--  -->
 
     <!-- Right end Arrow -->
      <ImageView
