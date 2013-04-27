@@ -82,7 +82,7 @@ public class MainActivity extends FragmentActivity {
                 return findViewById(android.R.id.tabcontent);
             }
         });
-        spec.setIndicator(createTabView(getString(R.string.recipes), R.drawable.tab3_cart)); //TODO change
+        spec.setIndicator(createTabView(getString(R.string.recipes), R.drawable.tab3_recipes)); //TODO change
         mTabHost.addTab(spec);
         
         spec = mTabHost.newTabSpec(TAB_D);
@@ -91,7 +91,7 @@ public class MainActivity extends FragmentActivity {
                 return findViewById(android.R.id.tabcontent);
             }
         });
-        spec.setIndicator(createTabView(getString(R.string.archives), R.drawable.tab3_cart)); //TODO change
+        spec.setIndicator(createTabView(getString(R.string.archives), R.drawable.tab4_archives)); //TODO change
         mTabHost.addTab(spec);
     }
     

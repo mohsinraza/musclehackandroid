@@ -70,6 +70,11 @@ public class Fragment1rss extends ListFragment {
     
     }
     
+    @Override
+    public void onActivityResult (int requestCode, int resultCode, Intent data){
+    	super.onActivityResult(requestCode, resultCode, data);
+    }
+    
     public void setEntries(List<RssItem> entries){
         this.entries = entries;
         rssFeedList = new ArrayList<HashMap<String, String>>();
@@ -82,8 +87,9 @@ public class Fragment1rss extends ListFragment {
 	        	public void onClick(DialogInterface dialog, int which) {
 	        	}
         	}).show();
+        	
         }else{
-            
+
             // adding each child node to HashMap key => value
             for (RssItem entry : entries) {
                 HashMap<String, String> map = new HashMap<String, String>();
@@ -106,6 +112,7 @@ public class Fragment1rss extends ListFragment {
     
     @Override
     public void onListItemClick(ListView l, View v, int position, long id){
+    	super.onListItemClick(l, v, position, id);
     	RssItem item = this.entries.get((int)id);
     	Uri uri = Uri.parse(item.link);
     	Intent intent = new Intent(Intent.ACTION_VIEW, uri);
@@ -142,6 +149,8 @@ public class Fragment1rss extends ListFragment {
         	}
         }
     }
+    
+
     
     private List<RssItem> loadXmlFromNetwork(String urlString) throws XmlPullParserException, IOException {
         InputStream stream = null;

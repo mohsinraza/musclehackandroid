@@ -25,11 +25,11 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.BaseAdapter;
 import android.widget.Checkable;
 import android.widget.Filter;
-//import android.widget.Filter.FilterResults;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.SimpleAdapter;
@@ -208,6 +208,10 @@ public class SimpleHtmlAdapter extends BaseAdapter implements Filterable {
                         }
                     } else if (v instanceof WebView) {
                     	WebView webView = (WebView) v;
+                    	WebSettings webSettings = webView.getSettings();
+                    	webSettings.setDefaultFontSize(20);
+                    	webSettings.setDefaultZoom(WebSettings.ZoomDensity.FAR);
+                    	webView.setInitialScale(100);
                     	webView.loadData(text, "text/html; charset=UTF-8", "UTF-8");
                     } else {
                         throw new IllegalStateException(v.getClass().getName() + " is not a " +

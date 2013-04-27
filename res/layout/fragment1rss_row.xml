@@ -1,32 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:layout_height="125dp"
     android:orientation="vertical"
     android:padding="5dip"
-    android:descendantFocusability="blocksDescendants">
+    android:descendantFocusability="blocksDescendants"
+    >
 
  
     <!-- web site title -->
     <TextView
         android:id="@+id/title"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="8dip"
         android:paddingLeft="8dip"
         android:paddingBottom="4dip"
-        android:textSize="22sp"
+        android:textSize="12sp"
         android:textStyle="bold"
-        android:textColor="#0B0A32" />
+        android:textColor="#0A0A11"
+        android:textIsSelectable="true"
+        />
 
     
     <!-- --> 
     <WebView
 	    android:id="@+id/text"
-	    android:layout_width="fill_parent"
-	    android:layout_height="fill_parent" 
-        android:paddingLeft="8dip"
-        android:paddingBottom="6dip"
+        android:width="880dp"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent" 
+        android:layout_marginLeft="1dip"
+        android:layout_marginRight="14dip"
+        android:layout_marginTop="1dip"
         android:layout_below="@id/title"
 	    android:focusable="false"
 	    android:focusableInTouchMode="false"
@@ -34,7 +39,8 @@
     <!--  -->
 
     <!-- Right end Arrow -->
-     <ImageView android:layout_width="wrap_content"
+     <ImageView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/pager_arrow_right"
         android:layout_alignParentRight="true"
