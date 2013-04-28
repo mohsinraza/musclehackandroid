@@ -220,53 +220,12 @@ public class SimpleHtmlAdapter extends BaseAdapter implements Filterable {
     }
 
 
-    
-    /*
-    class FlushedInputStream extends FilterInputStream {
-    	  public FlushedInputStream(final InputStream inputStream) {
-    	    super(inputStream);
-    	  }
 
-    	  @Override
-    	  public long skip(final long n) throws IOException {
-    	    long totalBytesSkipped = 0L;
-
-    	    while (totalBytesSkipped < n) {
-    	      long bytesSkipped = in.skip(n - totalBytesSkipped);
-
-    	      if (bytesSkipped == 0L) {
-    	        int bytesRead = read();
-
-    	        if (bytesRead < 0) { // we reached EOF
-    	          break;
-    	        }
-
-    	        bytesSkipped = 1;
-    	      }
-
-    	      totalBytesSkipped += bytesSkipped;
-    	    }
-
-    	    return totalBytesSkipped;
-    	  }
-    	} 
-    //*/
     public void setViewText(TextView v, String text) {
-        //v.setText(text);
     	if(v.getId() == R.id.text){
-    		/*
-    		v.setText(Html.fromHtml(text));
-    		if(true){
-    			return;
-    		}
-    		//*/
-    		/*
-    		SetHtmlInTextViewPostTaskParams params = new SetHtmlInTextViewPostTaskParams();
-    		params.textView = v;
-    		params.htmlText = text;
-    		new SetHtmlInTextViewPostTask().execute(params);
-    		//*/
     		URLImageParser p = new URLImageParser(v, null);
+    		
+    		//Spanned htmlSpan = Html.fromHtml(text, p, null);
     		Spanned htmlSpan = Html.fromHtml(text, p, null);
     		v.setText(htmlSpan);
     	}else{
@@ -281,102 +240,10 @@ public class SimpleHtmlAdapter extends BaseAdapter implements Filterable {
         return mFilter;
     }
 
-    /**
-     * This class can be used by external clients of SimpleAdapter to bind
-     * values to views.
-     *
-     * You should use this class to bind values to views that are not
-     * directly supported by SimpleAdapter or to change the way binding
-     * occurs for views supported by SimpleAdapter.
-     *
-     * @see SimpleAdapter#setViewImage(ImageView, int)
-     * @see SimpleAdapter#setViewImage(ImageView, String)
-     * @see SimpleAdapter#setViewText(TextView, String)
-     */
     public static interface ViewBinder {
-        /**
-         * Binds the specified data to the specified view.
-         *
-         * When binding is handled by this ViewBinder, this method must return true.
-         * If this method returns false, SimpleAdapter will attempts to handle
-         * the binding on its own.
-         *
-         * @param view the view to bind the data to
-         * @param data the data to bind to the view
-         * @param textRepresentation a safe String representation of the supplied data:
-         *        it is either the result of data.toString() or an empty String but it
-         *        is never null
-         *
-         * @return true if the data was bound to the view, false otherwise
-         */
         boolean setViewValue(View view, Object data, String textRepresentation);
     }
 
-    private class SetHtmlInTextViewPostTaskParams{
-    	public TextView textView;
-    	public String htmlText;
-    }
-    private class SetHtmlInTextViewPostTask extends AsyncTask<SetHtmlInTextViewPostTaskParams, Integer, Void> {
-    	   @Override
-    	   protected void onPreExecute() {
-    	      super.onPreExecute();
-    	   }
-    	 
-    	   @Override
-    	   protected Void doInBackground(SetHtmlInTextViewPostTaskParams... params) {
-    		   SetHtmlInTextViewPostTaskParams param = params[0];
-    		   param.textView.setText(Html.fromHtml(param.htmlText, new ImageGetter() {
-    			   @Override public Drawable getDrawable(String source) {
- 				      		Drawable drawableFromUrl = null;
-    				      //ImageLoader imageLoaded = new ImageLoader()
-
-    				   		/*
-    				      drawableFromUrl = Drawable.createFromPath(source);
-    				      drawableFromUrl.setBounds(0, 0, drawableFromUrl.getIntrinsicWidth(), drawableFromUrl.getIntrinsicHeight());
-
-    				      
-    				      //*/
-    				      //*
-    				      try{
-        				      drawableFromUrl = Drawable.createFromStream((InputStream)new URL(source).getContent(), "src");
-    				    	  
-    				      } catch (MalformedURLException e1) {
-								e1.printStackTrace();
-    				      } catch (IOException e1) {
-								e1.printStackTrace();
-    				      }
-    				      //*/
-    				      /*
-							try {
-								Bitmap x;
-							    HttpURLConnection connection;
-								//connection = (HttpURLConnection) new URL(source).openConnection();
-								//connection.connect();
-		    				    //InputStream input = connection.getInputStream();
-		    				    x = BitmapFactory.decodeStream(new FlushedInputStream((InputStream) new URL(source).getContent()));
-		    				    drawableFromUrl = new BitmapDrawable(x);
-							} catch (MalformedURLException e1) {
-								e1.printStackTrace();
-							} catch (IOException e1) {
-								e1.printStackTrace();
-							}
-						//*/
-    				      return drawableFromUrl;
-    				  }
-    				}, null));
-    		   return null;
-    	   }
-    	 
-    	   @Override
-    	   protected void onProgressUpdate(Integer... values) {
-    	      super.onProgressUpdate(values);
-    	   }
-    	 
-    	   @Override
-    	   protected void onPostExecute(Void result) {
-    	      super.onPostExecute(result);
-    	   }
-    }
     
     public class URLDrawable extends BitmapDrawable {
         // the drawable that you need to set, you could set the initial drawing
@@ -435,12 +302,15 @@ public class SimpleHtmlAdapter extends BaseAdapter implements Filterable {
             @Override
             protected void onPostExecute(Drawable result) {
                 // set the correct bound according to the result from HTTP call
-                urlDrawable.setBounds(0, 0, 0 + result.getIntrinsicWidth(), 0 
-                        + result.getIntrinsicHeight()); 
+            	int width = result.getIntrinsicWidth();
+            	int height = result.getIntrinsicHeight();
+//              //urlDrawable.setBounds(0, 0, 0, 0);
+                //urlDrawable.setBounds(0, 0, width, height);
 
-                // change the reference of the current drawable to the result
-                // from the HTTP call
+
                 urlDrawable.drawable = result;
+                
+
 
                 // redraw the image by invalidating the container
                 URLImageParser.this.container.invalidate();
@@ -455,8 +325,9 @@ public class SimpleHtmlAdapter extends BaseAdapter implements Filterable {
                 try {
                     InputStream is = fetch(urlString);
                     Drawable drawable = Drawable.createFromStream(is, "src");
-                    drawable.setBounds(0, 0, 0 + drawable.getIntrinsicWidth(), 0 
-                            + drawable.getIntrinsicHeight()); 
+                	int width = drawable.getIntrinsicWidth();
+                	int height = drawable.getIntrinsicHeight();
+                    //drawable.setBounds(0, 0, width, height);
                     return drawable;
                 } catch (Exception e) {
                     return null;

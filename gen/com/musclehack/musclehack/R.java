@@ -29,7 +29,6 @@ public final class R {
         public static final int tab3_recipes=0x7f020005;
         public static final int tab4_archives=0x7f020006;
         public static final int tab_style=0x7f020007;
-        public static final int tmp_calculette=0x7f020008;
     }
     public static final class id {
         public static final int action_settings=0x7f08000a;
