@@ -101,6 +101,7 @@ public class Fragment1rss extends ListFragment {
 
             //((SimpleHtmlAdapter)adapter).notifyDataSetChanged();
         }
+        
         ListAdapter adapter = new SimpleHtmlAdapter(this.getActivity(),
 				rssFeedList,
 				R.layout.fragment1rss_row,

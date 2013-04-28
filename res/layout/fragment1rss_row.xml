@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="125dp"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="5dip"
     android:descendantFocusability="blocksDescendants"
     >
 
+    <!-- android:layout_height="125dp"  -->
  
     <!-- web site title -->
     <TextView
@@ -22,7 +23,6 @@
         android:textIsSelectable="true"
         />
 
-    <!-- 
     <TextView
         android:id="@+id/text"
         android:layout_width="match_parent"
@@ -32,8 +32,9 @@
         android:paddingBottom="4dip"
         android:layout_below="@id/title"
         />
-      -->
     
+    
+    <!-- 
     <WebView
 	    android:id="@+id/text"
 	    android:layout_width="match_parent"
@@ -45,6 +46,7 @@
 	    android:focusable="false"
 	    android:focusableInTouchMode="false"
     />
+      -->
 
     <!-- Right end Arrow -->
      <ImageView

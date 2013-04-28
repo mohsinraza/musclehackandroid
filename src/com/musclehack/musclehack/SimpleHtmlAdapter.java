@@ -16,24 +16,27 @@ package com.musclehack.musclehack;
  */
 
 
-import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.text.Html;
 import android.text.Html.ImageGetter;
+import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,27 +50,7 @@ import android.widget.ImageView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
-/**
- * An easy adapter to map static data to views defined in an XML file. You can specify the data
- * backing the list as an ArrayList of Maps. Each entry in the ArrayList corresponds to one row
- * in the list. The Maps contain the data for each row. You also specify an XML file that
- * defines the views used to display the row, and a mapping from keys in the Map to specific
- * views.
- *
- * Binding data to views occurs in two phases. First, if a
- * {@link android.widget.SimpleAdapter.ViewBinder} is available,
- * {@link ViewBinder#setViewValue(android.view.View, Object, String)}
- * is invoked. If the returned value is true, binding has occurred. 
- * If the returned value is false, the following views are then tried in order:
- * <ul>
- * <li> A view that implements Checkable (e.g. CheckBox).  The expected bind value is a boolean.
- * <li> TextView.  The expected bind value is a string and {@link #setViewText(TextView, String)} 
- * is invoked.
- * <li> ImageView. The expected bind value is a resource id or a string and 
- * {@link #setViewImage(ImageView, int)} or {@link #setViewImage(ImageView, String)} is invoked. 
- * </ul>
- * If no appropriate binding can be found, an {@link IllegalStateException} is thrown.
- */
+
 public class SimpleHtmlAdapter extends BaseAdapter implements Filterable {
     private int[] mTo;
     private String[] mFrom;
@@ -82,21 +65,7 @@ public class SimpleHtmlAdapter extends BaseAdapter implements Filterable {
     private SimpleFilter mFilter;
     private ArrayList<Map<String, ?>> mUnfilteredData;
 
-    /**
-     * Constructor
-     * 
-     * @param context The context where the View associated with this SimpleAdapter is running
-     * @param data A List of Maps. Each entry in the List corresponds to one row in the list. The
-     *        Maps contain the data for each row, and should include all the entries specified in
-     *        "from"
-     * @param resource Resource identifier of a view layout that defines the views for this list
-     *        item. The layout file should include at least those named views defined in "to"
-     * @param from A list of column names that will be added to the Map associated with each
-     *        item.
-     * @param to The views that should display column in the "from" parameter. These should all be
-     *        TextViews. The first N views in this list are given the values of the first N columns
-     *        in the from parameter.
-     */
+
     public SimpleHtmlAdapter(Context context, List<? extends Map<String, ?>> data,
             int resource, String[] from, int[] to) {
         mData = data;
@@ -107,30 +76,22 @@ public class SimpleHtmlAdapter extends BaseAdapter implements Filterable {
     }
 
     
-    /**
-     * @see android.widget.Adapter#getCount()
-     */
+
     public int getCount() {
         return mData.size();
     }
 
-    /**
-     * @see android.widget.Adapter#getItem(int)
-     */
+
     public Object getItem(int position) {
         return mData.get(position);
     }
 
-    /**
-     * @see android.widget.Adapter#getItemId(int)
-     */
+
     public long getItemId(int position) {
         return position;
     }
 
-    /**
-     * @see android.widget.Adapter#getView(int, View, ViewGroup)
-     */
+
     public View getView(int position, View convertView, ViewGroup parent) {
         return createViewFromResource(position, convertView, parent, mResource);
     }
@@ -234,63 +195,22 @@ public class SimpleHtmlAdapter extends BaseAdapter implements Filterable {
         }
     }
 
-    /**
-     * Returns the {@link ViewBinder} used to bind data to views.
-     *
-     * @return a ViewBinder or null if the binder does not exist
-     *
-     * @see #setViewBinder(android.widget.SimpleAdapter.ViewBinder)
-     */
+
     public ViewBinder getViewBinder() {
         return mViewBinder;
     }
 
-    /**
-     * Sets the binder used to bind data to views.
-     *
-     * @param viewBinder the binder used to bind data to views, can be null to
-     *        remove the existing binder
-     *
-     * @see #getViewBinder()
-     */
+
     public void setViewBinder(ViewBinder viewBinder) {
         mViewBinder = viewBinder;
     }
 
-    /**
-     * Called by bindView() to set the image for an ImageView but only if
-     * there is no existing ViewBinder or if the existing ViewBinder cannot
-     * handle binding to an ImageView.
-     *
-     * This method is called instead of {@link #setViewImage(ImageView, String)}
-     * if the supplied data is an int or Integer.
-     *
-     * @param v ImageView to receive an image
-     * @param value the value retrieved from the data set
-     *
-     * @see #setViewImage(ImageView, String)
-     */
+
     public void setViewImage(ImageView v, int value) {
         v.setImageResource(value);
     }
 
-    /**
-     * Called by bindView() to set the image for an ImageView but only if
-     * there is no existing ViewBinder or if the existing ViewBinder cannot
-     * handle binding to an ImageView.
-     *
-     * By default, the value will be treated as an image resource. If the
-     * value cannot be used as an image resource, the value is used as an
-     * image Uri.
-     *
-     * This method is called instead of {@link #setViewImage(ImageView, int)}
-     * if the supplied data is not an int or Integer.
-     *
-     * @param v ImageView to receive an image
-     * @param value the value retrieved from the data set
-     *
-     * @see #setViewImage(ImageView, int) 
-     */
+
     public void setViewImage(ImageView v, String value) {
         try {
             v.setImageResource(Integer.parseInt(value));
@@ -299,14 +219,7 @@ public class SimpleHtmlAdapter extends BaseAdapter implements Filterable {
         }
     }
 
-    /**
-     * Called by bindView() to set the text for a TextView but only if
-     * there is no existing ViewBinder or if the existing ViewBinder cannot
-     * handle binding to an TextView.
-     *
-     * @param v TextView to receive text
-     * @param text the text to be set for the TextView
-     */
+
     
     /*
     class FlushedInputStream extends FilterInputStream {
@@ -341,44 +254,21 @@ public class SimpleHtmlAdapter extends BaseAdapter implements Filterable {
     public void setViewText(TextView v, String text) {
         //v.setText(text);
     	if(v.getId() == R.id.text){
-    		v.setText(Html.fromHtml(text, new ImageGetter() {
-    			   @Override public Drawable getDrawable(String source) {
-    				      
-    				      Bitmap x;
-
-
-    				      Drawable drawableFromUrl = null;
-    				      drawableFromUrl = Drawable.createFromPath(source);
-    				      drawableFromUrl.setBounds(0, 0, drawableFromUrl.getIntrinsicWidth(), drawableFromUrl.getIntrinsicHeight());
-
-    				      return drawableFromUrl;
-    				      /*
-    				      try{
-        				      drawableFromUrl = Drawable.createFromStream((InputStream)new URL(source).getContent(), "src");
-    				    	  
-    				      } catch (MalformedURLException e1) {
-								e1.printStackTrace();
-    				      } catch (IOException e1) {
-								e1.printStackTrace();
-    				      }
-    				      //*/
-    				      /*
-							try {
-							    HttpURLConnection connection;
-								//connection = (HttpURLConnection) new URL(source).openConnection();
-								//connection.connect();
-		    				    //InputStream input = connection.getInputStream();
-		    				    x = BitmapFactory.decodeStream(new FlushedInputStream((InputStream) new URL(source).getContent()));
-		    				    drawableFromUrl = new BitmapDrawable(x);
-							} catch (MalformedURLException e1) {
-								e1.printStackTrace();
-							} catch (IOException e1) {
-								e1.printStackTrace();
-							}
-						//*/
-    				      
-    				  }
-    				}, null));
+    		/*
+    		v.setText(Html.fromHtml(text));
+    		if(true){
+    			return;
+    		}
+    		//*/
+    		/*
+    		SetHtmlInTextViewPostTaskParams params = new SetHtmlInTextViewPostTaskParams();
+    		params.textView = v;
+    		params.htmlText = text;
+    		new SetHtmlInTextViewPostTask().execute(params);
+    		//*/
+    		URLImageParser p = new URLImageParser(v, null);
+    		Spanned htmlSpan = Html.fromHtml(text, p, null);
+    		v.setText(htmlSpan);
     	}else{
     		v.setText(text);
     	}
@@ -422,11 +312,167 @@ public class SimpleHtmlAdapter extends BaseAdapter implements Filterable {
         boolean setViewValue(View view, Object data, String textRepresentation);
     }
 
-    /**
-     * <p>An array filters constrains the content of the array adapter with
-     * a prefix. Each item that does not start with the supplied prefix
-     * is removed from the list.</p>
-     */
+    private class SetHtmlInTextViewPostTaskParams{
+    	public TextView textView;
+    	public String htmlText;
+    }
+    private class SetHtmlInTextViewPostTask extends AsyncTask<SetHtmlInTextViewPostTaskParams, Integer, Void> {
+    	   @Override
+    	   protected void onPreExecute() {
+    	      super.onPreExecute();
+    	   }
+    	 
+    	   @Override
+    	   protected Void doInBackground(SetHtmlInTextViewPostTaskParams... params) {
+    		   SetHtmlInTextViewPostTaskParams param = params[0];
+    		   param.textView.setText(Html.fromHtml(param.htmlText, new ImageGetter() {
+    			   @Override public Drawable getDrawable(String source) {
+ 				      		Drawable drawableFromUrl = null;
+    				      //ImageLoader imageLoaded = new ImageLoader()
+
+    				   		/*
+    				      drawableFromUrl = Drawable.createFromPath(source);
+    				      drawableFromUrl.setBounds(0, 0, drawableFromUrl.getIntrinsicWidth(), drawableFromUrl.getIntrinsicHeight());
+
+    				      
+    				      //*/
+    				      //*
+    				      try{
+        				      drawableFromUrl = Drawable.createFromStream((InputStream)new URL(source).getContent(), "src");
+    				    	  
+    				      } catch (MalformedURLException e1) {
+								e1.printStackTrace();
+    				      } catch (IOException e1) {
+								e1.printStackTrace();
+    				      }
+    				      //*/
+    				      /*
+							try {
+								Bitmap x;
+							    HttpURLConnection connection;
+								//connection = (HttpURLConnection) new URL(source).openConnection();
+								//connection.connect();
+		    				    //InputStream input = connection.getInputStream();
+		    				    x = BitmapFactory.decodeStream(new FlushedInputStream((InputStream) new URL(source).getContent()));
+		    				    drawableFromUrl = new BitmapDrawable(x);
+							} catch (MalformedURLException e1) {
+								e1.printStackTrace();
+							} catch (IOException e1) {
+								e1.printStackTrace();
+							}
+						//*/
+    				      return drawableFromUrl;
+    				  }
+    				}, null));
+    		   return null;
+    	   }
+    	 
+    	   @Override
+    	   protected void onProgressUpdate(Integer... values) {
+    	      super.onProgressUpdate(values);
+    	   }
+    	 
+    	   @Override
+    	   protected void onPostExecute(Void result) {
+    	      super.onPostExecute(result);
+    	   }
+    }
+    
+    public class URLDrawable extends BitmapDrawable {
+        // the drawable that you need to set, you could set the initial drawing
+        // with the loading image if you need to
+        protected Drawable drawable;
+
+        @Override
+        public void draw(Canvas canvas) {
+            // override the draw to facilitate refresh function later
+            if(drawable != null) {
+                drawable.draw(canvas);
+            }
+        }
+    }
+    public class URLImageParser implements ImageGetter {
+        Context c;
+        View container;
+
+        /***
+         * Construct the URLImageParser which will execute AsyncTask and refresh the container
+         * @param t
+         * @param c
+         */
+        public URLImageParser(View t, Context c) {
+            this.c = c;
+            this.container = t;
+        }
+
+        public Drawable getDrawable(String source) {
+            URLDrawable urlDrawable = new URLDrawable();
+
+            // get the actual source
+            ImageGetterAsyncTask asyncTask = 
+                new ImageGetterAsyncTask( urlDrawable);
+
+            asyncTask.execute(source);
+
+            // return reference to URLDrawable where I will change with actual image from
+            // the src tag
+            return urlDrawable;
+        }
+
+        public class ImageGetterAsyncTask extends AsyncTask<String, Void, Drawable>  {
+            URLDrawable urlDrawable;
+
+            public ImageGetterAsyncTask(URLDrawable d) {
+                this.urlDrawable = d;
+            }
+
+            @Override
+            protected Drawable doInBackground(String... params) {
+                String source = params[0];
+                return fetchDrawable(source);
+            }
+
+            @Override
+            protected void onPostExecute(Drawable result) {
+                // set the correct bound according to the result from HTTP call
+                urlDrawable.setBounds(0, 0, 0 + result.getIntrinsicWidth(), 0 
+                        + result.getIntrinsicHeight()); 
+
+                // change the reference of the current drawable to the result
+                // from the HTTP call
+                urlDrawable.drawable = result;
+
+                // redraw the image by invalidating the container
+                URLImageParser.this.container.invalidate();
+            }
+
+            /***
+             * Get the Drawable from URL
+             * @param urlString
+             * @return
+             */
+            public Drawable fetchDrawable(String urlString) {
+                try {
+                    InputStream is = fetch(urlString);
+                    Drawable drawable = Drawable.createFromStream(is, "src");
+                    drawable.setBounds(0, 0, 0 + drawable.getIntrinsicWidth(), 0 
+                            + drawable.getIntrinsicHeight()); 
+                    return drawable;
+                } catch (Exception e) {
+                    return null;
+                } 
+            }
+
+            private InputStream fetch(String urlString) throws MalformedURLException, IOException {
+                DefaultHttpClient httpClient = new DefaultHttpClient();
+                HttpGet request = new HttpGet(urlString);
+                HttpResponse response = httpClient.execute(request);
+                return response.getEntity().getContent();
+            }
+        }
+    }
+
+    
     private class SimpleFilter extends Filter {
 
         @Override
