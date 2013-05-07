@@ -57,13 +57,13 @@ public class MainActivity extends FragmentActivity {
     public void initializeTab() {
         
         TabHost.TabSpec spec = mTabHost.newTabSpec(TAB_A);
-        this.mTabHost.setCurrentTab(-3);
+        this.mTabHost.setCurrentTab(-3); //?
         spec.setContent(new TabHost.TabContentFactory() {
             public View createTabContent(String tag) {
                 return findViewById(android.R.id.tabcontent);
             }
         });
-        spec.setIndicator(createTabView(getString(R.string.rss), R.drawable.tab1_rss));
+        spec.setIndicator(createTabView(getString(R.string.worklog), R.drawable.tab2_worklog));
         mTabHost.addTab(spec);
 
 
@@ -73,7 +73,7 @@ public class MainActivity extends FragmentActivity {
                 return findViewById(android.R.id.tabcontent);
             }
         });
-        spec.setIndicator(createTabView(getString(R.string.worklog), R.drawable.tab2_worklog));
+        spec.setIndicator(createTabView(getString(R.string.rss), R.drawable.tab1_rss));
         mTabHost.addTab(spec);
         
         spec = mTabHost.newTabSpec(TAB_C);
@@ -101,9 +101,9 @@ public class MainActivity extends FragmentActivity {
     TabHost.OnTabChangeListener listener = new TabHost.OnTabChangeListener() {
           public void onTabChanged(String tabId) {
               if(tabId.equals(TAB_A)){
-                pushFragments(getString(R.string.rss), fragment1rss);
+                pushFragments(getString(R.string.worklog), fragment2worklog);
               }else if(tabId.equals(TAB_B)){
-                  pushFragments(getString(R.string.worklog), fragment2worklog);
+                  pushFragments(getString(R.string.rss), fragment1rss);
               }else if(tabId.equals(TAB_C)){
                   pushFragments(getString(R.string.recipes), fragment3recipe);
               }else if(tabId.equals(TAB_D)){
