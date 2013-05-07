@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.musclehack.musclehack.workouts.WorkoutManagerSingleton;
 
@@ -59,7 +60,14 @@ public class Fragment2worklog extends ListFragment {
 	public void onListItemClick(ListView l, View v, int position, long id){
 		super.onListItemClick(l, v, position, id);
 		ListFragment newFragment = new Fragment2worklog_1prog();
+		TextView textView = (TextView) v.findViewById(R.id.textWorklog); 
+		String clickedText = textView.getText().toString();
+		WorkoutManagerSingleton.getInstance().selectProgram(clickedText);
+
 		FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+
+
 
 		// Replace whatever is in the fragment_container view with this fragment,
 		// and add the transaction to the back stack

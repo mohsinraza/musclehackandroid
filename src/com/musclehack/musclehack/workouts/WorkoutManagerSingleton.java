@@ -12,6 +12,7 @@ public class WorkoutManagerSingleton{
 	protected static Context context = null;
 	//public HashMap<String, SubProgram> programs;
 	protected ProgramDbHelper dbHelper;
+	protected String selectedProgramName;
 
 	/*
 	public class Program{
@@ -68,13 +69,13 @@ public class WorkoutManagerSingleton{
 	}
 
 	public void selectProgram(String programName){
-		//TODO
+		this.selectedProgramName = programName;
 	}
 	
 	public void selectSubProgram(String subProgramName){
 		//TODO
 	}
-	
+
 	public void selectWeek(String weekName){
 		//TODO
 	}
@@ -82,12 +83,12 @@ public class WorkoutManagerSingleton{
 	public void selectDay(String dayName){
 		//TODO
 	}
-	
+
 	public List<String> getAvailableSubProgramNames(){
-		List<String> programs = new ArrayList<String>();
-		return programs;
+		List<String> subPrograms = this.dbHelper.getAvailableSubProgramNames(this.selectedProgramName);
+		return subPrograms;
 	}
-	
+
 	public List<String> getAvailableSubProgramNames(String programName){
 		List<String> programs = new ArrayList<String>();
 		return programs;

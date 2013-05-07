@@ -21,6 +21,14 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 	}
 	
+	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+		//db.execSQL(SQL_DELETE_ENTRIES);
+		//onCreate(db);
+	}
+	public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+		//onUpgrade(db, oldVersion, newVersion);
+	}
+	
 	public void onCreate(SQLiteDatabase db) {
 		db.execSQL(ContractProgram.CREATE_TABLE);
 		db.execSQL(ContractSubProgram.CREATE_TABLE);
@@ -67,22 +75,41 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 				null,                                     // don't filter by row groups
 				null                                      // The sort order
 				);
-		if(cursor.moveToFirst()){
-			programs.add(cursor.getString(0));
-			while(cursor.moveToNext()){
-				String programName = cursor.getString(0);
-				programs.add(programName);
-			}
+		while(cursor.moveToNext()){
+			String programName = cursor.getString(0);
+			programs.add(programName);
 		}
 		return programs;
-		
 	}
-	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		//db.execSQL(SQL_DELETE_ENTRIES);
-		//onCreate(db);
+
+	public List<String> getAvailableSubProgramNames(String programName){
+		SQLiteDatabase db = this.getReadableDatabase();
+		String[] projectionProgram = {
+				ContractProgram.COLUMN_NAME_ID,
+				ContractProgram.COLUMN_NAME_NAME
+				};
+		Cursor cursorProgram = db.query(ContractProgram.TABLE_NAME, projectionProgram,                               // The columns to return
+								null, null, null, null, null);
+		int idProgram = 0;
+		while(cursorProgram.moveToNext()){
+			String currentProgramName = cursorProgram.getString(1);
+			if(currentProgramName.equals(programName)){
+				idProgram = cursorProgram.getInt(0);
+			}
+		}
+		String[] projectionSubProgram = {
+				ContractSubProgram.COLUMN_NAME_NAME
+				};
+		Cursor cursorSubProgram = db.query(ContractSubProgram.TABLE_NAME, projectionSubProgram,                               // The columns to return
+								null, null, null, null, null);
+
+		List<String> subPrograms = new ArrayList<String>();
+		while(cursorSubProgram.moveToNext()){
+			String subProgramName = cursorSubProgram.getString(0);
+			subPrograms.add(subProgramName);
+		}
+		return subPrograms;
 	}
-	public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		//onUpgrade(db, oldVersion, newVersion);
-	}
+
 }
 

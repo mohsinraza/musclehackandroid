@@ -2,6 +2,9 @@ package com.musclehack.musclehack;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+
+import com.musclehack.musclehack.workouts.WorkoutManagerSingleton;
 
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -25,17 +28,13 @@ public class Fragment2worklog_1prog extends ListFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		//*
 		this.texts = new ArrayList<HashMap<String, String>>();
-		HashMap<String, String> map = new HashMap<String, String>();
-		map.put(TAG_TEXT_WORKLOG, "THT5 Volume 8-12");
-		this.texts.add(map);
-		map = new HashMap<String, String>();
-		map.put(TAG_TEXT_WORKLOG, "THT5 Volume 7-10");
-		this.texts.add(map);
-		map = new HashMap<String, String>();
-		map.put(TAG_TEXT_WORKLOG, "THT5 Volume 6-8");
-		this.texts.add(map);
+		List<String> subProgramNames = WorkoutManagerSingleton.getInstance().getAvailableSubProgramNames();
+		for(String subProgramName:subProgramNames){
+			HashMap<String, String> map = new HashMap<String, String>();
+			map.put(TAG_TEXT_WORKLOG, subProgramName);
+			this.texts.add(map);
+		}
 
 		this.adapter = new SimpleHtmlAdapter(this.getActivity(),
 												this.texts,
