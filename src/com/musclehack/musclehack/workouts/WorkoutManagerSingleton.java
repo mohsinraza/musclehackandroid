@@ -1,15 +1,19 @@
-package com.musclehack.musclehack;
+package com.musclehack.musclehack.workouts;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+
+import android.content.Context;
 
 
 
 public class WorkoutManagerSingleton{
-	private static WorkoutManagerSingleton instance = new WorkoutManagerSingleton();
-	public HashMap<String, SubProgram> programs;
+	protected static WorkoutManagerSingleton instance = new WorkoutManagerSingleton();
+	protected static Context context = null;
+	//public HashMap<String, SubProgram> programs;
+	protected ProgramDbHelper dbHelper;
 
+	/*
 	public class Program{
 		public String name;
 		List<SubProgram> subPrograms;
@@ -38,13 +42,20 @@ public class WorkoutManagerSingleton{
 			}
 		}
 	};
-
+	//*/
+	
+	public static void setContext(Context context){
+		WorkoutManagerSingleton.context = context;
+		WorkoutManagerSingleton.instance.dbHelper = new ProgramDbHelper(WorkoutManagerSingleton.context);
+		WorkoutManagerSingleton.instance.loadWorkoutData();
+	}
+	
 	public static WorkoutManagerSingleton getInstance(){
 		return WorkoutManagerSingleton.instance;
 	}
 	
 	private WorkoutManagerSingleton(){
-		this.loadWorkoutData();
+		
 	}
 	
 	private void loadWorkoutData(){
@@ -52,10 +63,7 @@ public class WorkoutManagerSingleton{
 	}
 	
 	public List<String> getAvailableProgramNames(){
-		List<String> programs = new ArrayList<String>();
-		programs.push_back("THT5 1");
-		programs.push_back("THT5 2");
-		programs.push_back("THT5 3");
+		List<String> programs = this.dbHelper.getAvailableProgramNames();
 		return programs;
 	}
 

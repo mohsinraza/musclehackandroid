@@ -1,18 +1,21 @@
-package com.musclehack.musclehack;
+package com.musclehack.musclehack.workouts;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class WorkoutDay{
-	protected int nomberOfTheWeek;
+	protected int numberOfTheWeek;
 	protected String name;
-	protected list<Exercice> exercices;
+	protected List<Exercice> exercices;
 	protected boolean isnull;
 
 	public WorkoutDay(){
 		this.exercices = new ArrayList<Exercice>();
-		this.isNull = true;
+		this.isnull = true;
 	}
 
 	public boolean isNull(){
-		return this.isNull;
+		return this.isnull;
 	}
 
 	public String getName(){
@@ -24,7 +27,7 @@ public class WorkoutDay{
 	}
 
 	public int getNumberOfTheWeek(){
-		return this.nomberOfTheWeek;
+		return this.numberOfTheWeek;
 	}
 
 	public void setNumberOfTheWeek(int numberOfTheWeek){

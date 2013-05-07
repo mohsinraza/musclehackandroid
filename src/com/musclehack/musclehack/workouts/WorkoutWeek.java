@@ -1,13 +1,13 @@
-package com.musclehack.musclehack;
+package com.musclehack.musclehack.workouts;
 
 public class WorkoutWeek{
 	public String name;
-	public Day days[];
+	//public Day days[];
 
 	public WorkoutWeek(){
-		this.days = new Day[7];
+		//this.days = new Day[7];
 		for(int i=0; i<7; i++){
-			this.days = null;
+			//this.days = null;
 		}
 	}
 
