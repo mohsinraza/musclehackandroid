@@ -98,15 +98,19 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 			}
 		}
 		String[] projectionSubProgram = {
-				ContractSubProgram.COLUMN_NAME_NAME
+				ContractSubProgram.COLUMN_NAME_NAME,
+				ContractSubProgram.COLUMN_NAME_EXTERN_ID
 				};
 		Cursor cursorSubProgram = db.query(ContractSubProgram.TABLE_NAME, projectionSubProgram,                               // The columns to return
 								null, null, null, null, null);
 
 		List<String> subPrograms = new ArrayList<String>();
 		while(cursorSubProgram.moveToNext()){
-			String subProgramName = cursorSubProgram.getString(0);
-			subPrograms.add(subProgramName);
+			int idExtProgram = cursorSubProgram.getInt(1);
+			if(idExtProgram == idProgram){
+				String subProgramName = cursorSubProgram.getString(0);
+				subPrograms.add(subProgramName);
+			}
 		}
 		return subPrograms;
 	}

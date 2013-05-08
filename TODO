@@ -1,8 +1,8 @@
-﻿- 1)Factorize the recipe and rss feature
-- 2)Continue to create the workout data manager
-- 3)Add workout data edition in listview avec empty spin box I think
-- 4)Clean old workout data manager
-- 5)Handle the fact that we can change the tab when loading xml rss/recipe data
+﻿- 1)Continue to create the workout data manager
+- 2)Add workout data edition in listview avec empty spin box I think
+- 3)Clean old workout data manager
+- 4)Handle the fact that we can change the tab when loading xml rss/recipe data
+- 5)Add a loading bar while downloading a webpage for the archives area
 - 6)Remove all warnings
 - 7)Add the new rss/new recipe notification feature
 - 8)Dislay images in the rss/recipe area

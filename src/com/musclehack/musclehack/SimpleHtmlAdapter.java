@@ -19,7 +19,6 @@ package com.musclehack.musclehack;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -47,7 +46,6 @@ import android.widget.Checkable;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 
@@ -302,8 +300,8 @@ public class SimpleHtmlAdapter extends BaseAdapter implements Filterable {
             @Override
             protected void onPostExecute(Drawable result) {
                 // set the correct bound according to the result from HTTP call
-            	int width = result.getIntrinsicWidth();
-            	int height = result.getIntrinsicHeight();
+            	//int width = result.getIntrinsicWidth();
+            	//int height = result.getIntrinsicHeight();
 //              //urlDrawable.setBounds(0, 0, 0, 0);
                 //urlDrawable.setBounds(0, 0, width, height);
 
@@ -325,8 +323,8 @@ public class SimpleHtmlAdapter extends BaseAdapter implements Filterable {
                 try {
                     InputStream is = fetch(urlString);
                     Drawable drawable = Drawable.createFromStream(is, "src");
-                	int width = drawable.getIntrinsicWidth();
-                	int height = drawable.getIntrinsicHeight();
+                	//int width = drawable.getIntrinsicWidth();
+                	//int height = drawable.getIntrinsicHeight();
                     //drawable.setBounds(0, 0, width, height);
                     return drawable;
                 } catch (Exception e) {

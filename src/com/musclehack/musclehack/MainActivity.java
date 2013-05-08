@@ -1,6 +1,5 @@
 package com.musclehack.musclehack;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -23,17 +22,19 @@ public class MainActivity extends FragmentActivity {
 
     TabHost mTabHost;
     
-    Fragment1rss fragment1rss;
+    FragmentListFeed fragment1rss;
     Fragment2worklog fragment2worklog;
-    Fragment3recipe fragment3recipe;
+    FragmentListFeed fragment3recipe;
     Fragment4archives fragment4archives;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_main);
-        this.fragment1rss = new Fragment1rss();
+        this.fragment1rss = new FragmentListFeed();
+        this.fragment1rss.setUrlFeed("http://feeds.feedburner.com/MuscleHack");
         this.fragment2worklog = new Fragment2worklog();
-        this.fragment3recipe = new Fragment3recipe();
+        this.fragment3recipe = new FragmentListFeed();
+        this.fragment3recipe.setUrlFeed("http://www.musclehack.com/category/recipes/feed");
         this.fragment4archives = new Fragment4archives();
         
         this.mTabHost = (TabHost)findViewById(android.R.id.tabhost);
@@ -82,7 +83,7 @@ public class MainActivity extends FragmentActivity {
                 return findViewById(android.R.id.tabcontent);
             }
         });
-        spec.setIndicator(createTabView(getString(R.string.recipes), R.drawable.tab3_recipes)); //TODO change
+        spec.setIndicator(createTabView(getString(R.string.recipes), R.drawable.tab3_recipes));
         mTabHost.addTab(spec);
         
         spec = mTabHost.newTabSpec(TAB_D);
@@ -91,7 +92,7 @@ public class MainActivity extends FragmentActivity {
                 return findViewById(android.R.id.tabcontent);
             }
         });
-        spec.setIndicator(createTabView(getString(R.string.archives), R.drawable.tab4_archives)); //TODO change
+        spec.setIndicator(createTabView(getString(R.string.archives), R.drawable.tab4_archives));
         mTabHost.addTab(spec);
     }
     
