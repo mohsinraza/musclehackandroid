@@ -13,6 +13,9 @@ public class WorkoutManagerSingleton{
 	//public HashMap<String, SubProgram> programs;
 	protected ProgramDbHelper dbHelper;
 	protected String selectedProgramName;
+	protected String selectedSubProgramName;
+	protected String selectedWeek;
+	protected String selectedDay;
 
 	/*
 	public class Program{
@@ -73,15 +76,15 @@ public class WorkoutManagerSingleton{
 	}
 	
 	public void selectSubProgram(String subProgramName){
-		//TODO
+		this.selectedSubProgramName = subProgramName;
 	}
 
 	public void selectWeek(String weekName){
-		//TODO
+		this.selectedWeek = weekName;
 	}
 	
 	public void selectDay(String dayName){
-		//TODO
+		this.selectedDay = dayName;
 	}
 
 	public List<String> getAvailableSubProgramNames(){
@@ -90,23 +93,28 @@ public class WorkoutManagerSingleton{
 	}
 
 	public List<String> getAvailableSubProgramNames(String programName){
-		List<String> programs = new ArrayList<String>();
-		return programs;
+		List<String> subPrograms = this.dbHelper.getAvailableSubProgramNames(programName);
+		return subPrograms;
 	}
 	
 	public List<String> getAvailableWeeks(){
-		List<String> programs = new ArrayList<String>();
-		return programs;
+		List<String> weeks = this.dbHelper.getAvailableWeeks(this.selectedProgramName,
+															 this.selectedSubProgramName);
+		return weeks;
 	}
 	
 	public List<String> getAvailableDays(){
-		List<String> programs = new ArrayList<String>();
-		return programs;
+		List<String> days = this.dbHelper.getAvailableDays(this.selectedProgramName,
+															this.selectedSubProgramName,
+															this.selectedWeek);
+		return days;
 	}
 	
-	public List<String> getAvailableExercices(){
-		List<String> programs = new ArrayList<String>();
-		return programs;
+	public List<Exercice> getAvailableExercices(){
+		List<Exercice> exercices = this.dbHelper.getAvailableExercices(this.selectedProgramName,
+																	this.selectedSubProgramName,
+																	this.selectedWeek,
+																	this.selectedDay);
+		return exercices;
 	}
-	
 }

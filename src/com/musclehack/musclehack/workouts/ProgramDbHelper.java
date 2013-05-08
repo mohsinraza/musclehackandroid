@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.musclehack.musclehack.workouts.ContractProgram.ContractExercise;
 import com.musclehack.musclehack.workouts.ContractProgram.ContractSubProgram;
 import com.musclehack.musclehack.workouts.ContractProgram.ContractWorkoutDay;
 import com.musclehack.musclehack.workouts.ContractProgram.ContractWorkoutWeek;
@@ -84,19 +85,7 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 
 	public List<String> getAvailableSubProgramNames(String programName){
 		SQLiteDatabase db = this.getReadableDatabase();
-		String[] projectionProgram = {
-				ContractProgram.COLUMN_NAME_ID,
-				ContractProgram.COLUMN_NAME_NAME
-				};
-		Cursor cursorProgram = db.query(ContractProgram.TABLE_NAME, projectionProgram,                               // The columns to return
-								null, null, null, null, null);
-		int idProgram = 0;
-		while(cursorProgram.moveToNext()){
-			String currentProgramName = cursorProgram.getString(1);
-			if(currentProgramName.equals(programName)){
-				idProgram = cursorProgram.getInt(0);
-			}
-		}
+		int idProgram = this.getIdProgram(programName);
 		String[] projectionSubProgram = {
 				ContractSubProgram.COLUMN_NAME_NAME,
 				ContractSubProgram.COLUMN_NAME_EXTERN_ID
@@ -114,6 +103,152 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 		}
 		return subPrograms;
 	}
+	
+	protected int getIdProgram(String programName){
+		SQLiteDatabase db = this.getReadableDatabase();
+		String[] projectionProgram = {
+				ContractProgram.COLUMN_NAME_ID,
+				ContractProgram.COLUMN_NAME_NAME
+				};
+		Cursor cursorProgram = db.query(ContractProgram.TABLE_NAME,
+										projectionProgram,
+										null, null, null, null, null);
+		int idProgram = 0;
+		while(cursorProgram.moveToNext()){
+			String currentProgramName = cursorProgram.getString(1);
+			if(currentProgramName.equals(programName)){
+				idProgram = cursorProgram.getInt(0);
+			}
+		}
+		return idProgram;
+	}
 
+	public List<String> getAvailableWeeks(String programName, String subProgramName){
+		SQLiteDatabase db = this.getReadableDatabase();
+		int idSubProgram = this.getIdSubProgram(programName, subProgramName);
+		String[] projectionWeek = {
+				ContractWorkoutWeek.COLUMN_NAME_NAME,
+				ContractWorkoutWeek.COLUMN_NAME_EXTERN_ID
+				};
+		Cursor cursorWeek = db.query(ContractWorkoutWeek.TABLE_NAME, projectionWeek,                               // The columns to return
+								null, null, null, null, null);
+
+		List<String> weeks = new ArrayList<String>();
+		while(cursorWeek.moveToNext()){
+			int idExtProgram = cursorWeek.getInt(1);
+			if(idExtProgram == idSubProgram){
+				String weekName = cursorWeek.getString(0);
+				weeks.add(weekName);
+			}
+		}
+		return weeks;
+	}
+
+	protected int getIdSubProgram(String programName, String subProgramName){
+		SQLiteDatabase db = this.getReadableDatabase();
+		int idProgram = this.getIdProgram(programName);
+		String[] projectionSubProgram = {
+				ContractSubProgram.COLUMN_NAME_ID,
+				ContractSubProgram.COLUMN_NAME_NAME,
+				ContractSubProgram.COLUMN_NAME_EXTERN_ID
+				};
+		Cursor cursorSubProgram = db.query(ContractSubProgram.TABLE_NAME, projectionSubProgram,                               // The columns to return
+								null, null, null, null, null);
+		int idSubProgram = 0;
+		while(cursorSubProgram.moveToNext()){
+			int idExtProgram = cursorSubProgram.getInt(2);
+			if(idExtProgram == idProgram){
+				idSubProgram = cursorSubProgram.getInt(0);
+			}
+		}
+		return idSubProgram;
+	}
+	
+	public List<String> getAvailableDays(String programName, String subProgramName, String week){
+		SQLiteDatabase db = this.getReadableDatabase();
+		int idWeek = this.getIdWeek(programName, subProgramName, week);
+		String[] projectionDay = {
+				ContractWorkoutDay.COLUMN_NAME_NAME,
+				ContractWorkoutDay.COLUMN_NAME_EXTERN_ID
+				};
+		Cursor cursorDay = db.query(ContractWorkoutDay.TABLE_NAME, projectionDay,                               // The columns to return
+								null, null, null, null, null);
+
+		List<String> days = new ArrayList<String>();
+		while(cursorDay.moveToNext()){
+			int idExtWeek = cursorDay.getInt(1);
+			if(idExtWeek == idWeek){
+				String dayName = cursorDay.getString(0);
+				days.add(dayName);
+			}
+		}
+		return days;
+	}
+	
+	protected int getIdWeek(String programName, String subProgramName, String week){
+		SQLiteDatabase db = this.getReadableDatabase();
+		int idSubProgram = this.getIdSubProgram(programName, subProgramName);
+		String[] projectionWeek = {
+				ContractWorkoutWeek.COLUMN_NAME_ID,
+				ContractWorkoutWeek.COLUMN_NAME_NAME,
+				ContractWorkoutWeek.COLUMN_NAME_EXTERN_ID
+				};
+		Cursor cursorWeek = db.query(ContractWorkoutWeek.TABLE_NAME, projectionWeek,                               // The columns to return
+								null, null, null, null, null);
+		int idWeek = 0;
+		while(cursorWeek.moveToNext()){
+			int idExtSubProgram = cursorWeek.getInt(2);
+			if(idExtSubProgram == idSubProgram){
+				idWeek = cursorWeek.getInt(0);
+			}
+		}
+		return idWeek;
+	}
+	
+	public List<Exercice> getAvailableExercices(String programName, String subProgramName, String week,  String day){
+		SQLiteDatabase db = this.getReadableDatabase();
+		int idDay = this.getIdDay(programName, subProgramName, week, day);
+		String[] projectionExercice = {
+				ContractExercise.COLUMN_NAME_NAME,
+				ContractExercise.COLUMN_NAME_NREP,
+				ContractExercise.COLUMN_NAME_WEIGHT,
+				ContractExercise.COLUMN_NAME_EXTERN_ID
+				};
+		Cursor cursorExercice = db.query(ContractExercise.TABLE_NAME, projectionExercice,                               // The columns to return
+								null, null, null, null, null);
+
+		List<Exercice> exercices = new ArrayList<Exercice>();
+		while(cursorExercice.moveToNext()){
+			int idExtDay = cursorExercice.getInt(1);
+			if(idExtDay == idDay){
+				String exerciseName = cursorExercice.getString(0);
+				int nRep = cursorExercice.getInt(1);
+				float weight = cursorExercice.getFloat(2);
+				Exercice exercice = new Exercice(exerciseName, nRep, weight);
+				exercices.add(exercice);
+			}
+		}
+		return exercices;
+	}
+
+	protected int getIdDay(String programName, String subProgramName, String week, String day){
+		SQLiteDatabase db = this.getReadableDatabase();
+		int idWeek = this.getIdWeek(programName, subProgramName, week);
+		String[] projectionDay = {
+				ContractWorkoutDay.COLUMN_NAME_ID,
+				ContractWorkoutDay.COLUMN_NAME_NAME,
+				ContractWorkoutDay.COLUMN_NAME_EXTERN_ID
+				};
+		Cursor cursorDay = db.query(ContractWorkoutDay.TABLE_NAME, projectionDay,                               // The columns to return
+								null, null, null, null, null);
+		int idDay = 0;
+		while(cursorDay.moveToNext()){
+			int idExtWeek = cursorDay.getInt(2);
+			if(idExtWeek == idWeek){
+				idDay = cursorDay.getInt(0);
+			}
+		}
+		return idDay;
+	}
 }
 

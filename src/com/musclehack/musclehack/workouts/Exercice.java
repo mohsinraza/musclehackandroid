@@ -1,6 +1,6 @@
 package com.musclehack.musclehack.workouts;
 
-import org.xmlpull.v1.XmlPullParser;
+
 
 public class Exercice{
 	protected String name;
@@ -11,6 +11,18 @@ public class Exercice{
 		this.name = "noname";
 		this.nRep = 0;
 		this.weight = 0.f;
+	}
+	
+	public Exercice(String name){
+		this.name = name;
+		this.nRep = 0;
+		this.weight = 0.f;
+	}
+	
+	public Exercice(String name, int nRep, float weight){
+		this.name = name;
+		this.nRep = nRep;
+		this.weight = weight;
 	}
 
 	public boolean isDone(){

@@ -40,10 +40,6 @@ public class Fragment2worklog_1prog extends ListFragment {
 												new String[] { TAG_TEXT_WORKLOG },
 												new int[] { R.id.textWorklog});
 		setListAdapter(this.adapter);
-		/**/
- 
-		
-		
 		return super.onCreateView(inflater, container, savedInstanceState);
 	
 	}
