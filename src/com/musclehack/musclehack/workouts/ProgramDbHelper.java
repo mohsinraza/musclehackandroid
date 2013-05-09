@@ -46,6 +46,45 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 		values.put(ContractSubProgram.COLUMN_NAME_NAME, "THT5 VOLUME 8-12");
 		values.put(ContractSubProgram.COLUMN_NAME_EXTERN_ID, newRowProgramId);
 		long newRowSubProgramId = db.insert(ContractSubProgram.TABLE_NAME, "null", values);
+		for(int i=0; i<10; i++){
+			values = new ContentValues();
+			values.put(ContractWorkoutWeek.COLUMN_NAME_NAME, "Week " + (i+1));
+			values.put(ContractWorkoutWeek.COLUMN_NAME_EXTERN_ID, newRowSubProgramId);
+			long newRowWeekId = db.insert(ContractWorkoutWeek.TABLE_NAME, "null", values);
+			values = new ContentValues();
+			values.put(ContractWorkoutDay.COLUMN_NAME_NAME, "Monday - Shoulders & Traps");
+			values.put(ContractWorkoutDay.COLUMN_NAME_DAY_OF_WEEK, 0);
+			values.put(ContractWorkoutDay.COLUMN_NAME_EXTERN_ID, newRowWeekId);
+			long newRowDayId = db.insert(ContractWorkoutDay.TABLE_NAME, "null", values);
+			values = new ContentValues();
+			values.put(ContractExercise.COLUMN_NAME_EXTERN_ID, newRowDayId);
+			values.put(ContractExercise.COLUMN_NAME_NREP, 0);
+			values.put(ContractExercise.COLUMN_NAME_WEIGHT, 0.f);
+			values.put(ContractExercise.COLUMN_NAME_REPRANGE, "8 to 12");
+			values.put(ContractExercise.COLUMN_NAME_REST, "3");
+			values.put(ContractExercise.COLUMN_NAME_NAME, "Overhead Barbell Press");
+			db.insert(ContractExercise.TABLE_NAME, "null", values);
+			values.put(ContractExercise.COLUMN_NAME_NAME, "Overhead Barbell Press");
+			db.insert(ContractExercise.TABLE_NAME, "null", values);
+			values.put(ContractExercise.COLUMN_NAME_NAME, "Overhead Barbell Press");
+			db.insert(ContractExercise.TABLE_NAME, "null", values);
+			values.put(ContractExercise.COLUMN_NAME_NAME, "Overhead Barbell Press");
+			db.insert(ContractExercise.TABLE_NAME, "null", values);
+			values.put(ContractExercise.COLUMN_NAME_NAME, "Overhead Dumbbell Press");
+			values.put(ContractExercise.COLUMN_NAME_REST, "2");
+			db.insert(ContractExercise.TABLE_NAME, "null", values);
+			values.put(ContractExercise.COLUMN_NAME_NAME, "Overhead Dumbbell Press");
+			db.insert(ContractExercise.TABLE_NAME, "null", values);
+			values.put(ContractExercise.COLUMN_NAME_NAME, "Dumbbell Lateral Raises");
+			db.insert(ContractExercise.TABLE_NAME, "null", values);
+			values.put(ContractExercise.COLUMN_NAME_NAME, "Dumbbell Lateral Raises");
+			db.insert(ContractExercise.TABLE_NAME, "null", values);
+			values.put(ContractExercise.COLUMN_NAME_NAME, "Dumbbell Front Raises");
+			db.insert(ContractExercise.TABLE_NAME, "null", values);
+			values.put(ContractExercise.COLUMN_NAME_NAME, "Dumbbell Front Raises");
+			values.put(ContractExercise.COLUMN_NAME_REST, "4");
+			db.insert(ContractExercise.TABLE_NAME, "null", values);
+		}
 		values = new ContentValues();
 		values.put(ContractSubProgram.COLUMN_NAME_NAME, "THT5 VOLUME 7-10");
 		values.put(ContractSubProgram.COLUMN_NAME_EXTERN_ID, newRowProgramId);
@@ -212,6 +251,8 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 				ContractExercise.COLUMN_NAME_NAME,
 				ContractExercise.COLUMN_NAME_NREP,
 				ContractExercise.COLUMN_NAME_WEIGHT,
+				ContractExercise.COLUMN_NAME_REPRANGE,
+				ContractExercise.COLUMN_NAME_REST,
 				ContractExercise.COLUMN_NAME_EXTERN_ID
 				};
 		Cursor cursorExercice = db.query(ContractExercise.TABLE_NAME, projectionExercice,                               // The columns to return
@@ -224,7 +265,9 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 				String exerciseName = cursorExercice.getString(0);
 				int nRep = cursorExercice.getInt(1);
 				float weight = cursorExercice.getFloat(2);
-				Exercice exercice = new Exercice(exerciseName, nRep, weight);
+				String repRange = cursorExercice.getString(3);
+				String rest = cursorExercice.getString(4);
+				Exercice exercice = new Exercice(exerciseName, nRep, weight, repRange, rest);
 				exercices.add(exercice);
 			}
 		}

@@ -16,7 +16,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class Fragment2worklog_1prog extends ListFragment {
+public class Fragment2worklog_2subProg extends ListFragment {
 	 
 	public static String TAG_TEXT_WORKLOG = "textWorklog";
 	protected ArrayList<HashMap<String, String>> texts;
@@ -27,7 +27,7 @@ public class Fragment2worklog_1prog extends ListFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		this.texts = new ArrayList<HashMap<String, String>>();
-		List<String> subProgramNames = WorkoutManagerSingleton.getInstance().getAvailableSubProgramNames();
+		List<String> subProgramNames = WorkoutManagerSingleton.getInstance().getAvailableWeeks();
 		for(String subProgramName:subProgramNames){
 			HashMap<String, String> map = new HashMap<String, String>();
 			map.put(TAG_TEXT_WORKLOG, subProgramName);
@@ -54,6 +54,8 @@ public class Fragment2worklog_1prog extends ListFragment {
 		WorkoutManagerSingleton.getInstance().selectSubProgram(clickedText);
 
 		FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+
 
 
 		transaction.replace(this.getId(), newFragment);

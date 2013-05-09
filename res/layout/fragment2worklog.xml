@@ -1,13 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical" >
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="5dip"
+    android:descendantFocusability="blocksDescendants">
+
  
-    <fragment
-        android:id="@+id/worklog_fragment"
+    <!-- web site title -->
+    <TextView
+        android:id="@+id/textWorklog"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-   />
+        android:paddingTop="8dip"
+        android:paddingLeft="8dip"
+        android:paddingBottom="4dip"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:ems="3"
+        android:textColor="#0B0A32" />
+
+    
+
+
+</RelativeLayout>
  
-</LinearLayout>

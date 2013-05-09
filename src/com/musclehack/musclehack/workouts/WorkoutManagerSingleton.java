@@ -16,42 +16,10 @@ public class WorkoutManagerSingleton{
 	protected String selectedSubProgramName;
 	protected String selectedWeek;
 	protected String selectedDay;
-
-	/*
-	public class Program{
-		public String name;
-		List<SubProgram> subPrograms;
-		HashMap<String, SubProgram> subProgramsHash;
-		public Program(){
-			this.subPrograms = new ArrayList<SubProgram>();
-			this.subProgramsHash = new HashMap<String, SubProgram>();
-		}
-	};
-
-	public class SubProgram{
-		public String name;
-		List<Week> weeks;
-		public SubProgram(){
-			this.weeks = new ArrayList<Week>();
-		}
-	};
-
-	public class Week{
-		public String name;
-		public Day days[];
-		public Week(){
-			this.days = new Day[7];
-			for(int i=0; i<7; i++){
-				this.days = null;
-			}
-		}
-	};
-	//*/
 	
 	public static void setContext(Context context){
 		WorkoutManagerSingleton.context = context;
 		WorkoutManagerSingleton.instance.dbHelper = new ProgramDbHelper(WorkoutManagerSingleton.context);
-		WorkoutManagerSingleton.instance.loadWorkoutData();
 	}
 	
 	public static WorkoutManagerSingleton getInstance(){
@@ -61,11 +29,7 @@ public class WorkoutManagerSingleton{
 	private WorkoutManagerSingleton(){
 		
 	}
-	
-	private void loadWorkoutData(){
-		//TODO
-	}
-	
+
 	public List<String> getAvailableProgramNames(){
 		List<String> programs = this.dbHelper.getAvailableProgramNames();
 		return programs;

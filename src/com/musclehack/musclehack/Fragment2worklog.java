@@ -41,7 +41,7 @@ public class Fragment2worklog extends ListFragment {
 
 		this.adapter = new SimpleHtmlAdapter(this.getActivity(),
 												this.texts,
-												R.layout.fragment2worklog_row1,
+												R.layout.fragment2worklog,
 												new String[] { TAG_TEXT_WORKLOG },
 												new int[] { R.id.textWorklog});
 		setListAdapter(this.adapter);

@@ -6,23 +6,24 @@ public class Exercice{
 	protected String name;
 	protected int nRep;
 	protected float weight;
+	protected String repRange;
+	protected String rest;
 
-	public Exercice(){
-		this.name = "noname";
-		this.nRep = 0;
-		this.weight = 0.f;
-	}
-	
-	public Exercice(String name){
+
+	public Exercice(String name, String repRange, String rest){
 		this.name = name;
 		this.nRep = 0;
 		this.weight = 0.f;
+		this.repRange = repRange;
+		this.rest = rest;
 	}
 	
-	public Exercice(String name, int nRep, float weight){
+	public Exercice(String name, int nRep, float weight, String repRange, String rest){
 		this.name = name;
 		this.nRep = nRep;
 		this.weight = weight;
+		this.repRange = repRange;
+		this.rest = rest;
 	}
 
 	public boolean isDone(){
@@ -47,7 +48,6 @@ public class Exercice{
 
 	public void setNRep(int nRep){
 		this.nRep = nRep;
-		this.updateDataInDB();
 	}
 
 	public float getWeight(){
@@ -56,11 +56,14 @@ public class Exercice{
 
 	public void setWeight(float weight){
 		this.weight = weight;
-		this.updateDataInDB();
+	}
+
+	public String getRepRange(){
+		return this.repRange;
 	}
 	
-	public void updateDataInDB(){
-		
+	public String getRest(){
+		return this.rest;
 	}
 };
 

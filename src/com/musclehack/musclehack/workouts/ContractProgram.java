@@ -61,12 +61,16 @@ public abstract class ContractProgram implements BaseColumns {
 		public static final String COLUMN_NAME_NAME = "name";
 		public static final String COLUMN_NAME_NREP = "nrep";
 		public static final String COLUMN_NAME_WEIGHT = "weight";
+		public static final String COLUMN_NAME_REPRANGE = "reprange";
+		public static final String COLUMN_NAME_REST = "rest";
 		public static final String COLUMN_NAME_EXTERN_ID = "id_day";
 		public static final String CREATE_TABLE = "CREATE TABLE " + TABLE_NAME + "(" 
 													+ COLUMN_NAME_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
 													+ COLUMN_NAME_NAME + " TEXT,"
 													+ COLUMN_NAME_NREP + " INTEGER,"
 													+ COLUMN_NAME_WEIGHT + " REAL,"
+													+ COLUMN_NAME_REPRANGE + " TEXT,"
+													+ COLUMN_NAME_REST + " TEXT,"
 													+ COLUMN_NAME_EXTERN_ID + " INTEGER NOT NULL,"
 													+ "FOREIGN KEY(" + COLUMN_NAME_EXTERN_ID + ") REFERENCES "
 													+ ContractWorkoutDay.TABLE_NAME + "(" + ContractWorkoutDay.COLUMN_NAME_ID + "));";
