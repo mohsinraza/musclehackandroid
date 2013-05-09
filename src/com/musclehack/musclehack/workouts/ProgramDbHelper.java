@@ -35,6 +35,7 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 		db.execSQL(ContractSubProgram.CREATE_TABLE);
 		db.execSQL(ContractWorkoutWeek.CREATE_TABLE);
 		db.execSQL(ContractWorkoutDay.CREATE_TABLE);
+		db.execSQL(ContractExercise.CREATE_TABLE);
 		this.loadDefaultWorkout(db);
 	}
 	
@@ -63,25 +64,18 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 			values.put(ContractExercise.COLUMN_NAME_REPRANGE, "8 to 12");
 			values.put(ContractExercise.COLUMN_NAME_REST, "3");
 			values.put(ContractExercise.COLUMN_NAME_NAME, "Overhead Barbell Press");
-			db.insert(ContractExercise.TABLE_NAME, "null", values);
-			values.put(ContractExercise.COLUMN_NAME_NAME, "Overhead Barbell Press");
-			db.insert(ContractExercise.TABLE_NAME, "null", values);
-			values.put(ContractExercise.COLUMN_NAME_NAME, "Overhead Barbell Press");
-			db.insert(ContractExercise.TABLE_NAME, "null", values);
-			values.put(ContractExercise.COLUMN_NAME_NAME, "Overhead Barbell Press");
-			db.insert(ContractExercise.TABLE_NAME, "null", values);
+			for(int j=0; j<4; j++){
+				db.insert(ContractExercise.TABLE_NAME, "null", values);
+			}
 			values.put(ContractExercise.COLUMN_NAME_NAME, "Overhead Dumbbell Press");
 			values.put(ContractExercise.COLUMN_NAME_REST, "2");
 			db.insert(ContractExercise.TABLE_NAME, "null", values);
-			values.put(ContractExercise.COLUMN_NAME_NAME, "Overhead Dumbbell Press");
 			db.insert(ContractExercise.TABLE_NAME, "null", values);
 			values.put(ContractExercise.COLUMN_NAME_NAME, "Dumbbell Lateral Raises");
 			db.insert(ContractExercise.TABLE_NAME, "null", values);
-			values.put(ContractExercise.COLUMN_NAME_NAME, "Dumbbell Lateral Raises");
 			db.insert(ContractExercise.TABLE_NAME, "null", values);
 			values.put(ContractExercise.COLUMN_NAME_NAME, "Dumbbell Front Raises");
 			db.insert(ContractExercise.TABLE_NAME, "null", values);
-			values.put(ContractExercise.COLUMN_NAME_NAME, "Dumbbell Front Raises");
 			values.put(ContractExercise.COLUMN_NAME_REST, "4");
 			db.insert(ContractExercise.TABLE_NAME, "null", values);
 		}
@@ -170,7 +164,7 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 				ContractWorkoutWeek.COLUMN_NAME_EXTERN_ID
 				};
 		Cursor cursorWeek = db.query(ContractWorkoutWeek.TABLE_NAME, projectionWeek,                               // The columns to return
-								null, null, null, null, null);
+								 null, null, null, null, null);
 
 		List<String> weeks = new ArrayList<String>();
 		while(cursorWeek.moveToNext()){
@@ -197,7 +191,10 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 		while(cursorSubProgram.moveToNext()){
 			int idExtProgram = cursorSubProgram.getInt(2);
 			if(idExtProgram == idProgram){
-				idSubProgram = cursorSubProgram.getInt(0);
+				String currentSubProgramName = cursorSubProgram.getString(1);
+				if(currentSubProgramName.equals(subProgramName)){
+					idSubProgram = cursorSubProgram.getInt(0);
+				}
 			}
 		}
 		return idSubProgram;
@@ -238,7 +235,10 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 		while(cursorWeek.moveToNext()){
 			int idExtSubProgram = cursorWeek.getInt(2);
 			if(idExtSubProgram == idSubProgram){
-				idWeek = cursorWeek.getInt(0);
+				String currentWeek = cursorWeek.getString(1);
+				if(currentWeek.equals(week)){
+					idWeek = cursorWeek.getInt(0);
+				}
 			}
 		}
 		return idWeek;
@@ -260,7 +260,7 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 
 		List<Exercice> exercices = new ArrayList<Exercice>();
 		while(cursorExercice.moveToNext()){
-			int idExtDay = cursorExercice.getInt(1);
+			int idExtDay = cursorExercice.getInt(5);
 			if(idExtDay == idDay){
 				String exerciseName = cursorExercice.getString(0);
 				int nRep = cursorExercice.getInt(1);
@@ -288,7 +288,10 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 		while(cursorDay.moveToNext()){
 			int idExtWeek = cursorDay.getInt(2);
 			if(idExtWeek == idWeek){
-				idDay = cursorDay.getInt(0);
+				String currentDay = cursorDay.getString(1);
+				if(currentDay.equals(day)){
+					idDay = cursorDay.getInt(0);
+				}
 			}
 		}
 		return idDay;

@@ -16,7 +16,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class Fragment2worklog_2subProg extends ListFragment {
+public class Fragment2worklog_3day extends ListFragment {
 	 
 	public static String TAG_TEXT_WORKLOG = "textWorklog";
 	protected ArrayList<HashMap<String, String>> texts;
@@ -27,7 +27,7 @@ public class Fragment2worklog_2subProg extends ListFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		this.texts = new ArrayList<HashMap<String, String>>();
-		List<String> subProgramNames = WorkoutManagerSingleton.getInstance().getAvailableWeeks();
+		List<String> subProgramNames = WorkoutManagerSingleton.getInstance().getAvailableDays();
 		for(String subProgramName:subProgramNames){
 			HashMap<String, String> map = new HashMap<String, String>();
 			map.put(TAG_TEXT_WORKLOG, subProgramName);
@@ -47,11 +47,15 @@ public class Fragment2worklog_2subProg extends ListFragment {
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id){
 		super.onListItemClick(l, v, position, id);
-		ListFragment newFragment = new Fragment2worklog_3day();
+		ListFragment newFragment = new Fragment2worklog_4exercices();
 		TextView textView = (TextView) v.findViewById(R.id.textWorklog); 
 		String clickedText = textView.getText().toString();
-		WorkoutManagerSingleton.getInstance().selectWeek(clickedText);
+		WorkoutManagerSingleton.getInstance().selectDay(clickedText);
+
 		FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+
+
 
 		transaction.replace(this.getId(), newFragment);
 		transaction.addToBackStack(null);
