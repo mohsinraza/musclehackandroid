@@ -7,10 +7,10 @@ public class Exercice{
 	protected int nRep;
 	protected float weight;
 	protected String repRange;
-	protected String rest;
+	protected int rest;
 
 
-	public Exercice(String name, String repRange, String rest){
+	public Exercice(String name, String repRange, int rest){
 		this.name = name;
 		this.nRep = 0;
 		this.weight = 0.f;
@@ -18,7 +18,7 @@ public class Exercice{
 		this.rest = rest;
 	}
 	
-	public Exercice(String name, int nRep, float weight, String repRange, String rest){
+	public Exercice(String name, int nRep, float weight, String repRange, int rest){
 		this.name = name;
 		this.nRep = nRep;
 		this.weight = weight;
@@ -62,7 +62,7 @@ public class Exercice{
 		return this.repRange;
 	}
 	
-	public String getRest(){
+	public int getRest(){
 		return this.rest;
 	}
 };

@@ -70,7 +70,7 @@ public abstract class ContractProgram implements BaseColumns {
 													+ COLUMN_NAME_NREP + " INTEGER,"
 													+ COLUMN_NAME_WEIGHT + " REAL,"
 													+ COLUMN_NAME_REPRANGE + " TEXT,"
-													+ COLUMN_NAME_REST + " TEXT,"
+													+ COLUMN_NAME_REST + " INTEGER,"
 													+ COLUMN_NAME_EXTERN_ID + " INTEGER NOT NULL,"
 													+ "FOREIGN KEY(" + COLUMN_NAME_EXTERN_ID + ") REFERENCES "
 													+ ContractWorkoutDay.TABLE_NAME + "(" + ContractWorkoutDay.COLUMN_NAME_ID + "));";
