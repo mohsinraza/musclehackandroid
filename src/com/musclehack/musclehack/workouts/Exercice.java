@@ -45,6 +45,14 @@ public class Exercice{
 	public int getNRep(){
 		return this.nRep;
 	}
+	
+	public String getNRepString(){
+		String nRep = "";
+		if(this.nRep > 0){
+			nRep = "" + this.nRep;
+		}
+		return nRep;
+	}
 
 	public void setNRep(int nRep){
 		this.nRep = nRep;
@@ -52,6 +60,14 @@ public class Exercice{
 
 	public float getWeight(){
 		return this.weight;
+	}
+	
+	public String getWeightString(){
+		String weight = "";
+		if(this.weight > 0.f){
+			weight = "" + this.weight;
+		}
+		return weight;
 	}
 
 	public void setWeight(float weight){

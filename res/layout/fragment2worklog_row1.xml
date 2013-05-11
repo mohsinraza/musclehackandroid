@@ -1,27 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="5dip"
-    android:descendantFocusability="blocksDescendants">
+    >
 
- 
-    <!-- web site title -->
-    <TextView
-        android:id="@+id/textWorklog"
+	    <LinearLayout
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:weightSum="1.0"
+	    android:orientation="horizontal"
+	    >
+
+		    <TextView
+		        android:id="@+id/exerciseName"
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"
+		        android:layout_weight="0.70"
+		        android:textSize="16sp"
+		        android:textColor="#0B0A32" />
+		    
+		    <TextView
+		        android:id="@+id/range"
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"
+		        android:layout_weight="0.30"
+		        android:textSize="12sp"
+		        android:layout_toRightOf="@id/exerciseName"
+		        />
+		    
+		</LinearLayout>
+        <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="8dip"
-        android:paddingLeft="8dip"
-        android:paddingBottom="4dip"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        android:ems="3"
-        android:textColor="#0B0A32" />
+        android:weightSum="1.0"
+        android:orientation="horizontal"
+        >
+		    
+              <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.10"
+                android:textSize="12sp"
+                android:text="Rest:"
+              />
+              
+		     <EditText
+		        android:id="@+id/rest"
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"
+		        android:inputType="numberSigned"
+		        android:layout_weight="0.20"
+		        android:layout_toRightOf="@id/range"
+		     />
+		
+              <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.14"
+                android:textSize="12sp"
+                android:text="Weight:"
+              />
+              
+		     <EditText
+		        android:id="@+id/weight"
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"
+		        android:inputType="numberSigned"
+		        android:layout_weight="0.26"
+		        android:layout_toRightOf="@id/rest"
+		     />
 
-    
+              <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.10"
+                android:textSize="12sp"
+                android:text="Reps:"
+              />
+              
+		     <EditText
+		        android:id="@+id/nreps"
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"
+		        android:inputType="numberDecimal"
+		        android:layout_weight="0.20"
+		        android:layout_toRightOf="@id/weight"
+		     />
 
-
-</RelativeLayout>
+    </LinearLayout>
+</LinearLayout>
  

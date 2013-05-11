@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.xmlpull.v1.XmlPullParserException;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -80,12 +81,15 @@ public class FragmentListFeed extends ListFragment {
 			//((SimpleHtmlAdapter)adapter).notifyDataSetChanged();
 		}
 		
-		ListAdapter adapter = new SimpleHtmlAdapter(this.getActivity(),
-				rssFeedList,
-				R.layout.fragment1rss_row,
-				new String[] { TAG_TITLE, TAG_TEXT },
-				new int[] { R.id.title, R.id.text });
-		setListAdapter(adapter);
+		Activity activity = this.getActivity();
+		if(activity != null){
+			ListAdapter adapter = new SimpleHtmlAdapter(activity,
+					rssFeedList,
+					R.layout.fragment1rss_row,
+					new String[] { TAG_TITLE, TAG_TEXT },
+					new int[] { R.id.title, R.id.text });
+			setListAdapter(adapter);
+		}
 
 	}
 	

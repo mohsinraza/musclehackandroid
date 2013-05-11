@@ -18,8 +18,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 public class Fragment2worklog_4exercices extends ListFragment {
-	 
-	public static String TAG_TEXT_WORKLOG = "textWorklog";
+	public static String TAG_EXERCICE_NAME = "exerciseName";
+	public static String TAG_EXERCICE_RANGE = "exerciseRange";
+	public static String TAG_EXERCICE_REST = "exerciseRest";
+	public static String TAG_EXERCICE_WEIGHT = "exerciseWeight";
+	public static String TAG_EXERCICE_NREPS = "exerciseNreps";
 	protected ArrayList<HashMap<String, String>> texts;
 	protected ListAdapter adapter;
 
@@ -32,15 +35,31 @@ public class Fragment2worklog_4exercices extends ListFragment {
 		for(Exercice exercice:exercices){
 			HashMap<String, String> map = new HashMap<String, String>();
 			String exerciceName = exercice.getName();
-			map.put(TAG_TEXT_WORKLOG, exerciceName);
+			map.put(TAG_EXERCICE_NAME, exerciceName);
+			String range = exercice.getRepRange();
+			map.put(TAG_EXERCICE_RANGE, range + " reps"); //TODO translate
+			int rest = exercice.getRest();
+			map.put(TAG_EXERCICE_REST, "" + rest);
+			float weight = exercice.getWeight();
+			map.put(TAG_EXERCICE_WEIGHT, "" + weight);
+			int nReps = exercice.getNRep();
+			map.put(TAG_EXERCICE_NREPS, "" + nReps);
 			this.texts.add(map);
 		}
 
 		this.adapter = new SimpleHtmlAdapter(this.getActivity(),
 												this.texts,
-												R.layout.fragment2worklog,
-												new String[] { TAG_TEXT_WORKLOG },
-												new int[] { R.id.textWorklog});
+												R.layout.fragment2worklog_row1,
+												new String[] {TAG_EXERCICE_NAME,
+																TAG_EXERCICE_RANGE,
+																TAG_EXERCICE_REST,
+																TAG_EXERCICE_WEIGHT,
+																TAG_EXERCICE_NREPS},
+												new int[] {R.id.exerciseName,
+															R.id.range,
+															R.id.rest,
+															R.id.weight,
+															R.id.nreps});
 		setListAdapter(this.adapter);
 		return super.onCreateView(inflater, container, savedInstanceState);
 	}
