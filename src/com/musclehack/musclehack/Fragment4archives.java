@@ -20,7 +20,7 @@ public class Fragment4archives extends Fragment {
         View view = inflater.inflate(R.layout.fragment4archives, container, false);
         WebView webView = (WebView) view.findViewById(R.id.webViewArchives);
         Fragment4archives.progressDialog = ProgressDialog.show(this.getActivity(), "",
-        											"Loading. Please wait...", true);
+        											getString(R.string.loading), true);
         webView.setWebViewClient(new WebViewClient() {
 	        	public void onPageFinished(WebView view, String url) {
 	        		Fragment4archives.progressDialog.dismiss();

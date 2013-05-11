@@ -465,5 +465,50 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 		}
 		return idDay;
 	}
+	
+	protected void setExerciceInfo(String programName,
+									String subProgramName,
+									String week,
+									String day,
+									String exerciceName,
+									String rest,
+									String weight,
+									String nReps){
+		int idExercise = this.getIdExercise(programName, subProgramName, week, day, exerciceName);
+		//not good because several exercise get the same name...
+		ContentValues values = new ContentValues();
+		values.put(ContractExercise.COLUMN_NAME_REST, rest);
+		values.put(ContractExercise.COLUMN_NAME_WEIGHT, weight);
+		values.put(ContractExercise.COLUMN_NAME_NREP, nReps);
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.update(ContractExercise.TABLE_NAME, values, ContractExercise.COLUMN_NAME_ID + "=" + idExercise, null);
+	}
+	
+	protected int getIdExercise(String programName,
+								String subProgramName,
+								String week,
+								String day,
+								String exerciceName){
+		SQLiteDatabase db = this.getReadableDatabase();
+		int idDay = this.getIdDay(programName, subProgramName, week, day);
+		String[] projectionExercice = {
+				ContractExercise.COLUMN_NAME_ID,
+				ContractExercise.COLUMN_NAME_NAME,
+				ContractExercise.COLUMN_NAME_EXTERN_ID
+				};
+		Cursor cursorExercise = db.query(ContractExercise.TABLE_NAME, projectionExercice,                               // The columns to return
+								null, null, null, null, null);
+		int idExercice = 0;
+		while(cursorExercise.moveToNext()){
+			int idExtDay = cursorExercise.getInt(2);
+			if(idExtDay == idDay){
+				String currentExercice = cursorExercise.getString(1);
+				if(currentExercice.equals(exerciceName)){
+					idExercice = cursorExercise.getInt(0);
+				}
+			}
+		}
+		return idExercice;
+	}
 }
 

@@ -8,5 +8,6 @@
     <string name="recipes">Recipes</string>
     <string name="archives">Archives</string>
     <string name="cart">Cart</string>
+    <string name="loading">Loading. Please wait…</string>
 
 </resources>

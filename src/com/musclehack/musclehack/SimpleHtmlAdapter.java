@@ -27,6 +27,8 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import com.musclehack.musclehack.workouts.WorkoutManagerSingleton;
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
@@ -43,9 +45,11 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.BaseAdapter;
 import android.widget.Checkable;
+import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
@@ -187,6 +191,33 @@ public class SimpleHtmlAdapter extends BaseAdapter implements Filterable {
                     } else {
                         throw new IllegalStateException(v.getClass().getName() + " is not a " +
                                 " view that can be bounds by this SimpleAdapter");
+                    }
+                    if(v instanceof EditText){
+                    	EditText editText = (EditText)v;
+                    	editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                    	    @Override
+                    	    public void onFocusChange(View v, boolean hasFocus) {
+                    	        if (!hasFocus) {                                   // run when focus is lost
+                    	            String value = ((EditText) v).getText().toString();         // get the value from the EditText
+                    	            //TextView textView = (TextView) ((LinearLayout)v.getParent()).findViewById(R.id.exerciseName);
+                    	            LinearLayout topLayout = (LinearLayout)v.getParent().getParent();
+                    	            LinearLayout firstLayout = (LinearLayout)topLayout.getChildAt(0);
+                    	            LinearLayout secondLayout = (LinearLayout)topLayout.getChildAt(1);
+                    	            TextView textView = (TextView)firstLayout.getChildAt(0);
+                    	    		String exerciseName = textView.getText().toString();
+                    	    		EditText editText = (EditText) secondLayout.getChildAt(1);
+                    	    		String restText = editText.getText().toString();
+                    	    		//int rest = Integer.parseInt(restText);
+                    	    		editText = (EditText) secondLayout.getChildAt(3);
+                    	    		String weightText = editText.getText().toString();
+                    	    		//float weight = Float.parseFloat(weightText);
+                    	    		editText = (EditText) secondLayout.getChildAt(5);
+                    	    		String nRepsText = editText.getText().toString();
+                    	    		//int nReps = Integer.parseInt(nRepsText);
+                    	    		WorkoutManagerSingleton.getInstance().setExerciceInfo(exerciseName, restText, weightText, nRepsText);
+                    	        }
+                    	    }
+                    	});
                     }
                 }
             }
