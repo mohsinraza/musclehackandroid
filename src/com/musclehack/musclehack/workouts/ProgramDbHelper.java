@@ -417,6 +417,7 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getReadableDatabase();
 		int idDay = this.getIdDay(programName, subProgramName, week, day);
 		String[] projectionExercice = {
+				ContractExercise.COLUMN_NAME_ID,
 				ContractExercise.COLUMN_NAME_NAME,
 				ContractExercise.COLUMN_NAME_NREP,
 				ContractExercise.COLUMN_NAME_WEIGHT,
@@ -424,23 +425,24 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 				ContractExercise.COLUMN_NAME_REST,
 				ContractExercise.COLUMN_NAME_EXTERN_ID
 				};
-		Cursor cursorExercice = db.query(ContractExercise.TABLE_NAME, projectionExercice,                               // The columns to return
+		Cursor cursorExercise = db.query(ContractExercise.TABLE_NAME, projectionExercice,                               // The columns to return
 								null, null, null, null, null);
 
-		List<Exercice> exercices = new ArrayList<Exercice>();
-		while(cursorExercice.moveToNext()){
-			int idExtDay = cursorExercice.getInt(5);
+		List<Exercice> exercises = new ArrayList<Exercice>();
+		while(cursorExercise.moveToNext()){
+			int idExtDay = cursorExercise.getInt(6);
 			if(idExtDay == idDay){
-				String exerciseName = cursorExercice.getString(0);
-				int nRep = cursorExercice.getInt(1);
-				float weight = cursorExercice.getFloat(2);
-				String repRange = cursorExercice.getString(3);
-				int rest = cursorExercice.getInt(4);
-				Exercice exercice = new Exercice(exerciseName, nRep, weight, repRange, rest);
-				exercices.add(exercice);
+				int exerciceId = cursorExercise.getInt(0);
+				String exerciseName = cursorExercise.getString(1);
+				int nRep = cursorExercise.getInt(2);
+				float weight = cursorExercise.getFloat(3);
+				String repRange = cursorExercise.getString(4);
+				int rest = cursorExercise.getInt(5);
+				Exercice exercice = new Exercice(exerciceId, exerciseName, nRep, weight, repRange, rest);
+				exercises.add(exercice);
 			}
 		}
-		return exercices;
+		return exercises;
 	}
 
 	protected int getIdDay(String programName, String subProgramName, String week, String day){
@@ -466,22 +468,18 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 		return idDay;
 	}
 	
-	protected void setExerciceInfo(String programName,
-									String subProgramName,
-									String week,
-									String day,
-									String exerciceName,
+	protected void setExerciceInfo(String exerciseId,
 									String rest,
 									String weight,
 									String nReps){
-		int idExercise = this.getIdExercise(programName, subProgramName, week, day, exerciceName);
-		//not good because several exercise get the same name...
 		ContentValues values = new ContentValues();
 		values.put(ContractExercise.COLUMN_NAME_REST, rest);
 		values.put(ContractExercise.COLUMN_NAME_WEIGHT, weight);
 		values.put(ContractExercise.COLUMN_NAME_NREP, nReps);
 		SQLiteDatabase db = this.getWritableDatabase();
-		db.update(ContractExercise.TABLE_NAME, values, ContractExercise.COLUMN_NAME_ID + "=" + idExercise, null);
+		db.update(ContractExercise.TABLE_NAME,
+					values, ContractExercise.COLUMN_NAME_ID + "=" + exerciseId,
+					null);
 	}
 	
 	protected int getIdExercise(String programName,

@@ -4,20 +4,22 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import com.musclehack.musclehack.workouts.Exercice;
-import com.musclehack.musclehack.workouts.WorkoutManagerSingleton;
-
+import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
+
+import com.musclehack.musclehack.workouts.Exercice;
+import com.musclehack.musclehack.workouts.WorkoutManagerSingleton;
 
 public class Fragment2worklog_4exercices extends ListFragment {
+	public static String TAG_EXERCICE_ID = "exerciseId";
 	public static String TAG_EXERCICE_NAME = "exerciseName";
 	public static String TAG_EXERCICE_RANGE = "exerciseRange";
 	public static String TAG_EXERCICE_REST = "exerciseRest";
@@ -31,18 +33,20 @@ public class Fragment2worklog_4exercices extends ListFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		this.texts = new ArrayList<HashMap<String, String>>();
-		List<Exercice> exercices = WorkoutManagerSingleton.getInstance().getAvailableExercices();
-		for(Exercice exercice:exercices){
+		List<Exercice> exercises = WorkoutManagerSingleton.getInstance().getAvailableExercices();
+		for(Exercice exercise:exercises){
 			HashMap<String, String> map = new HashMap<String, String>();
-			String exerciceName = exercice.getName();
+			int exerciceId = exercise.getId();
+			map.put(TAG_EXERCICE_ID, "" + exerciceId);
+			String exerciceName = exercise.getName();
 			map.put(TAG_EXERCICE_NAME, exerciceName);
-			String range = exercice.getRepRange();
+			String range = exercise.getRepRange();
 			map.put(TAG_EXERCICE_RANGE, range + " reps"); //TODO translate
-			int rest = exercice.getRest();
+			int rest = exercise.getRest();
 			map.put(TAG_EXERCICE_REST, "" + rest);
-			float weight = exercice.getWeight();
+			float weight = exercise.getWeight();
 			map.put(TAG_EXERCICE_WEIGHT, "" + weight);
-			int nReps = exercice.getNRep();
+			int nReps = exercise.getNRep();
 			map.put(TAG_EXERCICE_NREPS, "" + nReps);
 			this.texts.add(map);
 		}
@@ -51,19 +55,60 @@ public class Fragment2worklog_4exercices extends ListFragment {
 												this.texts,
 												R.layout.fragment2worklog_row1,
 												new String[] {TAG_EXERCICE_NAME,
+																TAG_EXERCICE_ID,
 																TAG_EXERCICE_RANGE,
 																TAG_EXERCICE_REST,
 																TAG_EXERCICE_WEIGHT,
 																TAG_EXERCICE_NREPS},
 												new int[] {R.id.exerciseName,
+															R.id.exerciseId,
 															R.id.range,
 															R.id.rest,
 															R.id.weight,
 															R.id.nreps});
 		setListAdapter(this.adapter);
+		
 		return super.onCreateView(inflater, container, savedInstanceState);
 	}
 	
+
+	@Override
+	public void onViewCreated(View viewTop, Bundle savedInstanceState){
+		super.onViewCreated(viewTop, savedInstanceState);
+		/*
+		ListView listView = this.getListView();
+		if(listView != null){
+			int nChilds = listView.getCount();
+			for(int i=0; i<nChilds; i++){
+				Class className = listView.getItemAtPosition(i).getClass();
+				HashMap<String, String> map = (HashMap<String, String>)listView.getItemAtPosition(i);
+				View view = (View)listView.getItemAtPosition(i);
+		        if(view instanceof LinearLayout && ((LinearLayout)view).getChildAt(1) instanceof LinearLayout){
+		            LinearLayout topLayout = (LinearLayout)view;
+		            LinearLayout secondLayout = (LinearLayout)topLayout.getChildAt(1);
+		    		EditText editText = (EditText) secondLayout.getChildAt(1);
+		    		String restText = editText.getText().toString();
+		    		//int rest = Integer.parseInt(restText);
+		    		editText = (EditText) secondLayout.getChildAt(3);
+		    		String weightText = editText.getText().toString();
+		    		editText = (EditText) secondLayout.getChildAt(5);
+		    		String nRepsText = editText.getText().toString();
+		    		boolean exerciseDone = false;
+		    		if(!weightText.equals("") && !nRepsText.equals("")){
+		        		float weight = Float.parseFloat(weightText);
+		        		int nReps = Integer.parseInt(nRepsText);
+		        		exerciseDone = weight > 0 && nReps > 0;
+		    		}
+		    		if(exerciseDone){
+		    			topLayout.setBackgroundColor(Color.CYAN);
+		    		}else{
+		    			topLayout.setBackgroundColor(Color.WHITE);
+		    		}
+		        }
+			}
+		}
+		//*/
+	}
 	
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id){

@@ -51,12 +51,8 @@ public class WorkoutManagerSingleton{
 		this.selectedDay = dayName;
 	}
 	
-	public void setExerciceInfo(String exerciceName, String rest, String weight, String nReps){
-		this.dbHelper.setExerciceInfo(this.selectedProgramName,
-						this.selectedSubProgramName,
-						this.selectedWeek,
-						this.selectedDay,
-						exerciceName,
+	public void setExerciceInfo(String exerciseId, String rest, String weight, String nReps){
+		this.dbHelper.setExerciceInfo(exerciseId,
 						rest,
 						weight,
 						nReps);

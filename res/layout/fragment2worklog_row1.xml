@@ -21,6 +21,13 @@
 		        android:textColor="#0B0A32" />
 		    
 		    <TextView
+                android:id="@+id/exerciseId"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.70"
+                android:textSize="16sp"
+                android:visibility="gone" />
+		    <TextView
 		        android:id="@+id/range"
 		        android:layout_width="0dp"
 		        android:layout_height="wrap_content"
@@ -42,6 +49,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.10"
                 android:textSize="12sp"
+                android:layout_marginLeft="4dp"
                 android:text="Rest:"
               />
               
@@ -60,13 +68,14 @@
                 android:layout_weight="0.14"
                 android:textSize="12sp"
                 android:text="Weight:"
+                android:layout_marginLeft="4dp"
               />
               
 		     <EditText
 		        android:id="@+id/weight"
 		        android:layout_width="0dp"
 		        android:layout_height="wrap_content"
-		        android:inputType="numberSigned"
+		        android:inputType="numberDecimal"
 		        android:layout_weight="0.26"
 		        android:layout_toRightOf="@id/rest"
 		     />
@@ -76,6 +85,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.10"
                 android:textSize="12sp"
+                android:layout_marginLeft="4dp"
                 android:text="Reps:"
               />
               
@@ -83,7 +93,7 @@
 		        android:id="@+id/nreps"
 		        android:layout_width="0dp"
 		        android:layout_height="wrap_content"
-		        android:inputType="numberDecimal"
+		        android:inputType="numberSigned"
 		        android:layout_weight="0.20"
 		        android:layout_toRightOf="@id/weight"
 		     />

@@ -27,10 +27,9 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-import com.musclehack.musclehack.workouts.WorkoutManagerSingleton;
-
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -51,6 +50,8 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.musclehack.musclehack.workouts.WorkoutManagerSingleton;
 
 
 public class SimpleHtmlAdapter extends BaseAdapter implements Filterable {
@@ -148,6 +149,7 @@ public class SimpleHtmlAdapter extends BaseAdapter implements Filterable {
         final String[] from = mFrom;
         final int[] to = mTo;
         final int count = to.length;
+        
 
         for (int i = 0; i < count; i++) {
             final View v = holder[i];
@@ -162,7 +164,7 @@ public class SimpleHtmlAdapter extends BaseAdapter implements Filterable {
                 if (binder != null) {
                     bound = binder.setViewValue(v, data, text);
                 }
-
+                
                 if (!bound) {
                     if (v instanceof Checkable) {
                         if (data instanceof Boolean) {
@@ -205,16 +207,24 @@ public class SimpleHtmlAdapter extends BaseAdapter implements Filterable {
                     	            LinearLayout secondLayout = (LinearLayout)topLayout.getChildAt(1);
                     	            TextView textView = (TextView)firstLayout.getChildAt(0);
                     	    		String exerciseName = textView.getText().toString();
+                    	            textView = (TextView)firstLayout.getChildAt(1);
+                    	    		String exerciseId = textView.getText().toString();
                     	    		EditText editText = (EditText) secondLayout.getChildAt(1);
                     	    		String restText = editText.getText().toString();
                     	    		//int rest = Integer.parseInt(restText);
                     	    		editText = (EditText) secondLayout.getChildAt(3);
                     	    		String weightText = editText.getText().toString();
-                    	    		//float weight = Float.parseFloat(weightText);
+                    	    		float weight = Float.parseFloat(weightText);
                     	    		editText = (EditText) secondLayout.getChildAt(5);
                     	    		String nRepsText = editText.getText().toString();
-                    	    		//int nReps = Integer.parseInt(nRepsText);
-                    	    		WorkoutManagerSingleton.getInstance().setExerciceInfo(exerciseName, restText, weightText, nRepsText);
+                    	    		int nReps = Integer.parseInt(nRepsText);
+                    	    		boolean exerciseDone = weight > 0 && nReps > 0;
+                    	    		if(exerciseDone){
+                    	    			topLayout.setBackgroundColor(Color.CYAN);
+                    	    		}else{
+                    	    			topLayout.setBackgroundColor(Color.WHITE);
+                    	    		}
+                    	    		WorkoutManagerSingleton.getInstance().setExerciceInfo(exerciseId, restText, weightText, nRepsText);
                     	        }
                     	    }
                     	});
@@ -222,6 +232,35 @@ public class SimpleHtmlAdapter extends BaseAdapter implements Filterable {
                 }
             }
         }
+        
+        //*
+        if(view instanceof LinearLayout && ((LinearLayout)view).getChildAt(1) instanceof LinearLayout){
+            LinearLayout topLayout = (LinearLayout)view;
+            LinearLayout secondLayout = (LinearLayout)topLayout.getChildAt(1);
+    		EditText editText = (EditText) secondLayout.getChildAt(1);
+    		String restText = editText.getText().toString();
+    		//int rest = Integer.parseInt(restText);
+    		editText = (EditText) secondLayout.getChildAt(3);
+    		String weightText = editText.getText().toString();
+    		editText = (EditText) secondLayout.getChildAt(5);
+    		String nRepsText = editText.getText().toString();
+    		boolean exerciseDone = false;
+    		if(!weightText.equals("") && !nRepsText.equals("")){
+        		float weight = Float.parseFloat(weightText);
+        		int nReps = Integer.parseInt(nRepsText);
+        		exerciseDone = weight > 0 && nReps > 0;
+    		}
+    		int backgroundColor = Color.WHITE; //TODO check it works whatever the theme, otherwise get the right color
+    		if(exerciseDone){
+    			backgroundColor = Color.CYAN;
+    		}
+			topLayout.setBackgroundColor(backgroundColor);
+			//secondLayout.setBackgroundColor(backgroundColor);
+			//secondLayout.getChildAt(1).setBackgroundColor(backgroundColor);
+			//secondLayout.getChildAt(3).setBackgroundColor(backgroundColor);
+			//secondLayout.getChildAt(5).setBackgroundColor(backgroundColor);
+        }
+        //*/
     }
 
 
