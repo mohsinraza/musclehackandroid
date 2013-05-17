@@ -56,7 +56,7 @@ public class Fragment2worklog_4exercices extends ListFragment {
 			exerciseNumber++;
 		}
 
-		this.adapter = new SimpleHtmlAdapter(this.getActivity(),
+		this.adapter = new SimpleExerciseAdapter(this.getActivity(),
 												this.texts,
 												R.layout.fragment2worklog_exercise,
 												new String[] {TAG_EXERCICE_NAME,

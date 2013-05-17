@@ -54,22 +54,22 @@ import android.widget.TextView;
 import com.musclehack.musclehack.workouts.WorkoutManagerSingleton;
 
 
-public class SimpleHtmlAdapter extends BaseAdapter implements Filterable {
-    private int[] mTo;
-    private String[] mFrom;
-    private ViewBinder mViewBinder;
+public class SimpleCustomableAdapter extends BaseAdapter implements Filterable {
+    protected int[] mTo;
+    protected String[] mFrom;
+    protected ViewBinder mViewBinder;
 
-    private List<? extends Map<String, ?>> mData;
+    protected List<? extends Map<String, ?>> mData;
 
-    private int mResource;
-    private int mDropDownResource;
-    private LayoutInflater mInflater;
+    protected int mResource;
+    protected int mDropDownResource;
+    protected LayoutInflater mInflater;
 
-    private SimpleFilter mFilter;
-    private ArrayList<Map<String, ?>> mUnfilteredData;
+    protected SimpleFilter mFilter;
+    protected ArrayList<Map<String, ?>> mUnfilteredData;
 
 
-    public SimpleHtmlAdapter(Context context, List<? extends Map<String, ?>> data,
+    public SimpleCustomableAdapter(Context context, List<? extends Map<String, ?>> data,
             int resource, String[] from, int[] to) {
         mData = data;
         mResource = mDropDownResource = resource;
@@ -78,7 +78,7 @@ public class SimpleHtmlAdapter extends BaseAdapter implements Filterable {
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
-    
+
 
     public int getCount() {
         return mData.size();
@@ -138,7 +138,7 @@ public class SimpleHtmlAdapter extends BaseAdapter implements Filterable {
         return createViewFromResource(position, convertView, parent, mDropDownResource);
     }
 
-    private void bindView(int position, View view) {
+    protected void bindView(int position, View view) {
         final Map dataSet = mData.get(position);
         if (dataSet == null) {
             return;
@@ -184,83 +184,14 @@ public class SimpleHtmlAdapter extends BaseAdapter implements Filterable {
                             setViewImage((ImageView) v, text);
                         }
                     } else if (v instanceof WebView) {
-                    	WebView webView = (WebView) v;
-                    	WebSettings webSettings = webView.getSettings();
-                    	webSettings.setDefaultFontSize(20);
-                    	webSettings.setDefaultZoom(WebSettings.ZoomDensity.FAR);
-                    	webView.setInitialScale(100);
-                    	webView.loadData(text, "text/html; charset=UTF-8", "UTF-8");
+                    	setViewHtml((WebView)v, text);
                     } else {
                         throw new IllegalStateException(v.getClass().getName() + " is not a " +
                                 " view that can be bounds by this SimpleAdapter");
                     }
-                    if(v instanceof EditText){
-                    	EditText editText = (EditText)v;
-                    	editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                    	    @Override
-                    	    public void onFocusChange(View v, boolean hasFocus) {
-                    	        if (!hasFocus) {                                   // run when focus is lost
-                    	            String value = ((EditText) v).getText().toString();         // get the value from the EditText
-                    	            //TextView textView = (TextView) ((LinearLayout)v.getParent()).findViewById(R.id.exerciseName);
-
-                    	            LinearLayout topLayout = (LinearLayout)v.getParent().getParent();
-                    	            LinearLayout firstLayout = (LinearLayout)topLayout.getChildAt(0);
-                    	            LinearLayout secondLayout = (LinearLayout)topLayout.getChildAt(1);
-                    	            TextView textView = (TextView)firstLayout.getChildAt(0);
-                    	    		String exerciseName = textView.getText().toString();
-                    	            textView = (TextView)firstLayout.getChildAt(1);
-                    	    		String exerciseId = textView.getText().toString();
-                    	    		EditText editText = (EditText) secondLayout.getChildAt(1);
-                    	    		String restText = editText.getText().toString();
-                    	    		//int rest = Integer.parseInt(restText);
-                    	    		editText = (EditText) secondLayout.getChildAt(3);
-                    	    		String weightText = editText.getText().toString();
-                    	    		float weight = Float.parseFloat(weightText);
-                    	    		editText = (EditText) secondLayout.getChildAt(5);
-                    	    		String nRepsText = editText.getText().toString();
-                    	    		int nReps = Integer.parseInt(nRepsText);
-                    	    		boolean exerciseDone = weight > 0 && nReps > 0;
-                    	    		if(exerciseDone){
-                    	    			topLayout.setBackgroundColor(Color.CYAN);
-                    	    		}else{
-                    	    			topLayout.setBackgroundColor(Color.WHITE);
-                    	    		}
-                    	    		WorkoutManagerSingleton.getInstance().setExerciceInfo(exerciseId, restText, weightText, nRepsText);
-                    	        }
-                    	    }
-                    	});
-                    }
                 }
             }
         }
-        
-        //*
-        if(view instanceof LinearLayout && ((LinearLayout)view).getChildAt(1) instanceof LinearLayout){
-            //LinearLayout secondLayout = (LinearLayout)view.findViewById(R.id.secondLayout);
-    		//EditText editText = (EditText) view.findViewById(R.id.rest);
-    		//String restText = editText.getText().toString();
-    		EditText editText = (EditText) view.findViewById(R.id.weight);
-    		String weightText = editText.getText().toString();
-    		editText = (EditText) view.findViewById(R.id.nreps);
-    		String nRepsText = editText.getText().toString();
-    		boolean exerciseDone = false;
-    		if(!weightText.equals("") && !nRepsText.equals("")){
-        		float weight = Float.parseFloat(weightText);
-        		int nReps = Integer.parseInt(nRepsText);
-        		exerciseDone = weight > 0 && nReps > 0;
-    		}
-    		int backgroundColor = Color.WHITE; //TODO check it works whatever the theme, otherwise get the right color
-    		if(exerciseDone){
-    			backgroundColor = Color.CYAN;
-    		}
-    		LinearLayout mainLayout = (LinearLayout)view.findViewById(R.id.mainLayout);
-    		mainLayout.setBackgroundColor(backgroundColor);
-			//secondLayout.setBackgroundColor(backgroundColor);
-			//secondLayout.getChildAt(1).setBackgroundColor(backgroundColor);
-			//secondLayout.getChildAt(3).setBackgroundColor(backgroundColor);
-			//secondLayout.getChildAt(5).setBackgroundColor(backgroundColor);
-        }
-        //*/
     }
 
 
@@ -287,6 +218,13 @@ public class SimpleHtmlAdapter extends BaseAdapter implements Filterable {
         }
     }
 
+    public void setViewHtml(WebView v, String value) {
+    	WebView webView = (WebView) v;
+    	WebSettings webSettings = webView.getSettings();
+    	webSettings.setDefaultFontSize(20);
+    	webSettings.setDefaultZoom(WebSettings.ZoomDensity.FAR);
+    	webView.setInitialScale(100);
+    }
 
 
     public void setViewText(TextView v, String text) {
@@ -412,7 +350,7 @@ public class SimpleHtmlAdapter extends BaseAdapter implements Filterable {
     }
 
     
-    private class SimpleFilter extends Filter {
+    protected class SimpleFilter extends Filter {
 
         @Override
         protected FilterResults performFiltering(CharSequence prefix) {

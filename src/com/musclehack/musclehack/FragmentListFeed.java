@@ -83,7 +83,7 @@ public class FragmentListFeed extends ListFragment {
 		
 		Activity activity = this.getActivity();
 		if(activity != null){
-			ListAdapter adapter = new SimpleHtmlAdapter(activity,
+			ListAdapter adapter = new SimpleRssAdapter(activity,
 					rssFeedList,
 					R.layout.fragment1rss_row,
 					new String[] { TAG_TITLE, TAG_TEXT },
