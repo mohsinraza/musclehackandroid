@@ -10,26 +10,17 @@ import android.webkit.WebSettings.PluginState;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-public class Fragment4archives extends Fragment {
+public class Fragment6book extends Fragment {
     static protected ProgressDialog progressDialog;
     
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
+    	
             super.onCreateView(inflater, container, savedInstanceState);
+            //setContentView(R.layout.activity_main);
             View view = inflater.inflate(R.layout.fragment4archives, container, false);
             WebView webView = (WebView) view.findViewById(R.id.webViewArchives);
-            //*
-            Fragment4archives.progressDialog = ProgressDialog.show(this.getActivity(), "",
-            											getString(R.string.loading), true);
-            webView.setWebViewClient(new WebViewClient() {
-    	        	public void onPageFinished(WebView view, String url) {
-    	        		Fragment4archives.progressDialog.dismiss();
-    	        	}
-            	});
-            webView.loadUrl("http://www.musclehack.com/archives/");
-            //*/
-            /*
             webView.getSettings().setJavaScriptEnabled(true);
             webView.getSettings().setPluginState(PluginState.ON);
 
@@ -39,9 +30,22 @@ public class Fragment4archives extends Fragment {
             webView.setWebViewClient(new Callback());
            
             //String pdfURL = "http://ownwebsite.googlecode.com/files/resume_cedric_bettinger_v11en.pdf";
-            String pdfURL = "http://dl.dropboxusercontent.com/u/37098169/Course%20Brochures/AND101.pdf";
+            String pdfURL = "http://www.musclehack.com/wp-content/uploads/2013/03/THT5point1.pdf";
             webView.loadUrl("http://docs.google.com/gview?embedded=true&url=" + pdfURL);
-            //*/
+
+
+        /*
+        View view = inflater.inflate(R.layout.fragment4archives, container, false);
+        WebView webView = (WebView) view.findViewById(R.id.webViewArchives);
+        Fragment4archives.progressDialog = ProgressDialog.show(this.getActivity(), "",
+        											getString(R.string.loading), true);
+        webView.setWebViewClient(new WebViewClient() {
+	        	public void onPageFinished(WebView view, String url) {
+	        		Fragment4archives.progressDialog.dismiss();
+	        	}
+        	});
+        webView.loadUrl("http://www.musclehack.com/archives/");
+        //*/
         return view;
     }
 

@@ -202,6 +202,7 @@ public class SimpleHtmlAdapter extends BaseAdapter implements Filterable {
                     	        if (!hasFocus) {                                   // run when focus is lost
                     	            String value = ((EditText) v).getText().toString();         // get the value from the EditText
                     	            //TextView textView = (TextView) ((LinearLayout)v.getParent()).findViewById(R.id.exerciseName);
+
                     	            LinearLayout topLayout = (LinearLayout)v.getParent().getParent();
                     	            LinearLayout firstLayout = (LinearLayout)topLayout.getChildAt(0);
                     	            LinearLayout secondLayout = (LinearLayout)topLayout.getChildAt(1);
@@ -235,14 +236,12 @@ public class SimpleHtmlAdapter extends BaseAdapter implements Filterable {
         
         //*
         if(view instanceof LinearLayout && ((LinearLayout)view).getChildAt(1) instanceof LinearLayout){
-            LinearLayout topLayout = (LinearLayout)view;
-            LinearLayout secondLayout = (LinearLayout)topLayout.getChildAt(1);
-    		EditText editText = (EditText) secondLayout.getChildAt(1);
-    		String restText = editText.getText().toString();
-    		//int rest = Integer.parseInt(restText);
-    		editText = (EditText) secondLayout.getChildAt(3);
+            //LinearLayout secondLayout = (LinearLayout)view.findViewById(R.id.secondLayout);
+    		//EditText editText = (EditText) view.findViewById(R.id.rest);
+    		//String restText = editText.getText().toString();
+    		EditText editText = (EditText) view.findViewById(R.id.weight);
     		String weightText = editText.getText().toString();
-    		editText = (EditText) secondLayout.getChildAt(5);
+    		editText = (EditText) view.findViewById(R.id.nreps);
     		String nRepsText = editText.getText().toString();
     		boolean exerciseDone = false;
     		if(!weightText.equals("") && !nRepsText.equals("")){
@@ -254,7 +253,8 @@ public class SimpleHtmlAdapter extends BaseAdapter implements Filterable {
     		if(exerciseDone){
     			backgroundColor = Color.CYAN;
     		}
-			topLayout.setBackgroundColor(backgroundColor);
+    		LinearLayout mainLayout = (LinearLayout)view.findViewById(R.id.mainLayout);
+    		mainLayout.setBackgroundColor(backgroundColor);
 			//secondLayout.setBackgroundColor(backgroundColor);
 			//secondLayout.getChildAt(1).setBackgroundColor(backgroundColor);
 			//secondLayout.getChildAt(3).setBackgroundColor(backgroundColor);

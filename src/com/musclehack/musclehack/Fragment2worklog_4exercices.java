@@ -20,6 +20,7 @@ import com.musclehack.musclehack.workouts.WorkoutManagerSingleton;
 
 public class Fragment2worklog_4exercices extends ListFragment {
 	public static String TAG_EXERCICE_ID = "exerciseId";
+	public static String TAG_EXERCICE_NUMBER = "exerciseNumber";
 	public static String TAG_EXERCICE_NAME = "exerciseName";
 	public static String TAG_EXERCICE_RANGE = "exerciseRange";
 	public static String TAG_EXERCICE_REST = "exerciseRest";
@@ -34,10 +35,13 @@ public class Fragment2worklog_4exercices extends ListFragment {
 			Bundle savedInstanceState) {
 		this.texts = new ArrayList<HashMap<String, String>>();
 		List<Exercice> exercises = WorkoutManagerSingleton.getInstance().getAvailableExercices();
+		int exerciseNumber = 1;
 		for(Exercice exercise:exercises){
 			HashMap<String, String> map = new HashMap<String, String>();
 			int exerciceId = exercise.getId();
 			map.put(TAG_EXERCICE_ID, "" + exerciceId);
+			String exerciseNumberString = (exerciseNumber<=9?"0":"") + exerciseNumber;
+			map.put(TAG_EXERCICE_NUMBER, "" + exerciseNumberString);
 			String exerciceName = exercise.getName();
 			map.put(TAG_EXERCICE_NAME, exerciceName);
 			String range = exercise.getRepRange();
@@ -49,18 +53,21 @@ public class Fragment2worklog_4exercices extends ListFragment {
 			int nReps = exercise.getNRep();
 			map.put(TAG_EXERCICE_NREPS, "" + nReps);
 			this.texts.add(map);
+			exerciseNumber++;
 		}
 
 		this.adapter = new SimpleHtmlAdapter(this.getActivity(),
 												this.texts,
-												R.layout.fragment2worklog_row1,
+												R.layout.fragment2worklog_exercise,
 												new String[] {TAG_EXERCICE_NAME,
+																TAG_EXERCICE_NUMBER,
 																TAG_EXERCICE_ID,
 																TAG_EXERCICE_RANGE,
 																TAG_EXERCICE_REST,
 																TAG_EXERCICE_WEIGHT,
 																TAG_EXERCICE_NREPS},
 												new int[] {R.id.exerciseName,
+															R.id.exerciseNumber,
 															R.id.exerciseId,
 															R.id.range,
 															R.id.rest,

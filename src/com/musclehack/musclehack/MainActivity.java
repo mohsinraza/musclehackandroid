@@ -15,17 +15,22 @@ import android.widget.TextView;
 public class MainActivity extends FragmentActivity {
 
 	/* Tab identifiers */
-    static String TAB_A = "First Tab";
-    static String TAB_B = "Second Tab";
-    static String TAB_C = "Recipes Tab";
-    static String TAB_D = "Archives Tab";
+    static String TAB_A = "Rss Tab";
+    static String TAB_B = "Workout log Tab";
+    static String TAB_C = "Testimonials Tab";
+    static String TAB_D = "Recipes Tab";
+    static String TAB_E = "Archives Tab";
+    static String TAB_F = "Book Tab";
 
     TabHost mTabHost;
     
     FragmentListFeed fragment1rss;
     Fragment2worklog fragment2worklog;
-    FragmentListFeed fragment3recipe;
-    Fragment4archives fragment4archives;
+    FragmentListFeed fragment3testimonials;
+    FragmentListFeed fragment4recipe;
+    Fragment4archives fragment5archives;
+    Fragment6book fragment6book;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,9 +38,12 @@ public class MainActivity extends FragmentActivity {
         this.fragment1rss = new FragmentListFeed();
         this.fragment1rss.setUrlFeed("http://feeds.feedburner.com/MuscleHack");
         this.fragment2worklog = new Fragment2worklog();
-        this.fragment3recipe = new FragmentListFeed();
-        this.fragment3recipe.setUrlFeed("http://www.musclehack.com/category/recipes/feed");
-        this.fragment4archives = new Fragment4archives();
+        this.fragment3testimonials = new FragmentListFeed();
+        this.fragment3testimonials.setUrlFeed("http://www.musclehack.com/category/testimonials-2/feed");
+        this.fragment4recipe = new FragmentListFeed();
+        this.fragment4recipe.setUrlFeed("http://www.musclehack.com/category/recipes/feed");
+        this.fragment5archives = new Fragment4archives();
+        this.fragment6book = new Fragment6book();
         
         this.mTabHost = (TabHost)findViewById(android.R.id.tabhost);
         this.mTabHost.setOnTabChangedListener(this.listener);
@@ -64,7 +72,7 @@ public class MainActivity extends FragmentActivity {
                 return findViewById(android.R.id.tabcontent);
             }
         });
-        spec.setIndicator(createTabView(getString(R.string.worklog), R.drawable.tab2_worklog));
+        spec.setIndicator(createTabView(getString(R.string.rss), R.drawable.tab1_rss));
         mTabHost.addTab(spec);
 
 
@@ -74,7 +82,7 @@ public class MainActivity extends FragmentActivity {
                 return findViewById(android.R.id.tabcontent);
             }
         });
-        spec.setIndicator(createTabView(getString(R.string.rss), R.drawable.tab1_rss));
+        spec.setIndicator(createTabView(getString(R.string.worklog), R.drawable.tab2_worklog));
         mTabHost.addTab(spec);
         
         spec = mTabHost.newTabSpec(TAB_C);
@@ -83,8 +91,9 @@ public class MainActivity extends FragmentActivity {
                 return findViewById(android.R.id.tabcontent);
             }
         });
-        spec.setIndicator(createTabView(getString(R.string.recipes), R.drawable.tab3_recipes));
+        spec.setIndicator(createTabView(getString(R.string.testimonials), R.drawable.tab3_testimonials));
         mTabHost.addTab(spec);
+        
         
         spec = mTabHost.newTabSpec(TAB_D);
         spec.setContent(new TabHost.TabContentFactory() {
@@ -92,7 +101,25 @@ public class MainActivity extends FragmentActivity {
                 return findViewById(android.R.id.tabcontent);
             }
         });
+        spec.setIndicator(createTabView(getString(R.string.recipes), R.drawable.tab3_recipes));
+        mTabHost.addTab(spec);
+        
+        spec = mTabHost.newTabSpec(TAB_E);
+        spec.setContent(new TabHost.TabContentFactory() {
+            public View createTabContent(String tag) {
+                return findViewById(android.R.id.tabcontent);
+            }
+        });
         spec.setIndicator(createTabView(getString(R.string.archives), R.drawable.tab4_archives));
+        mTabHost.addTab(spec);
+        
+        spec = mTabHost.newTabSpec(TAB_F);
+        spec.setContent(new TabHost.TabContentFactory() {
+            public View createTabContent(String tag) {
+                return findViewById(android.R.id.tabcontent);
+            }
+        });
+        spec.setIndicator(createTabView(getString(R.string.book), R.drawable.tab6_book));
         mTabHost.addTab(spec);
     }
     
@@ -102,13 +129,17 @@ public class MainActivity extends FragmentActivity {
     TabHost.OnTabChangeListener listener = new TabHost.OnTabChangeListener() {
           public void onTabChanged(String tabId) {
               if(tabId.equals(TAB_A)){
-                pushFragments(getString(R.string.worklog), fragment2worklog);
+                pushFragments(getString(R.string.worklog), fragment1rss);
               }else if(tabId.equals(TAB_B)){
-                  pushFragments(getString(R.string.rss), fragment1rss);
+                  pushFragments(getString(R.string.rss), fragment2worklog);
               }else if(tabId.equals(TAB_C)){
-                  pushFragments(getString(R.string.recipes), fragment3recipe);
+                  pushFragments(getString(R.string.testimonials), fragment3testimonials);
               }else if(tabId.equals(TAB_D)){
-                  pushFragments(getString(R.string.archives), fragment4archives);
+                  pushFragments(getString(R.string.recipes), fragment4recipe);
+              }else if(tabId.equals(TAB_E)){
+                  pushFragments(getString(R.string.archives), fragment5archives);
+              }else if(tabId.equals(TAB_F)){
+                  pushFragments(getString(R.string.book), fragment6book);
               }
           }
         };

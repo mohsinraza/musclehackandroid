@@ -18,7 +18,8 @@
         android:textSize="22sp"
         android:textStyle="bold"
         android:ems="3"
-        android:textColor="#0B0A32" />
+        android:textColor="#0B0A32"
+    />
 
     
     <!-- --> 
@@ -35,10 +36,12 @@
     <!--  -->
 
     <!-- Right end Arrow -->
-     <ImageView android:layout_width="wrap_content"
+     <ImageView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/pager_arrow_right"
         android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"/>
+        android:layout_centerVertical="true"
+     />
 </RelativeLayout>
  
