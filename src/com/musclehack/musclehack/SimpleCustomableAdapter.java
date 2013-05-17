@@ -19,6 +19,7 @@ package com.musclehack.musclehack;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -28,11 +29,11 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.text.Html;
 import android.text.Html.ImageGetter;
@@ -44,14 +45,11 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.BaseAdapter;
 import android.widget.Checkable;
-import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.musclehack.musclehack.workouts.WorkoutManagerSingleton;
 
 
 public class SimpleCustomableAdapter extends BaseAdapter implements Filterable {
@@ -117,7 +115,6 @@ public class SimpleCustomableAdapter extends BaseAdapter implements Filterable {
         } else {
             v = convertView;
         }
-
         bindView(position, v);
 
         return v;
@@ -210,12 +207,57 @@ public class SimpleCustomableAdapter extends BaseAdapter implements Filterable {
     }
 
 
-    public void setViewImage(ImageView v, String value) {
+    public void setViewImage(ImageView imageView, String value) {
         try {
-            v.setImageResource(Integer.parseInt(value));
+        	imageView.setImageResource(Integer.parseInt(value));
         } catch (NumberFormatException nfe) {
-            v.setImageURI(Uri.parse(value));
+            //v.setImageURI(Uri.parse(value));
+        	//String imageUrl ="http://ioe.edu.np/exam/notices/8560Result Diploma I_I.jpg";
+        	String imageUrl = value;
+        	SetImageAsyncTask setImageAsyncTask = new SetImageAsyncTask(imageView);
+        	setImageAsyncTask.execute(imageUrl);
         }
+    }
+    
+    public class SetImageAsyncTask extends AsyncTask<String, Void, Bitmap>  {
+    	ImageView imageView;
+
+        public SetImageAsyncTask(ImageView imageView) {
+            this.imageView = imageView;
+        }
+
+        @Override
+        protected Bitmap doInBackground(String... params) {
+            String imageUrl = params[0];
+            URL url;
+			Bitmap bmp = null;
+			try {
+				if(true){
+				url = new URL(imageUrl);
+	        	bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+	        	//this.imageView.setImageBitmap(bmp);
+				}
+			} catch (MalformedURLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return bmp;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap result) {
+            // set the correct bound according to the result from HTTP call
+        	//int width = result.getIntrinsicWidth();
+        	//int height = result.getIntrinsicHeight();
+//          //urlDrawable.setBounds(0, 0, 0, 0);
+            //urlDrawable.setBounds(0, 0, width, height);
+        	this.imageView.setImageBitmap(result);
+
+        }
+
     }
 
     public void setViewHtml(WebView v, String value) {
@@ -315,7 +357,7 @@ public class SimpleCustomableAdapter extends BaseAdapter implements Filterable {
 
 
                 urlDrawable.drawable = result;
-                
+
 
 
                 // redraw the image by invalidating the container

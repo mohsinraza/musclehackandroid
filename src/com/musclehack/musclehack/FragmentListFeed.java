@@ -28,6 +28,7 @@ import com.musclehack.musclehack.rss.StackOverflowXmlParser;
 import com.musclehack.musclehack.rss.StackOverflowXmlParser.RssItem;
 
 public class FragmentListFeed extends ListFragment {
+	public static String TAG_IMAGE_URL = "image_url";
 	public static String TAG_TITLE = "title";
 	public static String TAG_TEXT = "text";
 	protected List<RssItem> entries = null;
@@ -73,7 +74,8 @@ public class FragmentListFeed extends ListFragment {
 			for (RssItem entry : entries) {
 				HashMap<String, String> map = new HashMap<String, String>();
 				map.put(TAG_TITLE, entry.title);
-				map.put(TAG_TEXT, entry.description);
+				map.put(TAG_TEXT, entry.getShortDescription());
+				map.put(TAG_IMAGE_URL, entry.getImageUrl());
 				rssFeedList.add(map);
 			}
 
@@ -86,11 +88,10 @@ public class FragmentListFeed extends ListFragment {
 			ListAdapter adapter = new SimpleRssAdapter(activity,
 					rssFeedList,
 					R.layout.fragment1rss_row,
-					new String[] { TAG_TITLE, TAG_TEXT },
-					new int[] { R.id.title, R.id.text });
+					new String[] { TAG_TITLE, TAG_TEXT, TAG_IMAGE_URL },
+					new int[] { R.id.title, R.id.text, R.id.image_rss_article2});
 			setListAdapter(adapter);
 		}
-
 	}
 	
 	@Override
