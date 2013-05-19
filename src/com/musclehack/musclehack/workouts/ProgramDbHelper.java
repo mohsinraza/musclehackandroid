@@ -6,6 +6,7 @@ import java.util.Stack;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -266,6 +267,7 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 
 	public List<String> getAvailableProgramNames(){
 		List<String> programs = new ArrayList<String>();
+
 		SQLiteDatabase db = this.getReadableDatabase();
 		String[] projection = {
 				ContractProgram.COLUMN_NAME_NAME
@@ -283,6 +285,7 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 			String programName = cursor.getString(0);
 			programs.add(programName);
 		}
+		
 		return programs;
 	}
 

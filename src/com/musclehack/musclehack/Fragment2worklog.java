@@ -52,22 +52,25 @@ public class Fragment2worklog extends ListFragment {
 		return super.onCreateView(inflater, container, savedInstanceState);
 	
 	}
-	
-	
-	
-	
+
+
+
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id){
 		super.onListItemClick(l, v, position, id);
-		ListFragment newFragment = new Fragment2worklog_1prog();
+		ListFragment newFragment = null;
 		TextView textView = (TextView) v.findViewById(R.id.textWorklog); 
 		String clickedText = textView.getText().toString();
-		WorkoutManagerSingleton.getInstance().selectProgram(clickedText);
-
+		WorkoutManagerSingleton workoutManager = WorkoutManagerSingleton.getInstance();
+		String lastSubProgramShortcutName = workoutManager.getLastSubProgramShortcutName();
+		if(clickedText.equals(lastSubProgramShortcutName)){
+			workoutManager.selectLastSubProgram();
+			newFragment = new Fragment2worklog_2subProg();
+		}else{
+			workoutManager.selectProgram(clickedText);
+			newFragment = new Fragment2worklog_1prog();
+		}
 		FragmentTransaction transaction = getFragmentManager().beginTransaction();
-
-
-
 
 		transaction.replace(this.getId(), newFragment);
 		transaction.addToBackStack(null);

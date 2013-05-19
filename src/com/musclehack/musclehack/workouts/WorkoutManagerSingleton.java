@@ -1,13 +1,19 @@
 package com.musclehack.musclehack.workouts;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import com.musclehack.musclehack.R;
+
 import android.content.Context;
+import android.content.SharedPreferences;
 
 
 
 public class WorkoutManagerSingleton{
+	public static final String LAST_SUB_PROGRAM_SHORTCUT_NAME = "lastSubProgramShortcutName";
+	public static final String LAST_SUB_PROGRAM = "lastSubProgram";
+	public static final String LAST_PROGRAM = "lastProgram";
+
 	protected static WorkoutManagerSingleton instance = new WorkoutManagerSingleton();
 	protected static Context context = null;
 	//public HashMap<String, SubProgram> programs;
@@ -32,8 +38,49 @@ public class WorkoutManagerSingleton{
 
 	public List<String> getAvailableProgramNames(){
 		List<String> programs = this.dbHelper.getAvailableProgramNames();
+		if(WorkoutManagerSingleton.context != null){
+			String lastSubProgram = this.getLastSubProgramShortcutName();
+			if(!lastSubProgram.equals("")){
+				programs.add(0, lastSubProgram);
+			}
+		}
 		return programs;
 	}
+	
+	public static String getPrefName(){
+		return "MuscleHackPreferences";
+	}	
+	
+	public String getLastSubProgramShortcutName(){
+		String prefName = getPrefName();
+		SharedPreferences settings = WorkoutManagerSingleton.context.getSharedPreferences(prefName, 0);
+		String lastSubProgram = settings.getString(LAST_SUB_PROGRAM_SHORTCUT_NAME, "");
+		return lastSubProgram;
+	}	
+	
+	public void saveLastSubWorkout(){
+		String prefName = getPrefName();
+		SharedPreferences settings = WorkoutManagerSingleton.context.getSharedPreferences(prefName, 0);
+		SharedPreferences.Editor settingsEditor = settings.edit();
+		settingsEditor.putString(LAST_PROGRAM, this.selectedProgramName);
+		settingsEditor.putString(LAST_SUB_PROGRAM, this.selectedSubProgramName);
+		String lastSubPRogramShortcutName = WorkoutManagerSingleton.context.getString(R.string.currentSubWorkout)
+											+ " " + this.selectedSubProgramName;
+		settingsEditor.putString(LAST_SUB_PROGRAM_SHORTCUT_NAME, lastSubPRogramShortcutName);
+		settingsEditor.commit();
+	}
+	
+	public String selectLastSubProgram(){
+		String prefName = getPrefName();
+		SharedPreferences settings = WorkoutManagerSingleton.context.getSharedPreferences(prefName, 0);
+		String lastProgram = settings.getString(LAST_PROGRAM, "");
+		String lastSubProgram = settings.getString(LAST_SUB_PROGRAM, "");
+		if(!lastProgram.equals("") && !lastSubProgram.equals("")){
+			this.selectProgram(lastProgram);
+			this.selectSubProgram(lastSubProgram);
+		}
+		return lastSubProgram;
+	}	
 
 	public void selectProgram(String programName){
 		this.selectedProgramName = programName;

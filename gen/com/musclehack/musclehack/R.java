@@ -82,6 +82,7 @@ public final class R {
         public static final int archives=0x7f050006;
         public static final int book=0x7f050008;
         public static final int cart=0x7f050007;
+        public static final int currentSubWorkout=0x7f05000d;
         public static final int loading=0x7f05000b;
         public static final int no_data=0x7f050009;
         public static final int no_data_retrieved=0x7f05000a;
