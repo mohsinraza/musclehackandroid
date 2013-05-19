@@ -69,10 +69,23 @@ public class WorkoutManagerSingleton{
 		return subPrograms;
 	}
 	
+	public boolean isSubProgramCompleted(String subProgramName){
+		boolean completed = this.dbHelper.isSubProgramCompleted(this.selectedProgramName,
+																subProgramName);
+		return completed;
+	}
+	
 	public List<String> getAvailableWeeks(){
 		List<String> weeks = this.dbHelper.getAvailableWeeks(this.selectedProgramName,
 															 this.selectedSubProgramName);
 		return weeks;
+	}
+	
+	public boolean isWeekCompleted(String week){
+		boolean completed = this.dbHelper.isWeekCompleted(this.selectedProgramName,
+															this.selectedSubProgramName,
+															week);
+		return completed;
 	}
 	
 	public List<String> getAvailableDays(){
@@ -82,12 +95,25 @@ public class WorkoutManagerSingleton{
 		return days;
 	}
 	
+	public boolean isDayCompleted(String day){
+		boolean completed = this.dbHelper.isDayCompleted(this.selectedProgramName,
+															this.selectedSubProgramName,
+															this.selectedWeek,
+															day);
+		return completed;
+	}
+	
 	public List<Exercice> getAvailableExercices(){
 		List<Exercice> exercices = this.dbHelper.getAvailableExercices(this.selectedProgramName,
 																	this.selectedSubProgramName,
 																	this.selectedWeek,
 																	this.selectedDay);
 		return exercices;
+	}
+
+	public boolean isExerciseCompleted(int idExercise){
+		boolean completed = this.dbHelper.isExerciseCompleted(idExercise);
+		return completed;
 	}
 	
 	public List<Exercice> getPreviousExercices(){

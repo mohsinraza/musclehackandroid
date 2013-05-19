@@ -306,7 +306,7 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 		}
 		return subPrograms;
 	}
-	
+
 	protected int getIdProgram(String programName){
 		SQLiteDatabase db = this.getReadableDatabase();
 		String[] projectionProgram = {
@@ -324,6 +324,21 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 			}
 		}
 		return idProgram;
+	}
+
+	public boolean isSubProgramCompleted(String programName,
+											String subProgramName){
+		List<String> weeks = getAvailableWeeks(programName,
+												subProgramName);
+		for(String week:weeks){
+			boolean weekCompleted = this.isWeekCompleted(programName,
+														subProgramName,
+														week);
+			if(!weekCompleted){
+				return false;
+			}
+		}
+		return true;
 	}
 
 	public List<String> getAvailableWeeks(String programName,
@@ -424,6 +439,26 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 		return idWeek;
 	}
 
+	public boolean isWeekCompleted(String programName,
+									String subProgramName,
+									String week){
+		List<String> days = getAvailableDays(programName,
+											subProgramName,
+											week);
+		for(String day:days){
+			boolean dayCompleted = this.isDayCompleted(programName,
+														subProgramName,
+														week,
+														day);
+			if(!dayCompleted){
+				return false;
+			}
+		}
+		return true;
+	}
+	
+
+	
 	public List<Exercice> getAvailableExercices(String programName,
 												String subProgramName,
 												String week,
@@ -582,6 +617,64 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 		return true;
 	}
 	
+	public boolean isDayCompleted(String programName,
+			String subProgramName,
+			String week,
+			String day){
+		List<Exercice> exercises = getAvailableExercices(programName,
+														subProgramName,
+														week,
+														day);
+		for(Exercice exercise:exercises){
+			if(!exercise.isDone()){
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	//*
+	public boolean isExerciseCompleted(int exerciseId){
+		SQLiteDatabase db = this.getReadableDatabase();
+		String[] projectionExercice = {
+				ContractExercise.COLUMN_NAME_ID,
+				ContractExercise.COLUMN_NAME_NAME,
+				ContractExercise.COLUMN_NAME_NREP,
+				ContractExercise.COLUMN_NAME_WEIGHT,
+				ContractExercise.COLUMN_NAME_REPRANGE,
+				ContractExercise.COLUMN_NAME_REST,
+				ContractExercise.COLUMN_NAME_EXTERN_ID
+				};
+		Cursor cursorExercise = db.query(ContractExercise.TABLE_NAME,
+										projectionExercice,
+										null,
+										null,
+										null,
+										null,
+										null);
+		//TODO optimize
+		while(cursorExercise.moveToNext()){
+			int currentExerciseId = cursorExercise.getInt(0);
+			if(currentExerciseId == exerciseId){
+				String exerciseName = cursorExercise.getString(1);
+				int nRep = cursorExercise.getInt(2);
+				float weight = cursorExercise.getFloat(3);
+				String repRange = cursorExercise.getString(4);
+				int rest = cursorExercise.getInt(5);
+				Exercice exercise = new Exercice(currentExerciseId,
+												exerciseName,
+												nRep,
+												weight,
+												repRange,
+												rest);
+				boolean completed = exercise.isDone();
+				return completed;
+			}
+		}
+		return false;
+	}
+	//*/
+	
 	protected void setExerciceInfo(String exerciseId,
 									String rest,
 									String weight,
@@ -596,6 +689,7 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 					null);
 	}
 	
+	/*
 	protected int getIdExercise(String programName,
 								String subProgramName,
 								String week,
@@ -622,5 +716,7 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 		}
 		return idExercice;
 	}
+	//*/
+	
 }
 
