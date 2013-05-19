@@ -1,6 +1,10 @@
-﻿- Notification feature
+﻿- Retrieve previous exercise info from previous workout in database
+- Colorier les lignes des exercices complétés. Concernant les exercices je devrais faire les mises à jour différement car là ça bug.
 - On screen rotation
-- Refactoring (xml file name, simpleAdapter, translation)
+- Fill out the entire workout
+- Notification feature
+- Permettre de gérer dans les notifications ainsi que la remise à zéro de la base de données
+- Timer that will launch a sound
 - 6)Remove all warnings
 - 7)Add the new rss/new recipe notification feature
 - 8)Dislay images in the rss/recipe area

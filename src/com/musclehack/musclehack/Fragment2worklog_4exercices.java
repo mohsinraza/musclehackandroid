@@ -26,6 +26,9 @@ public class Fragment2worklog_4exercices extends ListFragment {
 	public static String TAG_EXERCICE_REST = "exerciseRest";
 	public static String TAG_EXERCICE_WEIGHT = "exerciseWeight";
 	public static String TAG_EXERCICE_NREPS = "exerciseNreps";
+	public static String TAG_EXERCICE_PREV_REST = "exercisePrevRest";
+	public static String TAG_EXERCICE_PREV_WEIGHT = "exercisePrevWeight";
+	public static String TAG_EXERCICE_PREV_NREPS = "exercisePrevNreps";
 	protected ArrayList<HashMap<String, String>> texts;
 	protected ListAdapter adapter;
 
@@ -35,8 +38,10 @@ public class Fragment2worklog_4exercices extends ListFragment {
 			Bundle savedInstanceState) {
 		this.texts = new ArrayList<HashMap<String, String>>();
 		List<Exercice> exercises = WorkoutManagerSingleton.getInstance().getAvailableExercices();
+		List<Exercice> previousExercises = WorkoutManagerSingleton.getInstance().getPreviousExercices();
 		int exerciseNumber = 1;
-		for(Exercice exercise:exercises){
+		for(int i=0; i<exercises.size(); i++){
+			Exercice exercise = exercises.get(i);
 			HashMap<String, String> map = new HashMap<String, String>();
 			int exerciceId = exercise.getId();
 			map.put(TAG_EXERCICE_ID, "" + exerciceId);
@@ -52,6 +57,18 @@ public class Fragment2worklog_4exercices extends ListFragment {
 			map.put(TAG_EXERCICE_WEIGHT, "" + weight);
 			int nReps = exercise.getNRep();
 			map.put(TAG_EXERCICE_NREPS, "" + nReps);
+			int prevRest = 0;
+			float prevWeight = 0.f;
+			int prevNReps = 0;
+			if(previousExercises != null){
+				Exercice previousExercise = previousExercises.get(i);
+				prevRest = previousExercise.getRest();
+				prevWeight = previousExercise.getWeight();
+				prevNReps = previousExercise.getNRep();
+			}
+			map.put(TAG_EXERCICE_PREV_REST, "" + prevRest);
+			map.put(TAG_EXERCICE_PREV_WEIGHT, "" + prevWeight);
+			map.put(TAG_EXERCICE_PREV_NREPS, "" + prevNReps);
 			this.texts.add(map);
 			exerciseNumber++;
 		}
@@ -65,16 +82,21 @@ public class Fragment2worklog_4exercices extends ListFragment {
 																TAG_EXERCICE_RANGE,
 																TAG_EXERCICE_REST,
 																TAG_EXERCICE_WEIGHT,
-																TAG_EXERCICE_NREPS},
+																TAG_EXERCICE_NREPS,
+																TAG_EXERCICE_PREV_REST,
+																TAG_EXERCICE_PREV_WEIGHT,
+																TAG_EXERCICE_PREV_NREPS},
 												new int[] {R.id.exerciseName,
 															R.id.exerciseNumber,
 															R.id.exerciseId,
 															R.id.range,
 															R.id.rest,
 															R.id.weight,
-															R.id.nreps});
+															R.id.nreps,
+															R.id.previousRest,
+															R.id.previousWeight,
+															R.id.previousNreps});
 		setListAdapter(this.adapter);
-		
 		return super.onCreateView(inflater, container, savedInstanceState);
 	}
 	

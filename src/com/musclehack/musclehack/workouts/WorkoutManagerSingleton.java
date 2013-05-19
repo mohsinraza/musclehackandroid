@@ -89,4 +89,12 @@ public class WorkoutManagerSingleton{
 																	this.selectedDay);
 		return exercices;
 	}
+	
+	public List<Exercice> getPreviousExercices(){
+		List<Exercice> exercices = this.dbHelper.getPreviousExercices(this.selectedProgramName,
+																	this.selectedSubProgramName,
+																	this.selectedWeek,
+																	this.selectedDay);
+		return exercices;
+	}
 }
