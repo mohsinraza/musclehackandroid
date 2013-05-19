@@ -65,10 +65,10 @@ public class Fragment2worklog extends ListFragment {
 		String lastSubProgramShortcutName = workoutManager.getLastSubProgramShortcutName();
 		if(clickedText.equals(lastSubProgramShortcutName)){
 			workoutManager.selectLastSubProgram();
-			newFragment = new Fragment2worklog_2subProg();
+			newFragment = new Fragment2worklog_2week();
 		}else{
 			workoutManager.selectProgram(clickedText);
-			newFragment = new Fragment2worklog_1prog();
+			newFragment = new Fragment2worklog_1subProg();
 		}
 		FragmentTransaction transaction = getFragmentManager().beginTransaction();
 

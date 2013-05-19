@@ -16,7 +16,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class Fragment2worklog_1prog extends ListFragment {
+public class Fragment2worklog_1subProg extends ListFragment {
 	 
 	public static String TAG_TEXT_WORKLOG = "textWorklog";
 	protected ArrayList<HashMap<String, String>> texts;
@@ -48,7 +48,7 @@ public class Fragment2worklog_1prog extends ListFragment {
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id){
 		super.onListItemClick(l, v, position, id);
-		ListFragment newFragment = new Fragment2worklog_2subProg();
+		ListFragment newFragment = new Fragment2worklog_2week();
 		TextView textView = (TextView) v.findViewById(R.id.textWorklog); 
 		String clickedText = textView.getText().toString();
 		WorkoutManagerSingleton.getInstance().selectSubProgram(clickedText);

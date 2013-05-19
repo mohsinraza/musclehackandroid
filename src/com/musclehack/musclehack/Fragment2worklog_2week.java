@@ -16,7 +16,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class Fragment2worklog_2subProg extends ListFragment {
+public class Fragment2worklog_2week extends ListFragment {
 	 
 	public static String TAG_TEXT_WORKLOG = "textWorklog";
 	protected ArrayList<HashMap<String, String>> texts;
