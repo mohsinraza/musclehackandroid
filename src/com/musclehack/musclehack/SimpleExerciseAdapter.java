@@ -101,17 +101,18 @@ public class SimpleExerciseAdapter extends SimpleCustomableAdapter {
 									EditText editText = (EditText) secondLayout.getChildAt(5);
 									String restText = editText.getText().toString();
 									//int rest = Integer.parseInt(restText);
-									editText = (EditText) secondLayout.getChildAt(3);
+									editText = (EditText) secondLayout.getChildAt(1);
 									String weightText = editText.getText().toString();
 									float weight = Float.parseFloat(weightText);
-									editText = (EditText) secondLayout.getChildAt(1);
+									editText = (EditText) secondLayout.getChildAt(3);
 									String nRepsText = editText.getText().toString();
 									int nReps = Integer.parseInt(nRepsText);
 									boolean exerciseDone = weight > 0 && nReps > 0;
+									RelativeLayout mainLayout = (RelativeLayout)v.getParent().getParent().getParent();
 									if(exerciseDone){
-										topLayout.setBackgroundColor(Color.CYAN);
+										mainLayout.setBackgroundColor(Color.CYAN);
 									}else{
-										topLayout.setBackgroundColor(Color.WHITE);
+										mainLayout.setBackgroundColor(Color.WHITE);
 									}
 									WorkoutManagerSingleton workoutManager = WorkoutManagerSingleton.getInstance();
 									workoutManager.setExerciceInfo(exerciseId,

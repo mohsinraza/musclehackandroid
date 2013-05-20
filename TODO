@@ -1,12 +1,12 @@
-﻿- Colorier les lignes des exercices complétés. Concernant les exercices je devrais faire les mises à jour différement car là ça bug.
+﻿- Corriger le bug du coloriage d'exercices
 - On screen rotation
 - Fill out the entire workout
 - Timer that will launch a sound
 - Générer une page internet pour l'onglet archive
-- Test that when a week and subworkout is complete, so is the color
-- About the shortcut, it should be colored eventually
 - Notification feature
 - Permettre de gérer dans les notifications ainsi que la remise à zéro de la base de données
+- Test that when a week and subworkout is complete, so is the color
+- About the shortcut, it should be colored eventually
 - Remove all warnings
 - Add the new rss/new recipe notification feature
 - Dislay images in the rss/recipe area
