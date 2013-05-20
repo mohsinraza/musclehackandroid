@@ -45,7 +45,16 @@ public class Fragment2worklog_4exercices extends ListFragment {
 			HashMap<String, String> map = new HashMap<String, String>();
 			int exerciceId = exercise.getId();
 			map.put(TAG_EXERCICE_ID, "" + exerciceId);
-			String exerciseNumberString = (exerciseNumber<=9?"0":"") + exerciseNumber;
+			String end = "th";
+			if(exerciseNumber%10 == 1){
+				end = "st";
+			}else if(exerciseNumber%10 == 1){
+				end = "nd";
+			}else if(exerciseNumber%10 == 1){
+				end = "rd";
+				
+			}
+			String exerciseNumberString = exerciseNumber + end;
 			map.put(TAG_EXERCICE_NUMBER, "" + exerciseNumberString);
 			String exerciceName = exercise.getName();
 			map.put(TAG_EXERCICE_NAME, exerciceName);

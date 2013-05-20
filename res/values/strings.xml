@@ -13,6 +13,8 @@
     <string name="no_data">No data</string>
     <string name="no_data_retrieved">No data could be retrieve. Please check your internet connection.</string>
     <string name="loading">Loading. Please wait…</string>
+    <string name="weight">Weight:</string>
+    <string name="reps">Reps:</string>
     <string name="previous">Prev:</string>
     <string name="currentSubWorkout">Current: </string>
 

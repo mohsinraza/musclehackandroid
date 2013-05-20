@@ -34,7 +34,7 @@ public class Fragment2worklog_2week extends ListFragment {
 			this.texts.add(map);
 		}
 
-		this.adapter = new SimpleCustomableAdapter(this.getActivity(),
+		this.adapter = new SimpleWeekAdapter(this.getActivity(),
 												this.texts,
 												R.layout.fragment2worklog,
 												new String[] { TAG_TEXT_WORKLOG },

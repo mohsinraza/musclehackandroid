@@ -1,14 +1,15 @@
-﻿- Retrieve previous exercise info from previous workout in database
-6 Create a shortcut to the last done workout
-- Colorier les lignes des exercices complétés. Concernant les exercices je devrais faire les mises à jour différement car là ça bug.
+﻿- Colorier les lignes des exercices complétés. Concernant les exercices je devrais faire les mises à jour différement car là ça bug.
 - On screen rotation
 - Fill out the entire workout
+- Timer that will launch a sound
+- Générer une page internet pour l'onglet archive
+- Test that when a week and subworkout is complete, so is the color
+- About the shortcut, it should be colored eventually
 - Notification feature
 - Permettre de gérer dans les notifications ainsi que la remise à zéro de la base de données
-- Timer that will launch a sound
-- 6)Remove all warnings
-- 7)Add the new rss/new recipe notification feature
-- 8)Dislay images in the rss/recipe area
-- 9)Add icone for all screen resolution
-- 10)Check I used all of the best practises
+- Remove all warnings
+- Add the new rss/new recipe notification feature
+- Dislay images in the rss/recipe area
+- Add icone for all screen resolution
+- Check I used all of the best practises
 

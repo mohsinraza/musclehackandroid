@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mainLayout"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -18,7 +19,9 @@
         android:textSize="22sp"
         android:textStyle="bold"
         android:ems="3"
-        android:textColor="#0B0A32" />
+        android:textColor="#0B0A32"
+        android:textIsSelectable="false"
+        />
 
     
 

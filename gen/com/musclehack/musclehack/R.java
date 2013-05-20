@@ -40,26 +40,26 @@ public final class R {
         public static final int exerciseNumber=0x7f080006;
         public static final int firstLayout=0x7f080008;
         public static final int image_rss_article2=0x7f080002;
-        public static final int mainLayout=0x7f080005;
-        public static final int nreps=0x7f08000f;
+        public static final int mainLayout=0x7f080004;
+        public static final int nreps=0x7f08000e;
         public static final int previousNreps=0x7f080012;
         public static final int previousRest=0x7f080010;
         public static final int previousWeight=0x7f080011;
         public static final int range=0x7f08000b;
         public static final int recipes_fragment=0x7f080013;
-        public static final int rest=0x7f08000d;
+        public static final int rest=0x7f08000f;
         public static final int secondLayout=0x7f08000c;
         public static final int tab_icon=0x7f080018;
         public static final int tab_text=0x7f080019;
         public static final int tabsLayout=0x7f080017;
         public static final int text=0x7f080003;
-        public static final int textWorklog=0x7f080004;
+        public static final int textWorklog=0x7f080005;
         public static final int title=0x7f080001;
         public static final int titleRecipe=0x7f080014;
         public static final int topLayout=0x7f080007;
         public static final int webViewArchives=0x7f080016;
         public static final int webViewRecipe=0x7f080015;
-        public static final int weight=0x7f08000e;
+        public static final int weight=0x7f08000d;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
@@ -67,11 +67,10 @@ public final class R {
         public static final int fragment1rss_row=0x7f030002;
         public static final int fragment2worklog=0x7f030003;
         public static final int fragment2worklog_exercise=0x7f030004;
-        public static final int fragment3cart=0x7f030005;
-        public static final int fragment3recipe=0x7f030006;
-        public static final int fragment3recipe_row=0x7f030007;
-        public static final int fragment4archives=0x7f030008;
-        public static final int tab_icon=0x7f030009;
+        public static final int fragment3recipe=0x7f030005;
+        public static final int fragment3recipe_row=0x7f030006;
+        public static final int fragment4archives=0x7f030007;
+        public static final int tab_icon=0x7f030008;
     }
     public static final class menu {
         public static final int main=0x7f070000;
@@ -82,14 +81,16 @@ public final class R {
         public static final int archives=0x7f050006;
         public static final int book=0x7f050008;
         public static final int cart=0x7f050007;
-        public static final int currentSubWorkout=0x7f05000d;
+        public static final int currentSubWorkout=0x7f05000f;
         public static final int loading=0x7f05000b;
         public static final int no_data=0x7f050009;
         public static final int no_data_retrieved=0x7f05000a;
-        public static final int previous=0x7f05000c;
+        public static final int previous=0x7f05000e;
         public static final int recipes=0x7f050005;
+        public static final int reps=0x7f05000d;
         public static final int rss=0x7f050002;
         public static final int testimonials=0x7f050004;
+        public static final int weight=0x7f05000c;
         public static final int worklog=0x7f050003;
     }
     public static final class style {

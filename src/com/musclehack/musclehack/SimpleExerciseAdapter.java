@@ -98,13 +98,13 @@ public class SimpleExerciseAdapter extends SimpleCustomableAdapter {
 									String exerciseName = textView.getText().toString();
 									textView = (TextView)firstLayout.getChildAt(1);
 									String exerciseId = textView.getText().toString();
-									EditText editText = (EditText) secondLayout.getChildAt(1);
+									EditText editText = (EditText) secondLayout.getChildAt(5);
 									String restText = editText.getText().toString();
 									//int rest = Integer.parseInt(restText);
 									editText = (EditText) secondLayout.getChildAt(3);
 									String weightText = editText.getText().toString();
 									float weight = Float.parseFloat(weightText);
-									editText = (EditText) secondLayout.getChildAt(5);
+									editText = (EditText) secondLayout.getChildAt(1);
 									String nRepsText = editText.getText().toString();
 									int nReps = Integer.parseInt(nRepsText);
 									boolean exerciseDone = weight > 0 && nReps > 0;
