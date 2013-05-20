@@ -255,7 +255,6 @@ public class SimpleCustomableAdapter extends BaseAdapter implements Filterable {
 //		  //urlDrawable.setBounds(0, 0, 0, 0);
 			//urlDrawable.setBounds(0, 0, width, height);
 			this.imageView.setImageBitmap(result);
-
 		}
 
 	}
