@@ -2,12 +2,19 @@ package com.musclehack.musclehack;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
+import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnCompletionListener;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.Button;
 import android.widget.Checkable;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -128,6 +135,12 @@ public class SimpleExerciseAdapter extends SimpleCustomableAdapter {
 			}
 		}
 		
+		Button button = (Button) view.findViewById(R.id.buttonRest);
+		EditText restEditText = (EditText)view.findViewById(R.id.rest);
+		OnClickListener restButtonOnClickListener = new OnRestButtonClickListener(restEditText);
+		button.setOnClickListener(restButtonOnClickListener);
+		
+
 		//*
 		//if(view instanceof LinearLayout && ((LinearLayout)view).getChildAt(1) instanceof LinearLayout){
 		//LinearLayout secondLayout = (LinearLayout)view.findViewById(R.id.secondLayout);
@@ -154,5 +167,101 @@ public class SimpleExerciseAdapter extends SimpleCustomableAdapter {
 		//secondLayout.getChildAt(3).setBackgroundColor(backgroundColor);
 		//secondLayout.getChildAt(5).setBackgroundColor(backgroundColor);
 
+	}
+	protected class OnRestButtonClickListener implements OnClickListener{
+		protected EditText restEditText;
+		protected int initialRestValue;
+		protected Boolean[] timerStarted;
+		public OnRestButtonClickListener(EditText restEditText){
+			this.restEditText = restEditText;
+			this.timerStarted = new Boolean [] {Boolean.valueOf(false)};
+			String restText = this.restEditText.getText().toString();
+			if(!restText.equals("")){
+				this.initialRestValue = Integer.parseInt(restText);
+			}else{
+				this.initialRestValue = 0;
+			}
+		}
+
+		@Override
+		public void onClick(View view) {
+			if(this.initialRestValue > 0){
+				if(!this.timerStarted[0]){
+					Timer timer = new Timer();
+					this.timerStarted[0] = Boolean.valueOf(true);
+					TimerTask task = new TimerRestButtonTask(this.restEditText,
+															this.initialRestValue,
+															this.timerStarted);
+					timer.scheduleAtFixedRate(task, 0, 1000);
+				}
+			}
+
+		}
+	}
+
+	protected class TimerRestButtonTask extends TimerTask {
+		protected EditText restEditText;
+		protected int initialRestValue;
+		protected Boolean[] timerStarted;
+		public TimerRestButtonTask(EditText restEditText,
+									int initialRestValue,
+									Boolean[] timerStarted){
+			super();
+			this.restEditText = restEditText;
+			this.initialRestValue = initialRestValue;
+			this.timerStarted = timerStarted;
+		}
+		
+		public void run() {
+			Activity activity = (Activity)this.restEditText.getContext();
+			Runnable runnable = new RestButtonRunnable(this,
+														this.restEditText,
+														this.initialRestValue,
+														this.timerStarted);
+			activity.runOnUiThread(runnable);
+		}
+	}
+
+	protected class RestButtonRunnable implements Runnable {
+		protected EditText restEditText;
+		protected int initialRestValue;
+		protected Boolean[] timerStarted;
+		protected TimerTask timerTask;
+		public RestButtonRunnable(TimerTask timerTask,
+									EditText restEditText,
+									int initialRestValue,
+									Boolean[] timerStarted){
+			this.timerTask = timerTask;
+			this.restEditText = restEditText;
+			this.initialRestValue = initialRestValue;
+			this.timerStarted = timerStarted;
+		}
+		@Override
+		public void run() {
+			String restText = this.restEditText.getText().toString();
+			int currentRest = Integer.parseInt(restText);
+			currentRest--;
+			if(currentRest <= 0){
+				this.playSound();
+				this.restEditText.setText("" + this.initialRestValue);
+				this.timerStarted[0] = Boolean.valueOf(false);
+				this.timerTask.cancel();
+			}else{
+				this.restEditText.setText("" + currentRest);
+			}
+		}
+		
+		protected void playSound(){
+			MediaPlayer mediaPlayer = MediaPlayer.create(restEditText.getContext(),
+					R.raw.power_up);
+			mediaPlayer.setOnCompletionListener(new OnCompletionListener() {
+				@Override
+				public void onCompletion(MediaPlayer mp) {
+					mp.release();
+				}
+			});
+			mediaPlayer.start();
+		}
+		
 	}
 }

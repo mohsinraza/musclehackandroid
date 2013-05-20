@@ -1,8 +1,6 @@
-﻿- Corriger le bug du coloriage d'exercices
+﻿- générer une page html à partir du flux archives
 - On screen rotation
 - Fill out the entire workout
-- Timer that will launch a sound
-- Générer une page internet pour l'onglet archive
 - Notification feature
 - Permettre de gérer dans les notifications ainsi que la remise à zéro de la base de données
 - Test that when a week and subworkout is complete, so is the color
