@@ -44,8 +44,9 @@ public class FragmentListFeed extends ListFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		//new DownloadXmlTask().execute("http://feeds.feedburner.com/MuscleHack");
-		new DownloadXmlTask().execute(this.urlFeed);
+		if(this.urlFeed != null){ //TODO find out why this is called two times and can be null
+			new DownloadXmlTask().execute(this.urlFeed);
+		}
 		return super.onCreateView(inflater, container, savedInstanceState);
 	
 	}
