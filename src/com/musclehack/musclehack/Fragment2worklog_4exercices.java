@@ -106,6 +106,7 @@ public class Fragment2worklog_4exercices extends ListFragment {
 															R.id.previousWeight,
 															R.id.previousNreps});
 		setListAdapter(this.adapter);
+		WorkoutManagerSingleton.getInstance().setLevelChoice(4);
 		return super.onCreateView(inflater, container, savedInstanceState);
 	}
 	

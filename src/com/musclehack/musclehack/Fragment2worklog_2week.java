@@ -40,6 +40,7 @@ public class Fragment2worklog_2week extends ListFragment {
 												new String[] { TAG_TEXT_WORKLOG },
 												new int[] { R.id.textWorklog});
 		setListAdapter(this.adapter);
+		WorkoutManagerSingleton.getInstance().setLevelChoice(2);
 		return super.onCreateView(inflater, container, savedInstanceState);
 	}
 	

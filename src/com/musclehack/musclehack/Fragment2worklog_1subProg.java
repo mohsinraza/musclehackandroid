@@ -40,11 +40,13 @@ public class Fragment2worklog_1subProg extends ListFragment {
 												new String[] { TAG_TEXT_WORKLOG },
 												new int[] { R.id.textWorklog});
 		setListAdapter(this.adapter);
-		return super.onCreateView(inflater, container, savedInstanceState);
-	
+		WorkoutManagerSingleton.getInstance().setLevelChoice(1);
+		View view = super.onCreateView(inflater, container, savedInstanceState);
+		return view;
 	}
 	
-	
+
+
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id){
 		super.onListItemClick(l, v, position, id);

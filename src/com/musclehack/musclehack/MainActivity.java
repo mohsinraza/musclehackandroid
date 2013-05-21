@@ -1,5 +1,7 @@
 package com.musclehack.musclehack;
 
+import com.musclehack.musclehack.workouts.WorkoutManagerSingleton;
+
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -59,7 +61,8 @@ public class MainActivity extends FragmentActivity {
 		this.mTabHost.setOnTabChangedListener(this.listener);
 		this.mTabHost.setup();
 		
-		this.initializeTab();
+		
+		this.initializeTab(savedInstanceState);
 	}
 
 
@@ -73,10 +76,11 @@ public class MainActivity extends FragmentActivity {
 	/*
 	 * Initialize the tabs and set views and identifiers for the tabs
 	 */
-	public void initializeTab() {
-		
+	public void initializeTab(Bundle savedInstanceState) {
 		TabHost.TabSpec spec = mTabHost.newTabSpec(TAB_A);
-		this.mTabHost.setCurrentTab(-3); //?
+		//this.mTabHost.setCurrentTab(-3); //?
+
+
 		spec.setContent(new TabHost.TabContentFactory() {
 			public View createTabContent(String tag) {
 				return findViewById(android.R.id.tabcontent);
@@ -131,8 +135,23 @@ public class MainActivity extends FragmentActivity {
 		});
 		spec.setIndicator(createTabView(getString(R.string.book), R.drawable.tab6_book));
 		mTabHost.addTab(spec);
+		
+		if (savedInstanceState == null) {
+			this.mTabHost.setCurrentTab(-3);
+		}else{
+			int tabPosition = savedInstanceState.getInt("TAB_POSITION");
+			this.mTabHost.setCurrentTab(tabPosition);
+		}
 	}
 	
+	@Override
+	public void onBackPressed() {
+		int levelChoice = WorkoutManagerSingleton.getInstance().getLevelChoice();
+		if(levelChoice == 1){
+			WorkoutManagerSingleton.getInstance().setLevelChoice(0);
+		}
+		super.onBackPressed();
+	}
 	/*
 	 * TabChangeListener for changing the tab when one of the tabs is pressed
 	 */
@@ -176,6 +195,14 @@ public class MainActivity extends FragmentActivity {
 	}
 	
 	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		int idTab = this.mTabHost.getCurrentTab();
+		outState.putInt("TAB_POSITION", idTab);
+		super.onSaveInstanceState(outState);
+	}
+	
+	/*
+	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
 
@@ -186,5 +213,6 @@ public class MainActivity extends FragmentActivity {
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		}
 	}
+	//*/
 		
 }

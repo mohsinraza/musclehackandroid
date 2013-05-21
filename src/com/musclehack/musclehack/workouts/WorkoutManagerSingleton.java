@@ -22,6 +22,7 @@ public class WorkoutManagerSingleton{
 	protected String selectedSubProgramName;
 	protected String selectedWeek;
 	protected String selectedDay;
+	protected int levelChoice;
 	
 	public static void setContext(Context context){
 		WorkoutManagerSingleton.context = context;
@@ -33,7 +34,15 @@ public class WorkoutManagerSingleton{
 	}
 	
 	private WorkoutManagerSingleton(){
-		
+		this.levelChoice = 0;
+	}
+	
+	public void setLevelChoice(int levelChoice){
+		this.levelChoice = levelChoice;
+	}
+	
+	public int getLevelChoice(){
+		return this.levelChoice;
 	}
 
 	public List<String> getAvailableProgramNames(){

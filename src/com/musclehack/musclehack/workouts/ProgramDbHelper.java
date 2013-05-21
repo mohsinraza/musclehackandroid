@@ -285,7 +285,8 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 			String programName = cursor.getString(0);
 			programs.add(programName);
 		}
-		
+
+		cursor.close();
 		return programs;
 	}
 
@@ -307,6 +308,7 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 				subPrograms.add(subProgramName);
 			}
 		}
+		cursorSubProgram.close();
 		return subPrograms;
 	}
 
@@ -326,6 +328,7 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 				idProgram = cursorProgram.getInt(0);
 			}
 		}
+		cursorProgram.close();
 		return idProgram;
 	}
 
@@ -364,6 +367,7 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 				weeks.add(weekName);
 			}
 		}
+		cursorWeek.close();
 		return weeks;
 	}
 
@@ -389,6 +393,7 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 				}
 			}
 		}
+		cursorSubProgram.close();
 		return idSubProgram;
 	}
 	
@@ -413,6 +418,7 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 				days.add(dayName);
 			}
 		}
+		cursorDay.close();
 		return days;
 	}
 	
@@ -439,6 +445,7 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 				}
 			}
 		}
+		cursorWeek.close();
 		return idWeek;
 	}
 
@@ -512,6 +519,7 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 					exercises.add(exercice);
 				}
 			}
+			cursorExercise.close();
 		}
 		return exercises;
 	}
@@ -539,6 +547,7 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 				}
 			}
 		}
+		cursorDay.close();
 		return idDay;
 	}
 	
@@ -588,6 +597,7 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 				previousDays.addElement(currentIdDay);
 			}
 		}
+		cursorDay.close();
 		int idPreviousDay = -1;
 		for(Integer previousDay:previousDays){
 			List<Exercice> exercises = this.getAvailableExercices(programName,
@@ -674,9 +684,9 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 				return completed;
 			}
 		}
+		cursorExercise.close();
 		return false;
 	}
-	//*/
 	
 	protected void setExerciceInfo(String exerciseId,
 									String rest,
@@ -690,36 +700,7 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 		db.update(ContractExercise.TABLE_NAME,
 					values, ContractExercise.COLUMN_NAME_ID + "=" + exerciseId,
 					null);
+		db.close();
 	}
-	
-	/*
-	protected int getIdExercise(String programName,
-								String subProgramName,
-								String week,
-								String day,
-								String exerciceName){
-		SQLiteDatabase db = this.getReadableDatabase();
-		int idDay = this.getIdDay(programName, subProgramName, week, day);
-		String[] projectionExercice = {
-				ContractExercise.COLUMN_NAME_ID,
-				ContractExercise.COLUMN_NAME_NAME,
-				ContractExercise.COLUMN_NAME_EXTERN_ID
-				};
-		Cursor cursorExercise = db.query(ContractExercise.TABLE_NAME, projectionExercice,                               // The columns to return
-								null, null, null, null, null);
-		int idExercice = 0;
-		while(cursorExercise.moveToNext()){
-			int idExtDay = cursorExercise.getInt(2);
-			if(idExtDay == idDay){
-				String currentExercice = cursorExercise.getString(1);
-				if(currentExercice.equals(exerciceName)){
-					idExercice = cursorExercise.getInt(0);
-				}
-			}
-		}
-		return idExercice;
-	}
-	//*/
-	
 }
 

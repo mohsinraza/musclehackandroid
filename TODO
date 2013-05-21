@@ -1,4 +1,6 @@
-﻿- Générer une page html à partir du flux archives
+﻿- Ajouter une fenêtre de chargement dans la page pdf
+- Voir pourquoi le annuler marche plus après rotation dans la partie exercise. Je pense que je devrais le faire dans OnStart on lui OnViewCreated mais pas sur
+- Générer une page html à partir du flux archives
 - On screen rotation
 - Fill out the entire workout
 - Notification feature
