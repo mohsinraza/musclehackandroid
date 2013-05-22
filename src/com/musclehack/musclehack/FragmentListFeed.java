@@ -55,7 +55,7 @@ public class FragmentListFeed extends ListFragment {
 	public void onActivityResult (int requestCode, int resultCode, Intent data){
 		super.onActivityResult(requestCode, resultCode, data);
 	}
-	
+
 	public void setEntries(List<RssItem> entries){
 		this.entries = entries;
 		rssFeedList = new ArrayList<HashMap<String, String>>();
@@ -68,7 +68,6 @@ public class FragmentListFeed extends ListFragment {
 				public void onClick(DialogInterface dialog, int which) {
 				}
 			}).show();
-			
 		}else{
 
 			// adding each child node to HashMap key => value
@@ -80,10 +79,9 @@ public class FragmentListFeed extends ListFragment {
 				rssFeedList.add(map);
 			}
 
-
 			//((SimpleHtmlAdapter)adapter).notifyDataSetChanged();
 		}
-		
+
 		Activity activity = this.getActivity();
 		if(activity != null){
 			ListAdapter adapter = new SimpleRssAdapter(activity,
@@ -137,10 +135,10 @@ public class FragmentListFeed extends ListFragment {
 	
 
 	
-	private List<RssItem> loadXmlFromNetwork(String urlString) throws XmlPullParserException, IOException {
+	static public List<RssItem> loadXmlFromNetwork(String urlString) throws XmlPullParserException, IOException {
 		InputStream stream = null;
 		StackOverflowXmlParser stackOverflowXmlParser = new StackOverflowXmlParser();
-
+		List<RssItem> entries = null;
 		try {
 			stream = downloadUrl(urlString);		
 			entries = stackOverflowXmlParser.parse(stream);
@@ -155,7 +153,7 @@ public class FragmentListFeed extends ListFragment {
 		return entries;
 	}
 
-	private InputStream downloadUrl(String urlString) throws IOException {
+	static public InputStream downloadUrl(String urlString) throws IOException {
 		URL url = new URL(urlString);
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 		conn.setReadTimeout(10000 /* milliseconds */);
@@ -164,7 +162,8 @@ public class FragmentListFeed extends ListFragment {
 		conn.setDoInput(true);
 		// Starts the query
 		conn.connect();
-		return conn.getInputStream();
+		InputStream inputStream = conn.getInputStream();
+		return inputStream;
 	}
 }
 
