@@ -28,20 +28,7 @@ public class Fragment4archives extends Fragment {
     	        	}
             	});
             webView.loadUrl("http://www.musclehack.com/archives/");
-            //*/
-            /*
-            webView.getSettings().setJavaScriptEnabled(true);
-            webView.getSettings().setPluginState(PluginState.ON);
 
-            //---you need this to prevent the webview from
-            // launching another browser when a url
-            // redirection occurs---
-            webView.setWebViewClient(new Callback());
-           
-            //String pdfURL = "http://ownwebsite.googlecode.com/files/resume_cedric_bettinger_v11en.pdf";
-            String pdfURL = "http://dl.dropboxusercontent.com/u/37098169/Course%20Brochures/AND101.pdf";
-            webView.loadUrl("http://docs.google.com/gview?embedded=true&url=" + pdfURL);
-            //*/
         return view;
     }
 

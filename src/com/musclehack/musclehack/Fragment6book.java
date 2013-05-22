@@ -31,7 +31,7 @@ public class Fragment6book extends Fragment {
             // launching another browser when a url
             // redirection occurs---
             webView.setWebViewClient(new Callback());
-           
+
             //String pdfURL = "http://ownwebsite.googlecode.com/files/resume_cedric_bettinger_v11en.pdf";
             String pdfURL = "http://www.musclehack.com/wp-content/uploads/2013/03/THT5point1.pdf";
             webView.setWebViewClient(new WebViewClient() {
