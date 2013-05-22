@@ -52,7 +52,7 @@ public class Fragment2worklog extends ListFragment {
 		
 		return view;
 	}
-	
+
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState){
 		super.onActivityCreated(savedInstanceState);
@@ -67,7 +67,7 @@ public class Fragment2worklog extends ListFragment {
 				newFragment = new Fragment2worklog_3day();
 			}else if(levelChoice == 4){
 				newFragment = new Fragment2worklog_4exercices();
-			}		
+			}
 			FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
 			transaction.replace(this.getId(), newFragment);

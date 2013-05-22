@@ -21,6 +21,9 @@ public class Fragment6book extends Fragment {
             //setContentView(R.layout.activity_main);
             View view = inflater.inflate(R.layout.fragment4archives, container, false);
             WebView webView = (WebView) view.findViewById(R.id.webViewArchives);
+            Fragment6book.progressDialog = ProgressDialog.show(this.getActivity(), "",
+					getString(R.string.loading), true);
+
             webView.getSettings().setJavaScriptEnabled(true);
             webView.getSettings().setPluginState(PluginState.ON);
 
@@ -31,6 +34,11 @@ public class Fragment6book extends Fragment {
            
             //String pdfURL = "http://ownwebsite.googlecode.com/files/resume_cedric_bettinger_v11en.pdf";
             String pdfURL = "http://www.musclehack.com/wp-content/uploads/2013/03/THT5point1.pdf";
+            webView.setWebViewClient(new WebViewClient() {
+	        	public void onPageFinished(WebView view, String url) {
+	        		Fragment6book.progressDialog.dismiss();
+	        	}
+        	});
             webView.loadUrl("http://docs.google.com/gview?embedded=true&url=" + pdfURL);
 
 
