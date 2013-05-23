@@ -55,13 +55,19 @@ public class Fragment4archives extends Fragment {
 	}
 
 	protected String getContentWithoutHeader(String content){
-		String contentWithoutHeader = content.split("<div class=\"car-container\">")[1];
-		String[] elements = contentWithoutHeader.split("</ul>");
-		elements[elements.length-1] = "";
-		contentWithoutHeader = elements[0];
-		for(int i=1; i<elements.length; i++){
-			String element = elements[i];
-			contentWithoutHeader += "</ul>" + element;
+		String contentWithoutHeader = "";
+		if(content != null){
+			String[] elements = content.split("<div class=\"car-container\">");
+			if(elements.length > 1){
+				contentWithoutHeader = elements[1];
+				elements = contentWithoutHeader.split("</ul>");
+				elements[elements.length-1] = "";
+				contentWithoutHeader = elements[0];
+				for(int i=1; i<elements.length; i++){
+					String element = elements[i];
+					contentWithoutHeader += "</ul>" + element;
+				}
+			}
 		}
 		return contentWithoutHeader;
 	}

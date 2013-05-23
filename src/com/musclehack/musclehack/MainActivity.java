@@ -30,7 +30,7 @@ public class MainActivity extends FragmentActivity {
 	TabHost mTabHost;
 	
 	FragmentListFeed fragment1rss;
-	Fragment2worklog fragment2worklog;
+	ListFragment fragment2worklog;
 	FragmentListFeed fragment3testimonials;
 	FragmentListFeed fragment4recipe;
 	Fragment4archives fragment5archives;
@@ -45,7 +45,20 @@ public class MainActivity extends FragmentActivity {
 		this.setContentView(R.layout.activity_main);
 		this.fragment1rss = new FragmentListFeed();
 		this.fragment1rss.setUrlFeed("http://feeds.feedburner.com/MuscleHack");
-		this.fragment2worklog = new Fragment2worklog();
+		this.fragment2worklog = null;
+		int levelChoice = WorkoutManagerSingleton.getInstance().getLevelChoice();
+		if(levelChoice == 0){
+			this.fragment2worklog = new Fragment2worklog();
+		}else if(levelChoice == 1){
+			this.fragment2worklog = new Fragment2worklog_1subProg();
+		}else if(levelChoice == 2){
+			this.fragment2worklog = new Fragment2worklog_2week();
+		}else if(levelChoice == 3){
+			this.fragment2worklog = new Fragment2worklog_3day();
+		}else if(levelChoice == 4){
+			this.fragment2worklog = new Fragment2worklog_4exercices();
+		}
+		
 		this.fragment3testimonials = new FragmentListFeed();
 		this.fragment3testimonials.setUrlFeed("http://www.musclehack.com/category/testimonials-2/feed");
 		this.fragment4recipe = new FragmentListFeed();
@@ -196,6 +209,7 @@ public class MainActivity extends FragmentActivity {
 			if(tabId.equals(TAB_A)){
 				pushFragments(getString(R.string.rss), fragment1rss);
 			}else if(tabId.equals(TAB_B)){
+				/*
 				ListFragment newFragment = null;
 				int levelChoice = WorkoutManagerSingleton.getInstance().getLevelChoice();
 				if(levelChoice == 0){
@@ -209,7 +223,8 @@ public class MainActivity extends FragmentActivity {
 				}else if(levelChoice == 4){
 					newFragment = new Fragment2worklog_4exercices();
 				}
-				pushFragments(getString(R.string.worklog), newFragment);
+				//*/
+				pushFragments(getString(R.string.worklog), fragment2worklog);
 			}else if(tabId.equals(TAB_C)){
 				pushFragments(getString(R.string.testimonials), fragment3testimonials);
 			}else if(tabId.equals(TAB_D)){
