@@ -83,11 +83,11 @@ public class SimpleWeekAdapter extends SimpleCustomableAdapter {
 		TextView textView = (TextView) view.findViewById(R.id.textWorklog); 
 		String day = textView.getText().toString();
 		boolean done = WorkoutManagerSingleton.getInstance().isWeekCompleted(day);
-		int backgroundColor = Color.WHITE;
+		//int backgroundColor = Color.WHITE;
 		if(done){
-			backgroundColor = Color.CYAN;
+			int backgroundColor = Color.CYAN;
+			RelativeLayout mainLayout = (RelativeLayout)view.findViewById(R.id.mainLayout);
+			mainLayout.setBackgroundColor(backgroundColor);
 		}
-		RelativeLayout mainLayout = (RelativeLayout)view.findViewById(R.id.mainLayout);
-		mainLayout.setBackgroundColor(backgroundColor);
 	}
 }
