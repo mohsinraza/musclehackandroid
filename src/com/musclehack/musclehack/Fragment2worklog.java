@@ -28,8 +28,8 @@ public class Fragment2worklog extends ListFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		//*
-		Context context = this.getActivity().getApplicationContext();
-		WorkoutManagerSingleton.setContext(context);
+		//Context context = this.getActivity().getApplicationContext();
+		//WorkoutManagerSingleton.setContext(context);
 		this.transactionDone = "";
 
 		this.texts = new ArrayList<HashMap<String, String>>();

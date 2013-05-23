@@ -1,5 +1,6 @@
 package com.musclehack.musclehack;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -37,6 +38,8 @@ public class MainActivity extends FragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		Context context = this.getApplicationContext();
+		WorkoutManagerSingleton.setContext(context);
 		this.setContentView(R.layout.activity_main);
 		this.fragment1rss = new FragmentListFeed();
 		this.fragment1rss.setUrlFeed("http://feeds.feedburner.com/MuscleHack");
@@ -64,7 +67,34 @@ public class MainActivity extends FragmentActivity {
 		this.initializeTab(savedInstanceState);
 	}
 
-
+	
+	@Override
+	public void onStart() {
+		super.onStart();
+		/*
+		int currentTab = this.mTabHost.getCurrentTab();
+		if(currentTab == 1){
+			this.fragment2worklog.onStart();
+		}
+		//*/
+	}
+	@Override
+	public void onBackPressed() {
+		/*
+		int levelChoice = WorkoutManagerSingleton.getInstance().getLevelChoice();
+		if(levelChoice > 0){
+			WorkoutManagerSingleton.getInstance().setLevelChoice(0);
+		}
+		//*/
+		super.onBackPressed();
+	}
+	
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		WorkoutManagerSingleton.closeDatabase();
+	}
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -143,27 +173,7 @@ public class MainActivity extends FragmentActivity {
 			this.mTabHost.setCurrentTab(tabPosition);
 		}
 	}
-	
-	@Override
-	public void onStart() {
-		super.onStart();
-		/*
-		int currentTab = this.mTabHost.getCurrentTab();
-		if(currentTab == 1){
-			this.fragment2worklog.onStart();
-		}
-		//*/
-	}
-	@Override
-	public void onBackPressed() {
-		/*
-		int levelChoice = WorkoutManagerSingleton.getInstance().getLevelChoice();
-		if(levelChoice > 0){
-			WorkoutManagerSingleton.getInstance().setLevelChoice(0);
-		}
-		//*/
-		super.onBackPressed();
-	}
+
 	/*
 	 * TabChangeListener for changing the tab when one of the tabs is pressed
 	 */

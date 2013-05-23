@@ -29,12 +29,19 @@ public class WorkoutManagerSingleton{
 		WorkoutManagerSingleton.instance.dbHelper = new ProgramDbHelper(WorkoutManagerSingleton.context);
 	}
 	
+	public static void closeDatabase(){
+		if(WorkoutManagerSingleton.instance.dbHelper != null){
+			WorkoutManagerSingleton.instance.dbHelper.close();
+		}
+	}
+	
 	public static WorkoutManagerSingleton getInstance(){
 		return WorkoutManagerSingleton.instance;
 	}
 	
 	private WorkoutManagerSingleton(){
 		this.levelChoice = 0;
+		this.dbHelper = null;
 	}
 	
 	public void setLevelChoice(int levelChoice){
