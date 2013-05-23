@@ -1,9 +1,7 @@
-﻿- Fill out the entire workout
-- Ajouter set au numéro d'exercice + bug de la numérotation
+﻿- Notification feature
+- Permettre de gérer dans les notifications ainsi que la remise à zéro de la base de données
 - Voir pourquoi le annuler marche plus après rotation dans la partie exercise. Je pense que je devrais le faire dans OnStart on lui OnViewCreated mais pas sur
 - On screen rotation
-- Notification feature
-- Permettre de gérer dans les notifications ainsi que la remise à zéro de la base de données
 - Voir pour les listes pour qu'il y est pas d'intervertion des items et images...pour quand on rempli vite par exemple
 
 - Générer une page html à partir du flux archives depuis flux rss

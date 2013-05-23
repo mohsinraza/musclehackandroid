@@ -1,20 +1,19 @@
 package com.musclehack.musclehack;
 
-import com.musclehack.musclehack.workouts.WorkoutManagerSingleton;
-
-import android.content.pm.ActivityInfo;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TextView;
+
+import com.musclehack.musclehack.workouts.WorkoutManagerSingleton;
 
 public class MainActivity extends FragmentActivity {
 
@@ -138,6 +137,7 @@ public class MainActivity extends FragmentActivity {
 		
 		if (savedInstanceState == null) {
 			this.mTabHost.setCurrentTab(-3);
+			WorkoutManagerSingleton.getInstance().setLevelChoice(0);
 		}else{
 			int tabPosition = savedInstanceState.getInt("TAB_POSITION");
 			this.mTabHost.setCurrentTab(tabPosition);
@@ -145,11 +145,23 @@ public class MainActivity extends FragmentActivity {
 	}
 	
 	@Override
+	public void onStart() {
+		super.onStart();
+		/*
+		int currentTab = this.mTabHost.getCurrentTab();
+		if(currentTab == 1){
+			this.fragment2worklog.onStart();
+		}
+		//*/
+	}
+	@Override
 	public void onBackPressed() {
+		/*
 		int levelChoice = WorkoutManagerSingleton.getInstance().getLevelChoice();
-		if(levelChoice == 1){
+		if(levelChoice > 0){
 			WorkoutManagerSingleton.getInstance().setLevelChoice(0);
 		}
+		//*/
 		super.onBackPressed();
 	}
 	/*
@@ -158,9 +170,22 @@ public class MainActivity extends FragmentActivity {
 	TabHost.OnTabChangeListener listener = new TabHost.OnTabChangeListener() {
 		  public void onTabChanged(String tabId) {
 			  if(tabId.equals(TAB_A)){
-				pushFragments(getString(R.string.worklog), fragment1rss);
+				pushFragments(getString(R.string.rss), fragment1rss);
 			  }else if(tabId.equals(TAB_B)){
-				  pushFragments(getString(R.string.rss), fragment2worklog);
+					ListFragment newFragment = null;
+					int levelChoice = WorkoutManagerSingleton.getInstance().getLevelChoice();
+					if(levelChoice == 0){
+						newFragment = fragment2worklog;
+					}else if(levelChoice == 1){
+						newFragment = new Fragment2worklog_1subProg();
+					}else if(levelChoice == 2){
+						newFragment = new Fragment2worklog_2week();
+					}else if(levelChoice == 3){
+						newFragment = new Fragment2worklog_3day();
+					}else if(levelChoice == 4){
+						newFragment = new Fragment2worklog_4exercices();
+					}
+					pushFragments(getString(R.string.worklog), newFragment);
 			  }else if(tabId.equals(TAB_C)){
 				  pushFragments(getString(R.string.testimonials), fragment3testimonials);
 			  }else if(tabId.equals(TAB_D)){

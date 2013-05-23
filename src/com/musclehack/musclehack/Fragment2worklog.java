@@ -47,6 +47,7 @@ public class Fragment2worklog extends ListFragment {
 												new String[] { TAG_TEXT_WORKLOG },
 												new int[] { R.id.textWorklog});
 		setListAdapter(this.adapter);
+		WorkoutManagerSingleton.getInstance().setLevelChoice(0);
 		/**/
 		View view = super.onCreateView(inflater, container, savedInstanceState);
 		
@@ -56,6 +57,20 @@ public class Fragment2worklog extends ListFragment {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState){
 		super.onActivityCreated(savedInstanceState);
+		
+		//WorkoutManagerSingleton.getInstance().setLevelChoice(0);
+		/*
+		if (savedInstanceState != null) {
+			this.transactionDone = savedInstanceState.getString("transactionDone");
+			this.doTransaction(this.transactionDone); //TODO mettre ca ailleurs
+		}
+		//*/
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		/*
 		int levelChoice = WorkoutManagerSingleton.getInstance().getLevelChoice();
 		if(levelChoice > 0){
 			ListFragment newFragment = null;
@@ -75,16 +90,8 @@ public class Fragment2worklog extends ListFragment {
 
 			transaction.commit();
 		}
-		//WorkoutManagerSingleton.getInstance().setLevelChoice(0);
-		/*
-		if (savedInstanceState != null) {
-			this.transactionDone = savedInstanceState.getString("transactionDone");
-			this.doTransaction(this.transactionDone); //TODO mettre ca ailleurs
-		}
 		//*/
 	}
-
-
 
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id){
