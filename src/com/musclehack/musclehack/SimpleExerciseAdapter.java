@@ -10,6 +10,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.webkit.WebSettings;
@@ -34,6 +35,7 @@ public class SimpleExerciseAdapter extends SimpleCustomableAdapter {
 
 	
 	protected void bindView(int position, View view) {
+		Log.d("SimpleExerciseAdapter", "protected void bindView(int position, View view) called");
 		final Map dataSet = mData.get(position);
 		if (dataSet == null) {
 			return;
@@ -135,6 +137,7 @@ public class SimpleExerciseAdapter extends SimpleCustomableAdapter {
 			}
 		}
 		
+		Log.d("SimpleExerciseAdapter", "Button button = (Button) view.findViewById(R.id.buttonRest);...");
 		Button button = (Button) view.findViewById(R.id.buttonRest);
 		EditText restEditText = (EditText)view.findViewById(R.id.rest);
 		OnClickListener restButtonOnClickListener = new OnRestButtonClickListener(restEditText);
@@ -162,6 +165,7 @@ public class SimpleExerciseAdapter extends SimpleCustomableAdapter {
 		}
 		RelativeLayout mainLayout = (RelativeLayout)view.findViewById(R.id.mainLayout);
 		mainLayout.setBackgroundColor(backgroundColor);
+		Log.d("SimpleExerciseAdapter", "protected void bindView(int position, View view) end");
 		//secondLayout.setBackgroundColor(backgroundColor);
 		//secondLayout.getChildAt(1).setBackgroundColor(backgroundColor);
 		//secondLayout.getChildAt(3).setBackgroundColor(backgroundColor);
@@ -173,6 +177,7 @@ public class SimpleExerciseAdapter extends SimpleCustomableAdapter {
 		protected int initialRestValue;
 		protected Boolean[] timerStarted;
 		public OnRestButtonClickListener(EditText restEditText){
+			Log.d("SimpleExerciseAdapter", "public OnRestButtonClickListener(EditText restEditText){ called");
 			this.restEditText = restEditText;
 			this.timerStarted = new Boolean [] {Boolean.valueOf(false)};
 			String restText = this.restEditText.getText().toString();
@@ -181,10 +186,12 @@ public class SimpleExerciseAdapter extends SimpleCustomableAdapter {
 			}else{
 				this.initialRestValue = 0;
 			}
+			Log.d("SimpleExerciseAdapter", "public OnRestButtonClickListener(EditText restEditText){ end");
 		}
 
 		@Override
 		public void onClick(View view) {
+			Log.d("SimpleExerciseAdapter", "public void onClick(View view){ called");
 			if(this.initialRestValue > 0){
 				if(!this.timerStarted[0]){
 					Timer timer = new Timer();
@@ -195,7 +202,7 @@ public class SimpleExerciseAdapter extends SimpleCustomableAdapter {
 					timer.scheduleAtFixedRate(task, 0, 1000);
 				}
 			}
-
+			Log.d("SimpleExerciseAdapter", "public void onClick(View view){ end");
 		}
 	}
 
@@ -238,6 +245,7 @@ public class SimpleExerciseAdapter extends SimpleCustomableAdapter {
 		}
 		@Override
 		public void run() {
+			Log.d("SimpleExerciseAdapter", "public void run(){ called");
 			String restText = this.restEditText.getText().toString();
 			int currentRest = Integer.parseInt(restText);
 			currentRest--;
@@ -249,9 +257,11 @@ public class SimpleExerciseAdapter extends SimpleCustomableAdapter {
 			}else{
 				this.restEditText.setText("" + currentRest);
 			}
+			Log.d("SimpleExerciseAdapter", "public void run(){ end");
 		}
 		
 		protected void playSound(){
+			Log.d("SimpleExerciseAdapter", "protected void playSound(){ called");
 			MediaPlayer mediaPlayer = MediaPlayer.create(restEditText.getContext(),
 					R.raw.power_up);
 			mediaPlayer.setOnCompletionListener(new OnCompletionListener() {
@@ -261,6 +271,7 @@ public class SimpleExerciseAdapter extends SimpleCustomableAdapter {
 				}
 			});
 			mediaPlayer.start();
+			Log.d("SimpleExerciseAdapter", "protected void playSound(){ end");
 		}
 		
 	}

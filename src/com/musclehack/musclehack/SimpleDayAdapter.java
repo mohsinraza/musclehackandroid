@@ -5,6 +5,7 @@ import java.util.Map;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -27,6 +28,7 @@ public class SimpleDayAdapter extends SimpleCustomableAdapter {
 
 	
 	protected void bindView(int position, View view) {
+		Log.d("SimpleDayAdapter", "protected void bindView(int position, View view) called");
 		final Map dataSet = mData.get(position);
 		if (dataSet == null) {
 			return;
@@ -83,7 +85,9 @@ public class SimpleDayAdapter extends SimpleCustomableAdapter {
 		TextView textView = (TextView) view.findViewById(R.id.textWorklog); 
 		String day = textView.getText().toString();
 		//*
+		Log.d("SimpleExerciseAdapter", "boolean done = WorkoutManagerSingleton.getInstance().isDayCompleted(day);...");
 		boolean done = WorkoutManagerSingleton.getInstance().isDayCompleted(day);
+		Log.d("SimpleExerciseAdapter", "boolean done = WorkoutManagerSingleton.getInstance().isDayCompleted(day);...ok");
 		//int backgroundColor = Color.WHITE;
 		if(done){
 			int backgroundColor = Color.CYAN;
@@ -91,5 +95,6 @@ public class SimpleDayAdapter extends SimpleCustomableAdapter {
 			mainLayout.setBackgroundColor(backgroundColor);
 		}
 		//*/
+		Log.d("SimpleDayAdapter", "protected void bindView(int position, View view) end");
 	}
 }

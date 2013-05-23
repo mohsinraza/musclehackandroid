@@ -5,6 +5,7 @@ import java.util.Map;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -27,6 +28,7 @@ public class SimpleSubProgramAdapter extends SimpleCustomableAdapter {
 
 	
 	protected void bindView(int position, View view) {
+		Log.d("SimpleSubProgramAdapter", "protected void bindView(int position, View view) called");
 		final Map dataSet = mData.get(position);
 		if (dataSet == null) {
 			return;
@@ -90,6 +92,7 @@ public class SimpleSubProgramAdapter extends SimpleCustomableAdapter {
 			RelativeLayout mainLayout = (RelativeLayout)view.findViewById(R.id.mainLayout);
 			mainLayout.setBackgroundColor(backgroundColor);
 		}
+		Log.d("SimpleSubProgramAdapter", "protected void bindView(int position, View view) end");
 		//*/
 	}
 }

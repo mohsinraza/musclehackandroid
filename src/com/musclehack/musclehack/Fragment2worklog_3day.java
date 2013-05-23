@@ -9,6 +9,7 @@ import com.musclehack.musclehack.workouts.WorkoutManagerSingleton;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,7 @@ public class Fragment2worklog_3day extends ListFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		Log.d("Fragment2worklog_3day", "public View onCreateView(...) called");
 		this.texts = new ArrayList<HashMap<String, String>>();
 		List<String> subProgramNames = WorkoutManagerSingleton.getInstance().getAvailableDays();
 		for(String subProgramName:subProgramNames){
@@ -41,13 +43,16 @@ public class Fragment2worklog_3day extends ListFragment {
 												new int[] { R.id.textWorklog});
 		setListAdapter(this.adapter);
 		WorkoutManagerSingleton.getInstance().setLevelChoice(3);
-		return super.onCreateView(inflater, container, savedInstanceState);
+		View view = super.onCreateView(inflater, container, savedInstanceState);
+		Log.d("Fragment2worklog_3day", "public View onCreateView(...) end");
+		return view;
 	}
 	
 	
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id){
 		super.onListItemClick(l, v, position, id);
+		Log.d("Fragment2worklog_3day", "public void onListItemClick(...) called");
 		ListFragment newFragment = new Fragment2worklog_4exercices();
 		TextView textView = (TextView) v.findViewById(R.id.textWorklog); 
 		String clickedText = textView.getText().toString();
@@ -62,5 +67,6 @@ public class Fragment2worklog_3day extends ListFragment {
 		transaction.addToBackStack(null);
 
 		transaction.commit();
+		Log.d("Fragment2worklog_3day", "public void onListItemClick(...) end");
 	}
 }

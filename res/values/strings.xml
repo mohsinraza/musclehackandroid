@@ -17,6 +17,7 @@
     <string name="reps">Reps</string>
     <string name="rest">Rest:</string>
     <string name="previous">Prev:</string>
+    <string name="creatingWorkout">Creating workout. Please wait…</string>
     <string name="currentSubWorkout">Current: </string>
 
 </resources>

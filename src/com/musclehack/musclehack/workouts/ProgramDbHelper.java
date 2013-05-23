@@ -4,13 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
+import com.musclehack.musclehack.R;
 import com.musclehack.musclehack.workouts.ContractProgram.ContractExercise;
 import com.musclehack.musclehack.workouts.ContractProgram.ContractSubProgram;
 import com.musclehack.musclehack.workouts.ContractProgram.ContractWorkoutDay;
@@ -19,9 +22,13 @@ import com.musclehack.musclehack.workouts.ContractProgram.ContractWorkoutWeek;
 public class ProgramDbHelper extends SQLiteOpenHelper {
 	public static final int DATABASE_VERSION = 1;
 	public static final String DATABASE_NAME = "programs.db";
+	protected Context context;
 
 	public ProgramDbHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
+		Log.d("ProgramDbHelper","public ProgramDbHelper(Context context) called");
+		this.context = context;
+		Log.d("ProgramDbHelper","public ProgramDbHelper(Context context) end");
 	}
 	
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -33,15 +40,23 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 	}
 	
 	public void onCreate(SQLiteDatabase db) {
+		Log.d("ProgramDbHelper","public void onCreate(SQLiteDatabase db) called");
+		ProgressDialog progressDialog = ProgressDialog.show(this.context,
+				"",
+				this.context.getString(R.string.creatingWorkout),
+				true);
 		db.execSQL(ContractProgram.CREATE_TABLE);
 		db.execSQL(ContractSubProgram.CREATE_TABLE);
 		db.execSQL(ContractWorkoutWeek.CREATE_TABLE);
 		db.execSQL(ContractWorkoutDay.CREATE_TABLE);
 		db.execSQL(ContractExercise.CREATE_TABLE);
 		this.loadDefaultWorkout(db);
+		progressDialog.dismiss();
+		Log.d("ProgramDbHelper","public void onCreate(SQLiteDatabase db) end");
 	}
 	
 	public void loadDefaultWorkout(SQLiteDatabase db){
+		Log.d("ProgramDbHelper","public void loadDefaultWorkout(SQLiteDatabase db) called");
 		String[] repRanges = {"8-12", "7-10", "6-8"};
 		ContentValues values = new ContentValues();
 		values.put(ContractProgram.COLUMN_NAME_NAME, "THT5 VOLUME CYCLES");
@@ -51,20 +66,24 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 			String repRangeText = repRangeSep[0] + " to " + repRangeSep[1];
 			values = new ContentValues();
 			values.put(ContractSubProgram.COLUMN_NAME_NAME, "THT5 VOLUME " + repRange);
+			values.put(ContractSubProgram.COLUMN_NAME_COMPLETED, false);
 			values.put(ContractSubProgram.COLUMN_NAME_EXTERN_ID, newRowProgramId);
 			long newRowSubProgramId = db.insert(ContractSubProgram.TABLE_NAME, "null", values);
 			for(int i=0; i<10; i++){
 				values = new ContentValues();
 				values.put(ContractWorkoutWeek.COLUMN_NAME_NAME, "Week " + (i+1));
 				values.put(ContractWorkoutWeek.COLUMN_NAME_EXTERN_ID, newRowSubProgramId);
+				values.put(ContractWorkoutWeek.COLUMN_NAME_COMPLETED, false);
 				long newRowWeekId = db.insert(ContractWorkoutWeek.TABLE_NAME, "null", values);
 					values = new ContentValues();
 					values.put(ContractWorkoutDay.COLUMN_NAME_NAME, "Monday - Shoulders & Traps");
+					values.put(ContractWorkoutDay.COLUMN_NAME_COMPLETED, false);
 					values.put(ContractWorkoutDay.COLUMN_NAME_DAY_OF_WEEK, 0);
 					values.put(ContractWorkoutDay.COLUMN_NAME_EXTERN_ID, newRowWeekId);
 					long newRowDayId = db.insert(ContractWorkoutDay.TABLE_NAME, "null", values);
 						values = new ContentValues();
 						values.put(ContractExercise.COLUMN_NAME_EXTERN_ID, newRowDayId);
+						values.put(ContractExercise.COLUMN_NAME_COMPLETED, false);
 						values.put(ContractExercise.COLUMN_NAME_NREP, 0);
 						values.put(ContractExercise.COLUMN_NAME_WEIGHT, 0.f);
 						values.put(ContractExercise.COLUMN_NAME_REPRANGE, repRangeText);
@@ -93,11 +112,13 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 						}
 					values = new ContentValues();
 					values.put(ContractWorkoutDay.COLUMN_NAME_NAME, "Tuesday - Legs");
+					values.put(ContractWorkoutDay.COLUMN_NAME_COMPLETED, false);
 					values.put(ContractWorkoutDay.COLUMN_NAME_DAY_OF_WEEK, 1);
 					values.put(ContractWorkoutDay.COLUMN_NAME_EXTERN_ID, newRowWeekId);
 					newRowDayId = db.insert(ContractWorkoutDay.TABLE_NAME, "null", values);
 						values = new ContentValues();
 						values.put(ContractExercise.COLUMN_NAME_EXTERN_ID, newRowDayId);
+						values.put(ContractExercise.COLUMN_NAME_COMPLETED, false);
 						values.put(ContractExercise.COLUMN_NAME_NREP, 0);
 						values.put(ContractExercise.COLUMN_NAME_WEIGHT, 0.f);
 						values.put(ContractExercise.COLUMN_NAME_REPRANGE, repRangeText);
@@ -126,11 +147,13 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 						db.insert(ContractExercise.TABLE_NAME, "null", values);
 					values = new ContentValues();
 					values.put(ContractWorkoutDay.COLUMN_NAME_NAME, "Wednesday - Tricpes, Biceps & Forearms");
-					values.put(ContractWorkoutDay.COLUMN_NAME_DAY_OF_WEEK, 3);
+					values.put(ContractWorkoutDay.COLUMN_NAME_COMPLETED, false);
+					values.put(ContractWorkoutDay.COLUMN_NAME_DAY_OF_WEEK, 2);
 					values.put(ContractWorkoutDay.COLUMN_NAME_EXTERN_ID, newRowWeekId);
 					newRowDayId = db.insert(ContractWorkoutDay.TABLE_NAME, "null", values);
 						values = new ContentValues();
 						values.put(ContractExercise.COLUMN_NAME_EXTERN_ID, newRowDayId);
+						values.put(ContractExercise.COLUMN_NAME_COMPLETED, false);
 						values.put(ContractExercise.COLUMN_NAME_NREP, 0);
 						values.put(ContractExercise.COLUMN_NAME_WEIGHT, 0.f);
 						values.put(ContractExercise.COLUMN_NAME_REPRANGE, repRangeText);
@@ -186,11 +209,13 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 						db.insert(ContractExercise.TABLE_NAME, "null", values);
 					values = new ContentValues();
 					values.put(ContractWorkoutDay.COLUMN_NAME_NAME, "Thursday - Back");
-					values.put(ContractWorkoutDay.COLUMN_NAME_DAY_OF_WEEK, 4);
+					values.put(ContractWorkoutDay.COLUMN_NAME_COMPLETED, false);
+					values.put(ContractWorkoutDay.COLUMN_NAME_DAY_OF_WEEK, 3);
 					values.put(ContractWorkoutDay.COLUMN_NAME_EXTERN_ID, newRowWeekId);
 					newRowDayId = db.insert(ContractWorkoutDay.TABLE_NAME, "null", values);
 						values = new ContentValues();
 						values.put(ContractExercise.COLUMN_NAME_EXTERN_ID, newRowDayId);
+						values.put(ContractExercise.COLUMN_NAME_COMPLETED, false);
 						values.put(ContractExercise.COLUMN_NAME_NREP, 0);
 						values.put(ContractExercise.COLUMN_NAME_WEIGHT, 0.f);
 						values.put(ContractExercise.COLUMN_NAME_REPRANGE, "4 to 6");
@@ -213,11 +238,13 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 						db.insert(ContractExercise.TABLE_NAME, "null", values);
 					values = new ContentValues();
 					values.put(ContractWorkoutDay.COLUMN_NAME_NAME, "Friday - Chest & Abs");
-					values.put(ContractWorkoutDay.COLUMN_NAME_DAY_OF_WEEK, 5);
+					values.put(ContractWorkoutDay.COLUMN_NAME_COMPLETED, false);
+					values.put(ContractWorkoutDay.COLUMN_NAME_DAY_OF_WEEK, 4);
 					values.put(ContractWorkoutDay.COLUMN_NAME_EXTERN_ID, newRowWeekId);
 					newRowDayId = db.insert(ContractWorkoutDay.TABLE_NAME, "null", values);
 						values = new ContentValues();
 						values.put(ContractExercise.COLUMN_NAME_EXTERN_ID, newRowDayId);
+						values.put(ContractExercise.COLUMN_NAME_COMPLETED, false);
 						values.put(ContractExercise.COLUMN_NAME_NREP, 0);
 						values.put(ContractExercise.COLUMN_NAME_WEIGHT, 0.f);
 						values.put(ContractExercise.COLUMN_NAME_REPRANGE, repRangeText);
@@ -270,22 +297,27 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 			String repRangeText = repRangeSep[0] + " to " + repRangeSep[1];
 			values = new ContentValues();
 			values.put(ContractSubProgram.COLUMN_NAME_NAME, "THT5 HIT " + repRange);
+			values.put(ContractSubProgram.COLUMN_NAME_COMPLETED, false);
 			values.put(ContractSubProgram.COLUMN_NAME_EXTERN_ID, newRowProgramId);
 			long newRowSubProgramId = db.insert(ContractSubProgram.TABLE_NAME, "null", values);
 			for(int i=0; i<10; i++){
 				values = new ContentValues();
 				values.put(ContractWorkoutWeek.COLUMN_NAME_NAME, "Week " + (i+1));
+				values.put(ContractWorkoutWeek.COLUMN_NAME_COMPLETED, false);
 				values.put(ContractWorkoutWeek.COLUMN_NAME_EXTERN_ID, newRowSubProgramId);
 				long newRowWeekId = db.insert(ContractWorkoutWeek.TABLE_NAME, "null", values);
 					String[] days = {"Monday", "Wednesday"};
 					for(String day:days){
 						values = new ContentValues();
 						values.put(ContractWorkoutDay.COLUMN_NAME_NAME, day + " - Mass Workout");
-						values.put(ContractWorkoutDay.COLUMN_NAME_DAY_OF_WEEK, 0);
+						values.put(ContractWorkoutDay.COLUMN_NAME_COMPLETED, false);
+						int dayOfWeek = day.equals(days[0])?0:2;
+						values.put(ContractWorkoutDay.COLUMN_NAME_DAY_OF_WEEK, dayOfWeek);
 						values.put(ContractWorkoutDay.COLUMN_NAME_EXTERN_ID, newRowWeekId);
 						long newRowDayId = db.insert(ContractWorkoutDay.TABLE_NAME, "null", values);
 							values = new ContentValues();
 							values.put(ContractExercise.COLUMN_NAME_EXTERN_ID, newRowDayId);
+							values.put(ContractExercise.COLUMN_NAME_COMPLETED, false);
 							values.put(ContractExercise.COLUMN_NAME_NREP, 0);
 							values.put(ContractExercise.COLUMN_NAME_WEIGHT, 0.f);
 							values.put(ContractExercise.COLUMN_NAME_REPRANGE, repRangeText);
@@ -339,11 +371,13 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 					
 					values = new ContentValues();
 					values.put(ContractWorkoutDay.COLUMN_NAME_NAME, "Friday - Consolidation Workout");
-					values.put(ContractWorkoutDay.COLUMN_NAME_DAY_OF_WEEK, 1);
+					values.put(ContractWorkoutDay.COLUMN_NAME_COMPLETED, false);
+					values.put(ContractWorkoutDay.COLUMN_NAME_DAY_OF_WEEK, 4);
 					values.put(ContractWorkoutDay.COLUMN_NAME_EXTERN_ID, newRowWeekId);
 					long newRowDayId = db.insert(ContractWorkoutDay.TABLE_NAME, "null", values);
 						values = new ContentValues();
 						values.put(ContractExercise.COLUMN_NAME_EXTERN_ID, newRowDayId);
+						values.put(ContractExercise.COLUMN_NAME_COMPLETED, false);
 						values.put(ContractExercise.COLUMN_NAME_NREP, 0);
 						values.put(ContractExercise.COLUMN_NAME_WEIGHT, 0.f);
 						values.put(ContractExercise.COLUMN_NAME_REPRANGE, "4 to 6");
@@ -379,9 +413,11 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 						db.insert(ContractExercise.TABLE_NAME, "null", values);
 			}
 		}
+		Log.d("ProgramDbHelper","public void loadDefaultWorkout(SQLiteDatabase db) end");
 	}
 
 	public List<String> getAvailableProgramNames(){
+		Log.d("ProgramDbHelper","public List<String> getAvailableProgramNames() called");
 		List<String> programs = new ArrayList<String>();
 
 		SQLiteDatabase db = this.getReadableDatabase();
@@ -403,10 +439,12 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 		}
 
 		cursor.close();
+		Log.d("ProgramDbHelper","public List<String> getAvailableProgramNames() end");
 		return programs;
 	}
 
 	public List<String> getAvailableSubProgramNames(String programName){
+		Log.d("ProgramDbHelper","public List<String> getAvailableSubProgramNames(String programName) called");
 		SQLiteDatabase db = this.getReadableDatabase();
 		int idProgram = this.getIdProgram(programName);
 		String[] projectionSubProgram = {
@@ -425,10 +463,12 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 			}
 		}
 		cursorSubProgram.close();
+		Log.d("ProgramDbHelper","public List<String> getAvailableSubProgramNames(String programName) ends");
 		return subPrograms;
 	}
 
 	protected int getIdProgram(String programName){
+		Log.d("ProgramDbHelper", "protected int getIdProgram(String programName) called");
 		SQLiteDatabase db = this.getReadableDatabase();
 		String[] projectionProgram = {
 				ContractProgram.COLUMN_NAME_ID,
@@ -445,11 +485,35 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 			}
 		}
 		cursorProgram.close();
+		Log.d("ProgramDbHelper", "protected int getIdProgram(String programName) end");
 		return idProgram;
 	}
 
 	public boolean isSubProgramCompleted(String programName,
 											String subProgramName){
+		Log.d("ProgramDbHelper", "public boolean isSubProgramCompleted(...) called");
+		SQLiteDatabase db = this.getReadableDatabase();
+		int idSubProgram = this.getIdSubProgram(programName,
+												subProgramName);
+		String[] projectionSubProgram = {
+				ContractSubProgram.COLUMN_NAME_ID,
+				ContractSubProgram.COLUMN_NAME_COMPLETED
+				};
+		String[] selectionsArgs = {""+idSubProgram};
+		Cursor cursorSubProgram = db.query(ContractSubProgram.TABLE_NAME,
+											projectionSubProgram,                               // The columns to return
+											ContractSubProgram.COLUMN_NAME_ID + "=?",
+											selectionsArgs,
+											null,
+											null,null);
+		boolean completed = false;
+		if(cursorSubProgram.moveToNext()){
+			completed = cursorSubProgram.getInt(1) > 0;
+		}
+		cursorSubProgram.close();
+		Log.d("ProgramDbHelper", "public boolean isSubProgramCompleted(...) end");
+		return completed;
+		/*
 		List<String> weeks = getAvailableWeeks(programName,
 												subProgramName);
 		for(String week:weeks){
@@ -461,10 +525,12 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 			}
 		}
 		return true;
+		//*/
 	}
 
 	public List<String> getAvailableWeeks(String programName,
 											String subProgramName){
+		Log.d("ProgramDbHelper", "public List<String> getAvailableWeeks(...) called");
 		SQLiteDatabase db = this.getReadableDatabase();
 		int idSubProgram = this.getIdSubProgram(programName, subProgramName);
 		String[] projectionWeek = {
@@ -484,11 +550,13 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 			}
 		}
 		cursorWeek.close();
+		Log.d("ProgramDbHelper", "public List<String> getAvailableWeeks(...) end");
 		return weeks;
 	}
 
 	protected int getIdSubProgram(String programName,
 									String subProgramName){
+		Log.d("ProgramDbHelper", "protected int getIdSubProgram(...) called");
 		SQLiteDatabase db = this.getReadableDatabase();
 		int idProgram = this.getIdProgram(programName);
 		String[] projectionSubProgram = {
@@ -510,12 +578,14 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 			}
 		}
 		cursorSubProgram.close();
+		Log.d("ProgramDbHelper", "protected int getIdSubProgram(...) end");
 		return idSubProgram;
 	}
 	
 	public List<String> getAvailableDays(String programName,
 										String subProgramName,
 										String week){
+		Log.d("ProgramDbHelper", "public List<String> getAvailableDays(...) called");
 		SQLiteDatabase db = this.getReadableDatabase();
 		int idWeek = this.getIdWeek(programName, subProgramName, week);
 		String[] projectionDay = {
@@ -535,12 +605,14 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 			}
 		}
 		cursorDay.close();
+		Log.d("ProgramDbHelper", "public List<String> getAvailableDays(...) end");
 		return days;
 	}
 	
 	protected int getIdWeek(String programName,
 							String subProgramName,
 							String week){
+		Log.d("ProgramDbHelper", "protected int getIdWeek(...) called");
 		SQLiteDatabase db = this.getReadableDatabase();
 		int idSubProgram = this.getIdSubProgram(programName, subProgramName);
 		String[] projectionWeek = {
@@ -562,12 +634,37 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 			}
 		}
 		cursorWeek.close();
+		Log.d("ProgramDbHelper", "protected int getIdWeek(...) end");
 		return idWeek;
 	}
 
 	public boolean isWeekCompleted(String programName,
 									String subProgramName,
 									String week){
+		Log.d("ProgramDbHelper", "public boolean isWeekCompleted(...) called");
+		SQLiteDatabase db = this.getReadableDatabase();
+		int idWeek = this.getIdWeek(programName,
+									subProgramName,
+									week);
+		String[] projectionWeek = {
+				ContractWorkoutWeek.COLUMN_NAME_ID,
+				ContractWorkoutWeek.COLUMN_NAME_COMPLETED
+				};
+		String[] selectionsArgs = {""+idWeek};
+		Cursor cursorWeek = db.query(ContractWorkoutWeek.TABLE_NAME,
+									projectionWeek,                               // The columns to return
+									ContractWorkoutWeek.COLUMN_NAME_ID + "=?",
+									selectionsArgs,
+									null,
+									null,null);
+		boolean completed = false;
+		if(cursorWeek.moveToNext()){
+			completed = cursorWeek.getInt(1) > 0;
+		}
+		cursorWeek.close();
+		Log.d("ProgramDbHelper", "public boolean isWeekCompleted(...) end");
+		return completed;
+		/*
 		List<String> days = getAvailableDays(programName,
 											subProgramName,
 											week);
@@ -581,6 +678,7 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 			}
 		}
 		return true;
+		//*/
 	}
 	
 
@@ -589,11 +687,13 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 												String subProgramName,
 												String week,
 												String day){
+		Log.d("ProgramDbHelper", "public List<Exercice> getAvailableExercices(...) called");
 		int idDay = this.getIdDay(programName, subProgramName, week, day);
 		List<Exercice> exercises = this.getAvailableExercices(programName,
 															subProgramName,
 															week,
 															idDay);
+		Log.d("ProgramDbHelper", "public List<Exercice> getAvailableExercices(...) end");
 		return exercises;
 	}
 
@@ -601,6 +701,7 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 												String subProgramName,
 												String week,
 												int idDay){
+		Log.d("ProgramDbHelper", "public List<Exercice> getAvailableExercices id(...) called");
 		List<Exercice> exercises = null;
 		if(idDay != -1){
 			SQLiteDatabase db = this.getReadableDatabase();
@@ -637,6 +738,7 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 			}
 			cursorExercise.close();
 		}
+		Log.d("ProgramDbHelper", "public List<Exercice> getAvailableExercices id(...) end");
 		return exercises;
 	}
 
@@ -644,6 +746,7 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 							String subProgramName,
 							String week,
 							String day){
+		Log.d("ProgramDbHelper", "protected int getIdDay(...) called");
 		SQLiteDatabase db = this.getReadableDatabase();
 		int idWeek = this.getIdWeek(programName, subProgramName, week);
 		String[] projectionDay = {
@@ -664,6 +767,7 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 			}
 		}
 		cursorDay.close();
+		Log.d("ProgramDbHelper", "protected int getIdDay(...) end");
 		return idDay;
 	}
 	
@@ -671,11 +775,13 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 												String subProgramName,
 												String week,
 												String day){
+		Log.d("ProgramDbHelper", "public List<Exercice> getPreviousExercices(...) called");
 		int idPreviousDay = this.getIdPreviousDay(programName, subProgramName, week, day);
 		List<Exercice> exercises = this.getAvailableExercices(programName,
 				subProgramName,
 				week,
 				idPreviousDay);
+		Log.d("ProgramDbHelper", "public List<Exercice> getPreviousExercices(...) end");
 		return exercises;
 	}
 	
@@ -683,6 +789,7 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 									String subProgramName,
 									String week,
 									String day){
+		Log.d("ProgramDbHelper", "protected int getIdPreviousDay(...) called");
 		SQLiteDatabase db = this.getReadableDatabase();
 		int idWeek = this.getIdWeek(programName, subProgramName, week);
 		String[] projectionDay = {
@@ -725,10 +832,12 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 				break;
 			}
 		}
+		Log.d("ProgramDbHelper", "protected int getIdPreviousDay(...) ends");
 		return idPreviousDay;
 	}
 	
 	static protected boolean exercisesListEquals(List<Exercice> exercises1, List<Exercice> exercises2){
+		Log.d("ProgramDbHelper", "static protected boolean exercisesListEquals(List<Exercice> exercises1, List<Exercice> exercises2) called");
 		if(exercises1 != null
 		&& exercises2 != null
 		&& exercises1.size() == exercises2.size()){
@@ -737,19 +846,47 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 				String name1 = exercises1.get(i).getName();
 				String name2 = exercises2.get(i).getName();
 				if(!name1.equals(name2)){
+					Log.d("ProgramDbHelper", "static protected boolean exercisesListEquals(List<Exercice> exercises1, List<Exercice> exercises2) end false 1");
 					return false;
 				}
 			}
 		}else{
+			Log.d("ProgramDbHelper", "static protected boolean exercisesListEquals(List<Exercice> exercises1, List<Exercice> exercises2) end false 2");
 			return false;
 		}
+		Log.d("ProgramDbHelper", "static protected boolean exercisesListEquals(List<Exercice> exercises1, List<Exercice> exercises2) end true3");
 		return true;
 	}
 	
 	public boolean isDayCompleted(String programName,
-			String subProgramName,
-			String week,
-			String day){
+									String subProgramName,
+									String week,
+									String day){
+		Log.d("ProgramDbHelper", "public boolean isDayCompleted(...) called");
+		SQLiteDatabase db = this.getReadableDatabase();
+		int idDay = this.getIdDay(programName,
+									subProgramName,
+									week,
+									day);
+		String[] projectionDay = {
+				ContractWorkoutDay.COLUMN_NAME_ID,
+				ContractWorkoutDay.COLUMN_NAME_COMPLETED
+				};
+		String[] selectionsArgs = {""+idDay};
+		Cursor cursorDay = db.query(ContractWorkoutDay.TABLE_NAME,
+									projectionDay,                               // The columns to return
+									ContractWorkoutDay.COLUMN_NAME_ID + "=?",
+									selectionsArgs,
+									null,
+									null,null);
+		boolean completed = false;
+		if(cursorDay.moveToNext()){
+			completed = cursorDay.getInt(1) > 0;
+		}
+		cursorDay.close();
+		Log.d("ProgramDbHelper", "public boolean isDayCompleted(...) end");
+		return completed;
+		/*
 		List<Exercice> exercises = getAvailableExercices(programName,
 														subProgramName,
 														week,
@@ -760,19 +897,16 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 			}
 		}
 		return true;
+		//*/
 	}
 	
 	//*
 	public boolean isExerciseCompleted(int exerciseId){
+		Log.d("ProgramDbHelper", "public boolean isExerciseCompleted(int exerciseId) called");
 		SQLiteDatabase db = this.getReadableDatabase();
 		String[] projectionExercice = {
 				ContractExercise.COLUMN_NAME_ID,
-				ContractExercise.COLUMN_NAME_NAME,
-				ContractExercise.COLUMN_NAME_NREP,
-				ContractExercise.COLUMN_NAME_WEIGHT,
-				ContractExercise.COLUMN_NAME_REPRANGE,
-				ContractExercise.COLUMN_NAME_REST,
-				ContractExercise.COLUMN_NAME_EXTERN_ID
+				ContractExercise.COLUMN_NAME_COMPLETED
 				};
 		Cursor cursorExercise = db.query(ContractExercise.TABLE_NAME,
 										projectionExercice,
@@ -785,6 +919,8 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 		while(cursorExercise.moveToNext()){
 			int currentExerciseId = cursorExercise.getInt(0);
 			if(currentExerciseId == exerciseId){
+				boolean completed = cursorExercise.getInt(1) > 0;
+				/*
 				String exerciseName = cursorExercise.getString(1);
 				int nRep = cursorExercise.getInt(2);
 				float weight = cursorExercise.getFloat(3);
@@ -797,26 +933,157 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 												repRange,
 												rest);
 				boolean completed = exercise.isDone();
+				//*/
+				Log.d("ProgramDbHelper", "public boolean isExerciseCompleted(int exerciseId) end completed");
 				return completed;
 			}
 		}
 		cursorExercise.close();
+		Log.d("ProgramDbHelper", "public boolean isExerciseCompleted(int exerciseId) end false");
 		return false;
 	}
 	
-	protected void setExerciceInfo(String exerciseId,
+	protected void setExerciceInfo(String programName,
+									String subProgramName,
+									String week,
+									String day,
+									String exerciseId,
 									String rest,
 									String weight,
 									String nReps){
-		ContentValues values = new ContentValues();
-		values.put(ContractExercise.COLUMN_NAME_REST, rest);
-		values.put(ContractExercise.COLUMN_NAME_WEIGHT, weight);
-		values.put(ContractExercise.COLUMN_NAME_NREP, nReps);
-		SQLiteDatabase db = this.getWritableDatabase();
-		db.update(ContractExercise.TABLE_NAME,
-					values, ContractExercise.COLUMN_NAME_ID + "=" + exerciseId,
-					null);
-		db.close();
+		Log.d("ProgramDbHelper", "protected void setExerciceInfo(...) called");
+		int exerciseIdInt = Integer.parseInt(exerciseId);
+		boolean oldCompleted = this.isExerciseCompleted(exerciseIdInt);
+		boolean completed = false;
+		if(!weight.equals("") && !nReps.equals("")){
+			float weightFloat = Float.parseFloat(weight);
+			int nRepsInt = Integer.parseInt(nReps);
+			completed = weightFloat > 0.f && nRepsInt > 0;
+		}
+		if(oldCompleted != completed){
+			ContentValues values = new ContentValues();
+			values.put(ContractExercise.COLUMN_NAME_REST, rest);
+			values.put(ContractExercise.COLUMN_NAME_WEIGHT, weight);
+			values.put(ContractExercise.COLUMN_NAME_NREP, nReps);
+	
+			values.put(ContractExercise.COLUMN_NAME_COMPLETED, completed);
+			SQLiteDatabase db = this.getWritableDatabase();
+			db.update(ContractExercise.TABLE_NAME,
+						values, ContractExercise.COLUMN_NAME_ID + "=" + exerciseId,
+						null);
+			db.close();
+			this.updateDayCompletedEventually(programName,
+									subProgramName,
+									week,
+									day);
+		}
+		Log.d("ProgramDbHelper", "protected void setExerciceInfo(...) end");
 	}
+	
+	protected void updateDayCompletedEventually(String programName,
+										String subProgramName,
+										String week,
+										String day){
+		Log.d("ProgramDbHelper", "protected void updateDayCompletedEventually(...) called");
+		boolean oldCompleted = this.isDayCompleted(programName,
+													subProgramName,
+													week,
+													day);
+		boolean completed = true;
+		List<Exercice> exercises = getAvailableExercices(programName,
+														subProgramName,
+														week,
+														day);
+		for(Exercice exercise:exercises){
+			if(!exercise.isDone()){
+				completed = false;
+				break;
+			}
+		}
+		if(oldCompleted != completed){
+			ContentValues values = new ContentValues();
+			values.put(ContractWorkoutDay.COLUMN_NAME_COMPLETED, completed);
+			SQLiteDatabase db = this.getWritableDatabase();
+			int idDay = this.getIdDay(programName,
+										subProgramName,
+										week,
+										day);
+			db.update(ContractWorkoutDay.TABLE_NAME,
+						values, ContractWorkoutDay.COLUMN_NAME_ID + "=" + idDay,
+						null);
+			db.close();
+			this.updateWeekCompletedEventually(programName,
+												subProgramName,
+												week);
+			Log.d("ProgramDbHelper", "protected void updateDayCompletedEventually(...) end");
+		}
+	}
+	//-------------------------------------------------------------
+	protected void updateWeekCompletedEventually(String programName,
+												String subProgramName,
+												String week){
+		Log.d("ProgramDbHelper", "protected void updateWeekCompletedEventually(...) called");
+		boolean oldCompleted = this.isWeekCompleted(programName,
+													subProgramName,
+													week);
+		boolean completed = true;
+		List<String> days = getAvailableDays(programName,
+												subProgramName,
+												week);
+		for(String day:days){
+			boolean dayCompleted = this.isDayCompleted(programName, subProgramName, week, day);
+			if(!dayCompleted){
+				completed = false;
+				break;
+			}
+		}
+		if(oldCompleted != completed){
+			ContentValues values = new ContentValues();
+			values.put(ContractWorkoutWeek.COLUMN_NAME_COMPLETED, completed);
+			SQLiteDatabase db = this.getWritableDatabase();
+			int idWeek = this.getIdWeek(programName,
+										subProgramName,
+										week);
+			db.update(ContractWorkoutWeek.TABLE_NAME,
+						values, ContractWorkoutWeek.COLUMN_NAME_ID + "=" + idWeek,
+						null);
+			db.close();
+			this.updateSubProgramCompletedEventually(programName,
+													subProgramName);
+		}
+		Log.d("ProgramDbHelper", "protected void updateWeekCompletedEventually(...) end");
+	}
+	//-------------------------------------------------------------
+	protected void updateSubProgramCompletedEventually(String programName,
+														String subProgramName){
+		Log.d("ProgramDbHelper", "protected void updateSubProgramCompletedEventually(...) called");
+		boolean oldCompleted = this.isSubProgramCompleted(programName,
+														subProgramName);
+		boolean completed = true;
+		List<String> weeks = getAvailableWeeks(programName,
+												subProgramName);
+		for(String week:weeks){
+			boolean weekCompleted = this.isWeekCompleted(programName,
+														subProgramName,
+														week);
+			if(!weekCompleted){
+				completed = false;
+				break;
+			}
+		}
+		if(oldCompleted != completed){
+			ContentValues values = new ContentValues();
+			values.put(ContractSubProgram.COLUMN_NAME_COMPLETED, completed);
+			SQLiteDatabase db = this.getWritableDatabase();
+			int idSubProgram = this.getIdSubProgram(programName,
+													subProgramName);
+			db.update(ContractSubProgram.TABLE_NAME,
+						values, ContractSubProgram.COLUMN_NAME_ID + "=" + idSubProgram,
+						null);
+			db.close();
+		}
+		Log.d("ProgramDbHelper", "protected void updateSubProgramCompletedEventually(...) end");
+	}
+
 }
 

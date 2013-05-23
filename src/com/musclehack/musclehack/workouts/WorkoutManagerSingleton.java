@@ -6,6 +6,7 @@ import com.musclehack.musclehack.R;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 
 
@@ -36,6 +37,7 @@ public class WorkoutManagerSingleton{
 	}
 	
 	public static WorkoutManagerSingleton getInstance(){
+		Log.d("WorkoutManagerSingleton", "public static WorkoutManagerSingleton getInstance()...val: " + WorkoutManagerSingleton.instance);
 		return WorkoutManagerSingleton.instance;
 	}
 	
@@ -114,11 +116,19 @@ public class WorkoutManagerSingleton{
 		this.selectedDay = dayName;
 	}
 	
-	public void setExerciceInfo(String exerciseId, String rest, String weight, String nReps){
-		this.dbHelper.setExerciceInfo(exerciseId,
-						rest,
-						weight,
-						nReps);
+	public void setExerciceInfo(
+								String exerciseId,
+								String rest,
+								String weight,
+								String nReps){
+		this.dbHelper.setExerciceInfo(this.selectedProgramName,
+										this.selectedSubProgramName,
+										this.selectedWeek,
+										this.selectedDay,
+										exerciseId,
+										rest,
+										weight,
+										nReps);
 
 	}
 
@@ -185,5 +195,9 @@ public class WorkoutManagerSingleton{
 																	this.selectedWeek,
 																	this.selectedDay);
 		return exercices;
+	}
+	
+	public void setExerciseCompleted(int exerciseId, boolean completed){
+		//TODO)
 	}
 }

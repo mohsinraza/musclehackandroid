@@ -7,6 +7,7 @@ import java.util.List;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,9 +37,12 @@ public class Fragment2worklog_4exercices extends ListFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		Log.d("Fragment2worklog_4exercices", "public View onCreateView(...) called");
 		this.texts = new ArrayList<HashMap<String, String>>();
 		List<Exercice> exercises = WorkoutManagerSingleton.getInstance().getAvailableExercices();
+		Log.d("Fragment2worklog_4exercices", "exercises got");
 		List<Exercice> previousExercises = WorkoutManagerSingleton.getInstance().getPreviousExercices();
+		Log.d("Fragment2worklog_4exercices", "previousExercises got");
 		int exerciseNumber = 1;
 		for(int i=0; i<exercises.size(); i++){
 			Exercice exercise = exercises.get(i);
@@ -80,7 +84,7 @@ public class Fragment2worklog_4exercices extends ListFragment {
 			this.texts.add(map);
 			exerciseNumber++;
 		}
-
+		Log.d("Fragment2worklog_4exercices", "exercises added in list");
 		this.adapter = new SimpleExerciseAdapter(this.getActivity(),
 												this.texts,
 												R.layout.fragment2worklog_exercise,
@@ -105,14 +109,19 @@ public class Fragment2worklog_4exercices extends ListFragment {
 															R.id.previousWeight,
 															R.id.previousNreps});
 		setListAdapter(this.adapter);
+		Log.d("Fragment2worklog_4exercices", "adapter set");
 		WorkoutManagerSingleton.getInstance().setLevelChoice(4);
-		return super.onCreateView(inflater, container, savedInstanceState);
+		View view = super.onCreateView(inflater, container, savedInstanceState);
+		Log.d("Fragment2worklog_4exercices", "public View onCreateView(...) end");
+		return view;
 	}
 	
 
 	@Override
 	public void onViewCreated(View viewTop, Bundle savedInstanceState){
+		Log.d("Fragment2worklog_4exercices", "public void onViewCreated(...) called");
 		super.onViewCreated(viewTop, savedInstanceState);
+		Log.d("Fragment2worklog_4exercices", "public void onViewCreated(...) end");
 		/*
 		ListView listView = this.getListView();
 		if(listView != null){
@@ -150,6 +159,7 @@ public class Fragment2worklog_4exercices extends ListFragment {
 	
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id){
+		Log.d("Fragment2worklog_4exercices", "public void onListItemClick(...) called");
 		super.onListItemClick(l, v, position, id);
 		/*
 		ListFragment newFragment = new Fragment2worklog_2subProg();
@@ -167,5 +177,6 @@ public class Fragment2worklog_4exercices extends ListFragment {
 
 		transaction.commit();
 		//*/
+		Log.d("Fragment2worklog_4exercices", "public void onListItemClick(...) end");
 	}
 }

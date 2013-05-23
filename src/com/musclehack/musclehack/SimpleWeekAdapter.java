@@ -5,6 +5,7 @@ import java.util.Map;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -27,6 +28,7 @@ public class SimpleWeekAdapter extends SimpleCustomableAdapter {
 
 	
 	protected void bindView(int position, View view) {
+		Log.d("SimpleExerciseAdapter", "protected void bindView(int position, View view) { called");
 		final Map dataSet = mData.get(position);
 		if (dataSet == null) {
 			return;
@@ -81,13 +83,17 @@ public class SimpleWeekAdapter extends SimpleCustomableAdapter {
 			}
 		}
 		TextView textView = (TextView) view.findViewById(R.id.textWorklog); 
-		String day = textView.getText().toString();
-		boolean done = WorkoutManagerSingleton.getInstance().isWeekCompleted(day);
+		String week = textView.getText().toString();
+
+		Log.d("SimpleExerciseAdapter", "boolean done = WorkoutManagerSingleton.getInstance().isWeekCompleted(day);...");
+		boolean done = WorkoutManagerSingleton.getInstance().isWeekCompleted(week);
+		Log.d("SimpleExerciseAdapter", "boolean done = WorkoutManagerSingleton.getInstance().isWeekCompleted(day);...ok");
 		//int backgroundColor = Color.WHITE;
 		if(done){
 			int backgroundColor = Color.CYAN;
 			RelativeLayout mainLayout = (RelativeLayout)view.findViewById(R.id.mainLayout);
 			mainLayout.setBackgroundColor(backgroundColor);
 		}
+		Log.d("SimpleExerciseAdapter", "protected void bindView(int position, View view){ end");
 	}
 }

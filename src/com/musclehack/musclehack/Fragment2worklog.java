@@ -8,6 +8,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ public class Fragment2worklog extends ListFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		Log.d("Fragment2worklog", "public View onCreateView(...) called");
 		//*
 		//Context context = this.getActivity().getApplicationContext();
 		//WorkoutManagerSingleton.setContext(context);
@@ -51,6 +53,7 @@ public class Fragment2worklog extends ListFragment {
 		/**/
 		View view = super.onCreateView(inflater, container, savedInstanceState);
 		
+		Log.d("Fragment2worklog", "public View onCreateView(...) end");
 		return view;
 	}
 
@@ -95,13 +98,16 @@ public class Fragment2worklog extends ListFragment {
 
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id){
+		Log.d("Fragment2worklog", "public void onListItemClick(...) called");
 		super.onListItemClick(l, v, position, id);
 		TextView textView = (TextView) v.findViewById(R.id.textWorklog); 
 		String clickedText = textView.getText().toString();
 		this.doTransaction(clickedText);
+		Log.d("Fragment2worklog", "public void onListItemClick(...) end");
 	}
 
 	public void doTransaction(String rowText){
+		Log.d("Fragment2worklog", "public void doTransaction(String rowText) called");
 		if(!rowText.equals("")){
 			this.transactionDone = rowText;
 			WorkoutManagerSingleton workoutManager = WorkoutManagerSingleton.getInstance();
@@ -122,6 +128,7 @@ public class Fragment2worklog extends ListFragment {
 
 			transaction.commit();
 		}
+		Log.d("Fragment2worklog", "public void doTransaction(String rowText) end");
 	}
 	
 	@Override

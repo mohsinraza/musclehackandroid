@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -37,6 +38,7 @@ public class MainActivity extends FragmentActivity {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		Log.d("MainActivity","protected void onCreate(Bundle savedInstanceState) called");
 		super.onCreate(savedInstanceState);
 		Context context = this.getApplicationContext();
 		WorkoutManagerSingleton.setContext(context);
@@ -65,6 +67,7 @@ public class MainActivity extends FragmentActivity {
 		
 		
 		this.initializeTab(savedInstanceState);
+		Log.d("MainActivity","protected void onCreate(Bundle savedInstanceState) end");
 	}
 
 	
@@ -80,6 +83,7 @@ public class MainActivity extends FragmentActivity {
 	}
 	@Override
 	public void onBackPressed() {
+		Log.d("MainActivity","public void onBackPressed called");
 		/*
 		int levelChoice = WorkoutManagerSingleton.getInstance().getLevelChoice();
 		if(levelChoice > 0){
@@ -87,12 +91,15 @@ public class MainActivity extends FragmentActivity {
 		}
 		//*/
 		super.onBackPressed();
+		Log.d("MainActivity","public void onBackPressed end");
 	}
 	
 	@Override
 	public void onDestroy() {
+		Log.d("MainActivity","public void onDestroy() called");
 		super.onDestroy();
 		WorkoutManagerSingleton.closeDatabase();
+		Log.d("MainActivity","public void onDestroy() end");
 	}
 	
 	@Override
@@ -106,6 +113,7 @@ public class MainActivity extends FragmentActivity {
 	 * Initialize the tabs and set views and identifiers for the tabs
 	 */
 	public void initializeTab(Bundle savedInstanceState) {
+		Log.d("MainActivity","public void initializeTab(Bundle savedInstanceState)  called");
 		TabHost.TabSpec spec = mTabHost.newTabSpec(TAB_A);
 		//this.mTabHost.setCurrentTab(-3); //?
 
@@ -164,49 +172,56 @@ public class MainActivity extends FragmentActivity {
 		});
 		spec.setIndicator(createTabView(getString(R.string.book), R.drawable.tab6_book));
 		mTabHost.addTab(spec);
-		
+
+		Log.d("MainActivity","Checking savedInstanceState...");
 		if (savedInstanceState == null) {
+			Log.d("MainActivity","savedInstanceState == null");
 			this.mTabHost.setCurrentTab(-3);
 			WorkoutManagerSingleton.getInstance().setLevelChoice(0);
 		}else{
+			Log.d("MainActivity","savedInstanceState != null");
 			int tabPosition = savedInstanceState.getInt("TAB_POSITION");
+			Log.d("MainActivity","tabPosition: " +tabPosition);
 			this.mTabHost.setCurrentTab(tabPosition);
 		}
+		Log.d("MainActivity","public void initializeTab(Bundle savedInstanceState)  end");
 	}
 
 	/*
 	 * TabChangeListener for changing the tab when one of the tabs is pressed
 	 */
 	TabHost.OnTabChangeListener listener = new TabHost.OnTabChangeListener() {
-		  public void onTabChanged(String tabId) {
-			  if(tabId.equals(TAB_A)){
+		public void onTabChanged(String tabId) {
+			Log.d("MainActivity","public void onTabChanged(String tabId) { called");
+			if(tabId.equals(TAB_A)){
 				pushFragments(getString(R.string.rss), fragment1rss);
-			  }else if(tabId.equals(TAB_B)){
-					ListFragment newFragment = null;
-					int levelChoice = WorkoutManagerSingleton.getInstance().getLevelChoice();
-					if(levelChoice == 0){
-						newFragment = fragment2worklog;
-					}else if(levelChoice == 1){
-						newFragment = new Fragment2worklog_1subProg();
-					}else if(levelChoice == 2){
-						newFragment = new Fragment2worklog_2week();
-					}else if(levelChoice == 3){
-						newFragment = new Fragment2worklog_3day();
-					}else if(levelChoice == 4){
-						newFragment = new Fragment2worklog_4exercices();
-					}
-					pushFragments(getString(R.string.worklog), newFragment);
-			  }else if(tabId.equals(TAB_C)){
-				  pushFragments(getString(R.string.testimonials), fragment3testimonials);
-			  }else if(tabId.equals(TAB_D)){
-				  pushFragments(getString(R.string.recipes), fragment4recipe);
-			  }else if(tabId.equals(TAB_E)){
-				  pushFragments(getString(R.string.archives), fragment5archives);
-			  }else if(tabId.equals(TAB_F)){
-				  pushFragments(getString(R.string.book), fragment6book);
-			  }
-		  }
-		};
+			}else if(tabId.equals(TAB_B)){
+				ListFragment newFragment = null;
+				int levelChoice = WorkoutManagerSingleton.getInstance().getLevelChoice();
+				if(levelChoice == 0){
+					newFragment = fragment2worklog;
+				}else if(levelChoice == 1){
+					newFragment = new Fragment2worklog_1subProg();
+				}else if(levelChoice == 2){
+					newFragment = new Fragment2worklog_2week();
+				}else if(levelChoice == 3){
+					newFragment = new Fragment2worklog_3day();
+				}else if(levelChoice == 4){
+					newFragment = new Fragment2worklog_4exercices();
+				}
+				pushFragments(getString(R.string.worklog), newFragment);
+			}else if(tabId.equals(TAB_C)){
+				pushFragments(getString(R.string.testimonials), fragment3testimonials);
+			}else if(tabId.equals(TAB_D)){
+				pushFragments(getString(R.string.recipes), fragment4recipe);
+			}else if(tabId.equals(TAB_E)){
+				pushFragments(getString(R.string.archives), fragment5archives);
+			}else if(tabId.equals(TAB_F)){
+				pushFragments(getString(R.string.book), fragment6book);
+			}
+			Log.d("MainActivity","public void onTabChanged(String tabId) { end");
+		}
+	};
 		
 	/*
 	 * adds the fragment to the FrameLayout
@@ -235,19 +250,4 @@ public class MainActivity extends FragmentActivity {
 		outState.putInt("TAB_POSITION", idTab);
 		super.onSaveInstanceState(outState);
 	}
-	
-	/*
-	@Override
-	public void onConfigurationChanged(Configuration newConfig) {
-		super.onConfigurationChanged(newConfig);
-
-		// Checks the orientation of the screen for landscape and portrait and set portrait mode always
-		if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-		} else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
-			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-		}
-	}
-	//*/
-		
 }
