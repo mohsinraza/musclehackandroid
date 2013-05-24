@@ -64,7 +64,8 @@ public class Fragment2worklog_3day extends ListFragment {
 
 
 		transaction.replace(this.getId(), newFragment);
-		transaction.addToBackStack(null);
+		//transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+		transaction.addToBackStack("dayToExercise");
 
 		transaction.commit();
 		Log.d("Fragment2worklog_3day", "public void onListItemClick(...) end");

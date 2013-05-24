@@ -121,7 +121,8 @@ public class Fragment2worklog extends ListFragment {
 			FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
 			transaction.replace(this.getId(), newFragment);
-			transaction.addToBackStack(null);
+			//transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+			transaction.addToBackStack("progToSubProg");
 
 			transaction.commit();
 		}

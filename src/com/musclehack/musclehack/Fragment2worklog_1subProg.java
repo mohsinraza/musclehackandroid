@@ -63,7 +63,8 @@ public class Fragment2worklog_1subProg extends ListFragment {
 
 
 		transaction.replace(this.getId(), newFragment);
-		transaction.addToBackStack(null);
+		//transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+		transaction.addToBackStack("subProgToWeek");
 
 		transaction.commit();
 		Log.d("Fragment2worklog_1subProg", "public void onListItemClick(...) end");

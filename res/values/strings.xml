@@ -30,5 +30,7 @@
 	<string name="settingsRecipesDesc">Enable or disable recipe notifications</string>
 	<string name="settingsSuccesses">Successes</string>
 	<string name="settingsSuccessesDesc">Enable or disable success notifications</string>
-
+	<string name="areYouSure">Are you sure?</string>
+	<string name="yes">Yes</string>
+	<string name="no">No</string>
 </resources>

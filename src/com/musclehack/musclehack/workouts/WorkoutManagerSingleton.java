@@ -2,11 +2,12 @@ package com.musclehack.musclehack.workouts;
 
 import java.util.List;
 
-import com.musclehack.musclehack.R;
-
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
+
+import com.musclehack.musclehack.R;
 
 
 
@@ -17,6 +18,7 @@ public class WorkoutManagerSingleton{
 
 	protected static WorkoutManagerSingleton instance = new WorkoutManagerSingleton();
 	protected static Context context = null;
+	protected static Activity mainActivity = null;
 	//public HashMap<String, SubProgram> programs;
 	protected ProgramDbHelper dbHelper;
 	protected String selectedProgramName;
@@ -24,15 +26,43 @@ public class WorkoutManagerSingleton{
 	protected String selectedWeek;
 	protected String selectedDay;
 	protected int levelChoice;
+	protected boolean databaseDeleted;
 	
 	public static void setContext(Context context){
 		WorkoutManagerSingleton.context = context;
 		WorkoutManagerSingleton.instance.dbHelper = new ProgramDbHelper(WorkoutManagerSingleton.context);
+		WorkoutManagerSingleton.instance.databaseDeleted = false;
+	}
+	
+	public static void setMainActivity(Activity activity){
+		WorkoutManagerSingleton.mainActivity = activity;
+	}
+	
+	public Activity getMainActivity(){
+		return WorkoutManagerSingleton.mainActivity;
 	}
 	
 	public static void closeDatabase(){
 		if(WorkoutManagerSingleton.instance.dbHelper != null){
 			WorkoutManagerSingleton.instance.dbHelper.close();
+		}
+	}
+	
+	public Context getContext(){
+		return WorkoutManagerSingleton.context;
+	}
+	
+	public static void clearDatabase(){
+		if(WorkoutManagerSingleton.context != null){
+			WorkoutManagerSingleton.closeDatabase();
+			WorkoutManagerSingleton.context.deleteDatabase(ProgramDbHelper.DATABASE_NAME);
+			String prefName = getPrefName();
+			SharedPreferences settings = WorkoutManagerSingleton.context.getSharedPreferences(prefName, 0);
+			SharedPreferences.Editor settingsEditor = settings.edit();
+			settingsEditor.putString(LAST_SUB_PROGRAM_SHORTCUT_NAME, "");
+			settingsEditor.commit();
+			WorkoutManagerSingleton.instance.databaseDeleted = true;
+			WorkoutManagerSingleton.instance.dbHelper = new ProgramDbHelper(WorkoutManagerSingleton.context);
 		}
 	}
 	
@@ -44,6 +74,16 @@ public class WorkoutManagerSingleton{
 	private WorkoutManagerSingleton(){
 		this.levelChoice = 0;
 		this.dbHelper = null;
+		this.databaseDeleted = false;
+		this.setLevelChoice(0);
+	}
+	
+	public boolean isDatabaseDeleted(){
+		return this.databaseDeleted;
+	}
+	
+	public void setDatabaseNotDeleted(){
+		this.databaseDeleted = false;
 	}
 	
 	public void setLevelChoice(int levelChoice){

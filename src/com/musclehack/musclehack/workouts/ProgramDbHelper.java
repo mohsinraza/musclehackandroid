@@ -41,17 +41,17 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 	
 	public void onCreate(SQLiteDatabase db) {
 		Log.d("ProgramDbHelper","public void onCreate(SQLiteDatabase db) called");
-		ProgressDialog progressDialog = ProgressDialog.show(this.context,
-				"",
-				this.context.getString(R.string.creatingWorkout),
-				true);
+		//ProgressDialog progressDialog = ProgressDialog.show(this.context,
+				//"",
+				//this.context.getString(R.string.creatingWorkout),
+				//true);
 		db.execSQL(ContractProgram.CREATE_TABLE);
 		db.execSQL(ContractSubProgram.CREATE_TABLE);
 		db.execSQL(ContractWorkoutWeek.CREATE_TABLE);
 		db.execSQL(ContractWorkoutDay.CREATE_TABLE);
 		db.execSQL(ContractExercise.CREATE_TABLE);
 		this.loadDefaultWorkout(db);
-		progressDialog.dismiss();
+		//progressDialog.dismiss();
 		Log.d("ProgramDbHelper","public void onCreate(SQLiteDatabase db) end");
 	}
 	

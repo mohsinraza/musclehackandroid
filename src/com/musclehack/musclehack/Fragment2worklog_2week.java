@@ -60,7 +60,8 @@ public class Fragment2worklog_2week extends ListFragment {
 		FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
 		transaction.replace(this.getId(), newFragment);
-		transaction.addToBackStack(null);
+		//transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+		transaction.addToBackStack("weekToDay");
 
 		transaction.commit();
 		Log.d("Fragment2worklog_2week", "public void onListItemClick(...) end");

@@ -1,5 +1,6 @@
 package com.musclehack.musclehack;
 
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -44,6 +45,7 @@ public class MainActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		Context context = this.getApplicationContext();
 		WorkoutManagerSingleton.setContext(context);
+		WorkoutManagerSingleton.setMainActivity(this);
 		this.setContentView(R.layout.activity_main);
 		this.fragment1rss = new FragmentListFeed();
 		this.fragment1rss.setUrlFeed("http://feeds.feedburner.com/MuscleHack");
@@ -131,12 +133,24 @@ public class MainActivity extends FragmentActivity {
             startActivity(i);
             //startActivityForResult(i, RESULT_SETTINGS);
             break;
- 
         }
  
         return true;
     }
 
+	@Override
+	public void onOptionsMenuClosed(Menu menu) {
+		super.onOptionsMenuClosed(menu);
+		/*
+		WorkoutManagerSingleton workoutManager = WorkoutManagerSingleton.getInstance();
+		if(workoutManager.isDatabaseDeleted()){
+			workoutManager.setDatabaseNotDeleted();
+		    startActivity(new Intent(this, MainActivity.class));
+		    this.finish();
+		}
+	    //*/
+		
+	}
  
 	/*
 	 * Initialize the tabs and set views and identifiers for the tabs
@@ -206,7 +220,6 @@ public class MainActivity extends FragmentActivity {
 		if (savedInstanceState == null) {
 			Log.d("MainActivity","savedInstanceState == null");
 			this.mTabHost.setCurrentTab(-3);
-			WorkoutManagerSingleton.getInstance().setLevelChoice(0);
 		}else{
 			Log.d("MainActivity","savedInstanceState != null");
 			int tabPosition = savedInstanceState.getInt("TAB_POSITION");

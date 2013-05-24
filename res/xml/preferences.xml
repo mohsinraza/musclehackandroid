@@ -24,7 +24,7 @@
 			android:summary="@string/settingsRecipesDesc"
 			>
 		</CheckBoxPreference>
-		
+
 		<CheckBoxPreference
 			android:key="notifSuccesses"
 			android:defaultValue="true"
