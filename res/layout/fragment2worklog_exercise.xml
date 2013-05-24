@@ -93,6 +93,7 @@
 					android:layout_height="wrap_content"
 					android:inputType="numberDecimal"
 					android:layout_weight="0.21"
+					android:selectAllOnFocus="true"
 				/>
 	
 				<TextView
@@ -111,6 +112,7 @@
 					android:layout_height="wrap_content"
 					android:inputType="numberSigned"
 					android:layout_weight="0.17"
+					android:selectAllOnFocus="true"
 				/>
 	
 				<Button
@@ -129,6 +131,7 @@
 					android:layout_height="wrap_content"
 					android:inputType="numberSigned"
 					android:layout_weight="0.17"
+					android:selectAllOnFocus="true"
 				 />
 		</LinearLayout>
 		<LinearLayout

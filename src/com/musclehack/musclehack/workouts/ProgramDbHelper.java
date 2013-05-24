@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -41,9 +41,10 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 	
 	public void onCreate(SQLiteDatabase db) {
 		Log.d("ProgramDbHelper","public void onCreate(SQLiteDatabase db) called");
-		//ProgressDialog progressDialog = ProgressDialog.show(this.context,
+		//Activity mainActivity = WorkoutManagerSingleton.getInstance().getMainActivity();
+		//ProgressDialog progressDialog = ProgressDialog.show(mainActivity,
 				//"",
-				//this.context.getString(R.string.creatingWorkout),
+				//mainActivity.getString(R.string.creatingWorkout),
 				//true);
 		db.execSQL(ContractProgram.CREATE_TABLE);
 		db.execSQL(ContractSubProgram.CREATE_TABLE);

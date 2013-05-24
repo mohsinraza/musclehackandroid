@@ -60,9 +60,6 @@ public class Fragment2worklog_3day extends ListFragment {
 
 		FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
-
-
-
 		transaction.replace(this.getId(), newFragment);
 		//transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 		transaction.addToBackStack("dayToExercise");
