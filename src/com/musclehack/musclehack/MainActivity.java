@@ -39,6 +39,15 @@ public class MainActivity extends FragmentActivity {
 	Fragment4archives fragment5archives;
 	Fragment6book fragment6book;
 	
+	public MainActivity(){
+		this.mTabHost = null;
+		this.fragment1rss = null;
+		this.fragment2worklog = null;
+		this.fragment3testimonials = null;
+		this.fragment4recipe = null;
+		this.fragment5archives = null;
+		this.fragment6book = null;
+	}
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		Log.d("MainActivity","protected void onCreate(Bundle savedInstanceState) called");
@@ -50,10 +59,35 @@ public class MainActivity extends FragmentActivity {
 		this.fragment1rss = new FragmentListFeed();
 		this.fragment1rss.setUrlFeed("http://feeds.feedburner.com/MuscleHack");
 		this.fragment2worklog = null;
+		if(savedInstanceState != null){
+			int tabPosition = savedInstanceState.getInt("TAB_POSITION");
+			if(tabPosition == 1){
+				FragmentManager manager = this.getSupportFragmentManager();
+				for(int i = 0; i < manager.getBackStackEntryCount(); ++i) {    
+					manager.popBackStack();
+				}
+			}
+		}
+		this.fragment2worklog = new Fragment2worklog();
+		/*
 		int levelChoice = WorkoutManagerSingleton.getInstance().getLevelChoice();
 		if(levelChoice == 0){
 			this.fragment2worklog = new Fragment2worklog();
-		}else if(levelChoice == 1){
+		}else{
+			if(levelChoice > 0){
+				
+			}
+			if(levelChoice > 1){
+				
+			}
+			if(levelChoice > 2){
+				
+			}
+			if(levelChoice > 3){
+				
+			}
+
+
 			this.fragment2worklog = new Fragment2worklog_1subProg();
 		}else if(levelChoice == 2){
 			this.fragment2worklog = new Fragment2worklog_2week();
@@ -62,6 +96,8 @@ public class MainActivity extends FragmentActivity {
 		}else if(levelChoice == 4){
 			this.fragment2worklog = new Fragment2worklog_4exercices();
 		}
+		//*/
+
 		
 		this.fragment3testimonials = new FragmentListFeed();
 		this.fragment3testimonials.setUrlFeed("http://www.musclehack.com/category/testimonials-2/feed");
@@ -93,19 +129,16 @@ public class MainActivity extends FragmentActivity {
 	@Override
 	public void onBackPressed() {
 		Log.d("MainActivity","public void onBackPressed called");
-		super.onBackPressed();
 		/*
 		int levelChoice = WorkoutManagerSingleton.getInstance().getLevelChoice();
 		if(levelChoice > 0){
 			WorkoutManagerSingleton.getInstance().setLevelChoice(0);
 		}
 		//*/
-		/*
-		int currentTab = this.mTabHost.getCurrentTab();
-		if(currentTab == 1){
-			this.fragment2worklog.onDestroy();
-		}
+		//*
+
 		//*/
+		super.onBackPressed();
 		Log.d("MainActivity","public void onBackPressed end");
 	}
 	
@@ -238,22 +271,25 @@ public class MainActivity extends FragmentActivity {
 			if(tabId.equals(TAB_A)){
 				pushFragments(getString(R.string.rss), fragment1rss);
 			}else if(tabId.equals(TAB_B)){
-				/*
-				ListFragment newFragment = null;
-				int levelChoice = WorkoutManagerSingleton.getInstance().getLevelChoice();
-				if(levelChoice == 0){
-					newFragment = fragment2worklog;
-				}else if(levelChoice == 1){
-					newFragment = new Fragment2worklog_1subProg();
-				}else if(levelChoice == 2){
-					newFragment = new Fragment2worklog_2week();
-				}else if(levelChoice == 3){
-					newFragment = new Fragment2worklog_3day();
-				}else if(levelChoice == 4){
-					newFragment = new Fragment2worklog_4exercices();
-				}
-				//*/
 				pushFragments(getString(R.string.worklog), fragment2worklog);
+				int levelChoice = WorkoutManagerSingleton.getInstance().getLevelChoice();
+				ListFragment nextFragment = null;
+				if(levelChoice > 0){
+					nextFragment = new Fragment2worklog_1subProg();
+					pushFragmentsRegisterInStack(nextFragment);
+				}
+				if(levelChoice > 1){
+					nextFragment = new Fragment2worklog_2week();
+					pushFragmentsRegisterInStack(nextFragment);
+				}
+				if(levelChoice > 2){
+					nextFragment = new Fragment2worklog_3day();
+					pushFragmentsRegisterInStack(nextFragment);
+				}
+				if(levelChoice > 3){
+					nextFragment = new Fragment2worklog_4exercices();
+					pushFragmentsRegisterInStack(nextFragment);
+				}
 			}else if(tabId.equals(TAB_C)){
 				pushFragments(getString(R.string.testimonials), fragment3testimonials);
 			}else if(tabId.equals(TAB_D)){
@@ -274,6 +310,14 @@ public class MainActivity extends FragmentActivity {
 		FragmentManager manager = this.getSupportFragmentManager();
 		FragmentTransaction ft = manager.beginTransaction();
 		ft.replace(android.R.id.tabcontent, fragment);
+		ft.commit();
+	}
+	
+	public void pushFragmentsRegisterInStack(Fragment fragment){
+		FragmentManager manager = this.getSupportFragmentManager();
+		FragmentTransaction ft = manager.beginTransaction();
+		ft.replace(android.R.id.tabcontent, fragment);
+		ft.addToBackStack(null);
 		ft.commit();
 	}
 	

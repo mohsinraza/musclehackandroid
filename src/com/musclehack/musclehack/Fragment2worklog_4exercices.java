@@ -161,22 +161,7 @@ public class Fragment2worklog_4exercices extends ListFragment {
 	public void onListItemClick(ListView l, View v, int position, long id){
 		Log.d("Fragment2worklog_4exercices", "public void onListItemClick(...) called");
 		super.onListItemClick(l, v, position, id);
-		/*
-		ListFragment newFragment = new Fragment2worklog_2subProg();
-		TextView textView = (TextView) v.findViewById(R.id.textWorklog); 
-		String clickedText = textView.getText().toString();
-		WorkoutManagerSingleton.getInstance().selectDay(clickedText);
-
-		FragmentTransaction transaction = getFragmentManager().beginTransaction();
-
-
-
-
-		transaction.replace(this.getId(), newFragment);
-		transaction.addToBackStack(null);
-
-		transaction.commit();
-		//*/
 		Log.d("Fragment2worklog_4exercices", "public void onListItemClick(...) end");
 	}
+
 }
