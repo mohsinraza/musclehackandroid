@@ -1,6 +1,7 @@
 package com.musclehack.musclehack;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -10,6 +11,7 @@ import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TabHost;
@@ -18,7 +20,7 @@ import android.widget.TextView;
 import com.musclehack.musclehack.workouts.WorkoutManagerSingleton;
 
 public class MainActivity extends FragmentActivity {
-
+	private static final int RESULT_SETTINGS = 1;
 	/* Tab identifiers */
 	static String TAB_A = "Rss Tab";
 	static String TAB_B = "Workout log Tab";
@@ -65,15 +67,7 @@ public class MainActivity extends FragmentActivity {
 		this.fragment4recipe.setUrlFeed("http://www.musclehack.com/category/recipes/feed");
 		this.fragment5archives = new Fragment4archives();
 		this.fragment6book = new Fragment6book();
-		/*
-		this.fragment1rss.setRetainInstance(true);
-		this.fragment2worklog.setRetainInstance(true);
-		this.fragment3testimonials.setRetainInstance(true);
-		this.fragment4recipe.setRetainInstance(true);
-		this.fragment5archives.setRetainInstance(true);
-		this.fragment6book.setRetainInstance(true);
-		//*/
-		
+
 		this.mTabHost = (TabHost)findViewById(android.R.id.tabhost);
 		this.mTabHost.setOnTabChangedListener(this.listener);
 		this.mTabHost.setup();
@@ -97,13 +91,19 @@ public class MainActivity extends FragmentActivity {
 	@Override
 	public void onBackPressed() {
 		Log.d("MainActivity","public void onBackPressed called");
+		super.onBackPressed();
 		/*
 		int levelChoice = WorkoutManagerSingleton.getInstance().getLevelChoice();
 		if(levelChoice > 0){
 			WorkoutManagerSingleton.getInstance().setLevelChoice(0);
 		}
 		//*/
-		super.onBackPressed();
+		/*
+		int currentTab = this.mTabHost.getCurrentTab();
+		if(currentTab == 1){
+			this.fragment2worklog.onDestroy();
+		}
+		//*/
 		Log.d("MainActivity","public void onBackPressed end");
 	}
 	
@@ -122,6 +122,22 @@ public class MainActivity extends FragmentActivity {
 		return true;
 	}
 	
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+ 
+        case R.id.action_settings:
+            Intent i = new Intent(this, GeneralPreference.class);
+            startActivity(i);
+            //startActivityForResult(i, RESULT_SETTINGS);
+            break;
+ 
+        }
+ 
+        return true;
+    }
+
+ 
 	/*
 	 * Initialize the tabs and set views and identifiers for the tabs
 	 */

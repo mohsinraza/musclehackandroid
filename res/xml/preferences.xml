@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+ 
+	<PreferenceCategory android:title="@string/settingsCatData" >
+		<Preference android:title="@string/settingsClearWorkout"
+					android:key="buttonClearData"
+					android:summary="@string/settingsClearWorkoutDesc"
+					/>
+	</PreferenceCategory>
+	 
+	<PreferenceCategory android:title="@string/settingsCatNotifications" >
+		<CheckBoxPreference
+			android:key="notifArticles"
+			android:defaultValue="true"
+			android:title="@string/settingsArticles"
+			android:summary="@string/settingsArticlesDesc"
+			>
+		</CheckBoxPreference>
+ 
+		<CheckBoxPreference
+			android:key="notifRecipes"
+			android:defaultValue="true"
+			android:title="@string/settingsRecipes"
+			android:summary="@string/settingsRecipesDesc"
+			>
+		</CheckBoxPreference>
+		
+		<CheckBoxPreference
+			android:key="notifSuccesses"
+			android:defaultValue="true"
+			android:title="@string/settingsSuccesses"
+			android:summary="@string/settingsSuccessesDesc"
+			>
+		</CheckBoxPreference>
+	</PreferenceCategory>
+ 
+</PreferenceScreen>

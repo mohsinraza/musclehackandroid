@@ -17,8 +17,8 @@ public final class R {
          screen margins) for sw720dp devices (e.g. 10" tablets) in landscape here.
     
          */
-        public static final int activity_horizontal_margin=0x7f050000;
-        public static final int activity_vertical_margin=0x7f050001;
+        public static final int activity_horizontal_margin=0x7f060000;
+        public static final int activity_vertical_margin=0x7f060001;
     }
     public static final class drawable {
         public static final int ic_launcher=0x7f020000;
@@ -33,32 +33,32 @@ public final class R {
         public static final int tab_style=0x7f020009;
     }
     public static final class id {
-        public static final int action_settings=0x7f090019;
-        public static final int buttonRest=0x7f09000f;
-        public static final int country_fragment=0x7f090000;
-        public static final int exerciseId=0x7f09000a;
-        public static final int exerciseName=0x7f090009;
-        public static final int exerciseNumber=0x7f090006;
-        public static final int firstLayout=0x7f090008;
-        public static final int image_rss_article2=0x7f090002;
-        public static final int mainLayout=0x7f090004;
-        public static final int nreps=0x7f09000e;
-        public static final int previousNreps=0x7f090013;
-        public static final int previousRest=0x7f090011;
-        public static final int previousWeight=0x7f090012;
-        public static final int range=0x7f09000b;
-        public static final int recipes_fragment=0x7f090014;
-        public static final int rest=0x7f090010;
-        public static final int secondLayout=0x7f09000c;
-        public static final int tab_icon=0x7f090017;
-        public static final int tab_text=0x7f090018;
-        public static final int tabsLayout=0x7f090016;
-        public static final int text=0x7f090003;
-        public static final int textWorklog=0x7f090005;
-        public static final int title=0x7f090001;
-        public static final int topLayout=0x7f090007;
-        public static final int webViewArchives=0x7f090015;
-        public static final int weight=0x7f09000d;
+        public static final int action_settings=0x7f0a0019;
+        public static final int buttonRest=0x7f0a000f;
+        public static final int country_fragment=0x7f0a0000;
+        public static final int exerciseId=0x7f0a000a;
+        public static final int exerciseName=0x7f0a0009;
+        public static final int exerciseNumber=0x7f0a0006;
+        public static final int firstLayout=0x7f0a0008;
+        public static final int image_rss_article2=0x7f0a0002;
+        public static final int mainLayout=0x7f0a0004;
+        public static final int nreps=0x7f0a000e;
+        public static final int previousNreps=0x7f0a0013;
+        public static final int previousRest=0x7f0a0011;
+        public static final int previousWeight=0x7f0a0012;
+        public static final int range=0x7f0a000b;
+        public static final int recipes_fragment=0x7f0a0014;
+        public static final int rest=0x7f0a0010;
+        public static final int secondLayout=0x7f0a000c;
+        public static final int tab_icon=0x7f0a0017;
+        public static final int tab_text=0x7f0a0018;
+        public static final int tabsLayout=0x7f0a0016;
+        public static final int text=0x7f0a0003;
+        public static final int textWorklog=0x7f0a0005;
+        public static final int title=0x7f0a0001;
+        public static final int topLayout=0x7f0a0007;
+        public static final int webViewArchives=0x7f0a0015;
+        public static final int weight=0x7f0a000d;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
@@ -71,30 +71,41 @@ public final class R {
         public static final int tab_icon=0x7f030007;
     }
     public static final class menu {
-        public static final int main=0x7f080000;
+        public static final int main=0x7f090000;
     }
     public static final class raw {
-        public static final int power_up=0x7f040000;
+        public static final int power_up=0x7f050000;
     }
     public static final class string {
-        public static final int action_settings=0x7f060001;
-        public static final int app_name=0x7f060000;
-        public static final int archives=0x7f060006;
-        public static final int book=0x7f060008;
-        public static final int cart=0x7f060007;
-        public static final int creatingWorkout=0x7f060010;
-        public static final int currentSubWorkout=0x7f060011;
-        public static final int loading=0x7f06000b;
-        public static final int no_data=0x7f060009;
-        public static final int no_data_retrieved=0x7f06000a;
-        public static final int previous=0x7f06000f;
-        public static final int recipes=0x7f060005;
-        public static final int reps=0x7f06000d;
-        public static final int rest=0x7f06000e;
-        public static final int rss=0x7f060002;
-        public static final int testimonials=0x7f060004;
-        public static final int weight=0x7f06000c;
-        public static final int worklog=0x7f060003;
+        public static final int action_settings=0x7f070001;
+        public static final int app_name=0x7f070000;
+        public static final int archives=0x7f070006;
+        public static final int book=0x7f070008;
+        public static final int cart=0x7f070007;
+        public static final int creatingWorkout=0x7f070010;
+        public static final int currentSubWorkout=0x7f070011;
+        public static final int enableNotifications=0x7f070012;
+        public static final int loading=0x7f07000b;
+        public static final int no_data=0x7f070009;
+        public static final int no_data_retrieved=0x7f07000a;
+        public static final int previous=0x7f07000f;
+        public static final int recipes=0x7f070005;
+        public static final int reps=0x7f07000d;
+        public static final int rest=0x7f07000e;
+        public static final int rss=0x7f070002;
+        public static final int settingsArticles=0x7f070017;
+        public static final int settingsArticlesDesc=0x7f070018;
+        public static final int settingsCatData=0x7f070013;
+        public static final int settingsCatNotifications=0x7f070016;
+        public static final int settingsClearWorkout=0x7f070014;
+        public static final int settingsClearWorkoutDesc=0x7f070015;
+        public static final int settingsRecipes=0x7f070019;
+        public static final int settingsRecipesDesc=0x7f07001a;
+        public static final int settingsSuccesses=0x7f07001b;
+        public static final int settingsSuccessesDesc=0x7f07001c;
+        public static final int testimonials=0x7f070004;
+        public static final int weight=0x7f07000c;
+        public static final int worklog=0x7f070003;
     }
     public static final class style {
         /** 
@@ -118,10 +129,13 @@ public final class R {
     
  API 14 theme customizations can go here. 
          */
-        public static final int AppBaseTheme=0x7f070000;
+        public static final int AppBaseTheme=0x7f080000;
         /**  Application theme. 
  All customizations that are NOT specific to a particular API-level can go here. 
          */
-        public static final int AppTheme=0x7f070001;
+        public static final int AppTheme=0x7f080001;
+    }
+    public static final class xml {
+        public static final int preferences=0x7f040000;
     }
 }

@@ -23,7 +23,6 @@ public class Fragment2worklog extends ListFragment {
 	public static String TAG_TEXT_WORKLOG = "textWorklog";
 	protected ArrayList<HashMap<String, String>> texts;
 	protected ListAdapter adapter;
-	protected String transactionDone;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -32,7 +31,6 @@ public class Fragment2worklog extends ListFragment {
 		//*
 		//Context context = this.getActivity().getApplicationContext();
 		//WorkoutManagerSingleton.setContext(context);
-		this.transactionDone = "";
 
 		this.texts = new ArrayList<HashMap<String, String>>();
 		List<String> programNames = WorkoutManagerSingleton.getInstance().getAvailableProgramNames();
@@ -109,7 +107,6 @@ public class Fragment2worklog extends ListFragment {
 	public void doTransaction(String rowText){
 		Log.d("Fragment2worklog", "public void doTransaction(String rowText) called");
 		if(!rowText.equals("")){
-			this.transactionDone = rowText;
 			WorkoutManagerSingleton workoutManager = WorkoutManagerSingleton.getInstance();
 			String lastSubProgramShortcutName = workoutManager.getLastSubProgramShortcutName();
 			ListFragment newFragment = null;
@@ -129,11 +126,5 @@ public class Fragment2worklog extends ListFragment {
 			transaction.commit();
 		}
 		Log.d("Fragment2worklog", "public void doTransaction(String rowText) end");
-	}
-	
-	@Override
-	public void onSaveInstanceState(Bundle outState) {
-		outState.putString("transactionDone", this.transactionDone);
-		super.onSaveInstanceState(outState);
 	}
 }

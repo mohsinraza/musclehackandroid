@@ -30,7 +30,7 @@ import com.musclehack.musclehack.rss.StackOverflowXmlParser;
 import com.musclehack.musclehack.rss.StackOverflowXmlParser.RssItem;
 
 public class FragmentListFeed extends ListFragment {
-	static protected ProgressDialog progressDialog = null;
+	//static protected ProgressDialog progressDialog = null;
 	public static String TAG_IMAGE_URL = "image_url";
 	public static String TAG_TITLE = "title";
 	public static String TAG_TEXT = "text";
@@ -39,18 +39,18 @@ public class FragmentListFeed extends ListFragment {
 	protected ListAdapter adapter;
 	protected String urlFeed;
 
-	
+
 	public void setUrlFeed(String urlFeed){
 		this.urlFeed = urlFeed;
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+			Bundle savedInstanceState){
 		Log.d("FragmentListFeed", "protected void onCreateView(...) called");
 		if(this.urlFeed != null){ //TODO find out why this is called two times and can be null
-			FragmentListFeed.progressDialog = ProgressDialog.show(this.getActivity(), "",
-					getString(R.string.loading), true);
+			//FragmentListFeed.progressDialog = ProgressDialog.show(this.getActivity(), "",
+					//getString(R.string.loading), true);
 			new DownloadXmlTask().execute(this.urlFeed);
 		}
 		View view = super.onCreateView(inflater, container, savedInstanceState);
@@ -66,9 +66,9 @@ public class FragmentListFeed extends ListFragment {
 
 	public void setEntries(List<RssItem> entries){
 		Log.d("FragmentListFeed", "public void setEntries(List<RssItem> entries) called");
-		if(FragmentListFeed.progressDialog != null){
-			FragmentListFeed.progressDialog.dismiss();
-		}
+		//if(FragmentListFeed.progressDialog != null){
+			//FragmentListFeed.progressDialog.dismiss();
+		//}
 		this.entries = entries;
 		rssFeedList = new ArrayList<HashMap<String, String>>();
 		if(this.entries == null || this.entries.size() <= 0){
