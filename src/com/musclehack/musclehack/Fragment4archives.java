@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URLEncoder;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -43,7 +44,6 @@ public class Fragment4archives extends Fragment {
 			//String archivesFeedUrl = "http://feeds.feedburner.com/MuscleHack?max-results=10";
 			//new DownloadXmlTask().execute(archivesFeedUrl);
 			new RetrieveWebContentTask().execute("http://www.musclehack.com/archives/");
-			
 		return view;
 	}
 	
@@ -51,7 +51,8 @@ public class Fragment4archives extends Fragment {
 		View view = this.getView();
 		WebView webView = (WebView) view.findViewById(R.id.webViewArchives);
 		String contentWithoutHeader = getContentWithoutHeader(content);
-		webView.loadData(contentWithoutHeader, "text/html", null);
+		//webView.loadData(contentWithoutHeader, "text/html; charset=UTF-8", null);
+		webView.loadData(URLEncoder.encode(contentWithoutHeader).replaceAll("\\+"," "), "text/html", "utf-8" );
 	}
 
 	protected String getContentWithoutHeader(String content){

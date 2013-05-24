@@ -69,35 +69,6 @@ public class MainActivity extends FragmentActivity {
 			}
 		}
 		this.fragment2worklog = new Fragment2worklog();
-		/*
-		int levelChoice = WorkoutManagerSingleton.getInstance().getLevelChoice();
-		if(levelChoice == 0){
-			this.fragment2worklog = new Fragment2worklog();
-		}else{
-			if(levelChoice > 0){
-				
-			}
-			if(levelChoice > 1){
-				
-			}
-			if(levelChoice > 2){
-				
-			}
-			if(levelChoice > 3){
-				
-			}
-
-
-			this.fragment2worklog = new Fragment2worklog_1subProg();
-		}else if(levelChoice == 2){
-			this.fragment2worklog = new Fragment2worklog_2week();
-		}else if(levelChoice == 3){
-			this.fragment2worklog = new Fragment2worklog_3day();
-		}else if(levelChoice == 4){
-			this.fragment2worklog = new Fragment2worklog_4exercices();
-		}
-		//*/
-
 		
 		this.fragment3testimonials = new FragmentListFeed();
 		this.fragment3testimonials.setUrlFeed("http://www.musclehack.com/category/testimonials-2/feed");
