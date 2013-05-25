@@ -80,14 +80,14 @@ public final class R {
         public static final int action_settings=0x7f070001;
         public static final int app_name=0x7f070000;
         public static final int archives=0x7f070006;
-        public static final int areYouSure=0x7f07001d;
+        public static final int areYouSure=0x7f07001f;
         public static final int book=0x7f070008;
         public static final int cart=0x7f070007;
         public static final int creatingWorkout=0x7f070010;
         public static final int currentSubWorkout=0x7f070011;
         public static final int enableNotifications=0x7f070012;
         public static final int loading=0x7f07000b;
-        public static final int no=0x7f07001f;
+        public static final int no=0x7f070021;
         public static final int no_data=0x7f070009;
         public static final int no_data_retrieved=0x7f07000a;
         public static final int previous=0x7f07000f;
@@ -95,20 +95,22 @@ public final class R {
         public static final int reps=0x7f07000d;
         public static final int rest=0x7f07000e;
         public static final int rss=0x7f070002;
-        public static final int settingsArticles=0x7f070017;
-        public static final int settingsArticlesDesc=0x7f070018;
-        public static final int settingsCatData=0x7f070013;
-        public static final int settingsCatNotifications=0x7f070016;
-        public static final int settingsClearWorkout=0x7f070014;
-        public static final int settingsClearWorkoutDesc=0x7f070015;
-        public static final int settingsRecipes=0x7f070019;
-        public static final int settingsRecipesDesc=0x7f07001a;
-        public static final int settingsSuccesses=0x7f07001b;
-        public static final int settingsSuccessesDesc=0x7f07001c;
+        public static final int settingsArticles=0x7f070019;
+        public static final int settingsArticlesDesc=0x7f07001a;
+        public static final int settingsCatData=0x7f070015;
+        public static final int settingsCatNotifications=0x7f070018;
+        public static final int settingsClearWorkout=0x7f070016;
+        public static final int settingsClearWorkoutDesc=0x7f070017;
+        public static final int settingsNotificationInterval=0x7f070013;
+        public static final int settingsNotificationIntervalDesc=0x7f070014;
+        public static final int settingsRecipes=0x7f07001b;
+        public static final int settingsRecipesDesc=0x7f07001c;
+        public static final int settingsSuccesses=0x7f07001d;
+        public static final int settingsSuccessesDesc=0x7f07001e;
         public static final int testimonials=0x7f070004;
         public static final int weight=0x7f07000c;
         public static final int worklog=0x7f070003;
-        public static final int yes=0x7f07001e;
+        public static final int yes=0x7f070020;
     }
     public static final class style {
         /** 

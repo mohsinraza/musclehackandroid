@@ -20,6 +20,8 @@
 	<string name="creatingWorkout">Creating workout. Please wait…</string>
 	<string name="currentSubWorkout">Current: </string>
 	<string name="enableNotifications">Enable notifications </string>
+	<string name="settingsNotificationInterval">Interval</string>
+	<string name="settingsNotificationIntervalDesc">Interval in minutes rss data will be pull</string>
 	<string name="settingsCatData">Data</string>
 	<string name="settingsClearWorkout">Clear workout data</string>
 	<string name="settingsClearWorkoutDesc">Clear all of the workout data</string>

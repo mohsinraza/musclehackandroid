@@ -6,6 +6,8 @@
 	
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+	<uses-permission android:name="android.permission.WAKE_LOCK" />
 	
 	<uses-sdk
 		android:minSdkVersion="8"
@@ -33,6 +35,12 @@
 			
 			>
 		</activity>
+		<service android:name=".RssNotificationsService"/>
+		<receiver android:name=".RssReceiver">
+			<intent-filter>
+				<action android:name="android.intent.action.BOOT_COMPLETED" />
+			</intent-filter>
+		</receiver>
 	</application>
 
 </manifest>

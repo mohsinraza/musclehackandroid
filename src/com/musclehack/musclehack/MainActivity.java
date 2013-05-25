@@ -1,9 +1,14 @@
 package com.musclehack.musclehack;
 
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.SystemClock;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -63,7 +68,7 @@ public class MainActivity extends FragmentActivity {
 			int tabPosition = savedInstanceState.getInt("TAB_POSITION");
 			if(tabPosition == 1){
 				FragmentManager manager = this.getSupportFragmentManager();
-				for(int i = 0; i < manager.getBackStackEntryCount(); ++i) {    
+				for(int i = 0; i < manager.getBackStackEntryCount(); ++i) {	
 					manager.popBackStack();
 				}
 			}
@@ -85,30 +90,38 @@ public class MainActivity extends FragmentActivity {
 		this.initializeTab(savedInstanceState);
 		Log.d("MainActivity","protected void onCreate(Bundle savedInstanceState) end");
 	}
-
+	
+	public void onResume() {
+		Log.d("MainActivity","public void onResume() called");
+		
+		super.onResume();
+		//*
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		String minutesString = prefs.getString("notificationIntervalInMinutes", "20");
+		int minutes = Integer.parseInt(minutesString);
+		AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
+		Intent i = new Intent(this, RssNotificationsService.class);
+		PendingIntent pi = PendingIntent.getService(this, 0, i, 0);
+		am.cancel(pi);
+		// by my own convention, minutes <= 0 means notifications are disabled
+		if (minutes > 0) {
+			am.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+				SystemClock.elapsedRealtime() + minutes*10*1000,
+				minutes*10*1000, pi);
+		}
+		//*/
+		Log.d("MainActivity","public void onResume() end");
+	}
 	
 	@Override
 	public void onStart() {
 		super.onStart();
-		/*
-		int currentTab = this.mTabHost.getCurrentTab();
-		if(currentTab == 1){
-			this.fragment2worklog.onStart();
-		}
-		//*/
 	}
+	
 	@Override
 	public void onBackPressed() {
 		Log.d("MainActivity","public void onBackPressed called");
-		/*
-		int levelChoice = WorkoutManagerSingleton.getInstance().getLevelChoice();
-		if(levelChoice > 0){
-			WorkoutManagerSingleton.getInstance().setLevelChoice(0);
-		}
-		//*/
-		//*
 
-		//*/
 		super.onBackPressed();
 		Log.d("MainActivity","public void onBackPressed end");
 	}
@@ -128,19 +141,19 @@ public class MainActivity extends FragmentActivity {
 		return true;
 	}
 	
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
  
-        case R.id.action_settings:
-            Intent i = new Intent(this, GeneralPreference.class);
-            startActivity(i);
-            //startActivityForResult(i, RESULT_SETTINGS);
-            break;
-        }
+		case R.id.action_settings:
+			Intent i = new Intent(this, GeneralPreference.class);
+			startActivity(i);
+			//startActivityForResult(i, RESULT_SETTINGS);
+			break;
+		}
  
-        return true;
-    }
+		return true;
+	}
 
 	@Override
 	public void onOptionsMenuClosed(Menu menu) {
@@ -149,11 +162,10 @@ public class MainActivity extends FragmentActivity {
 		WorkoutManagerSingleton workoutManager = WorkoutManagerSingleton.getInstance();
 		if(workoutManager.isDatabaseDeleted()){
 			workoutManager.setDatabaseNotDeleted();
-		    startActivity(new Intent(this, MainActivity.class));
-		    this.finish();
+			startActivity(new Intent(this, MainActivity.class));
+			this.finish();
 		}
-	    //*/
-		
+		//*/
 	}
  
 	/*
