@@ -32,17 +32,20 @@ public class Fragment2worklog extends ListFragment {
 	public static String TAG_TEXT_WORKLOG = "textWorklog";
 	protected ArrayList<HashMap<String, String>> texts;
 	protected ListAdapter adapter;
-	static protected ProgressDialog progressDialog;
+	static protected ProgressDialog progressDialog = null;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		Log.d("Fragment2worklog", "public View onCreateView(...) called");
 		Activity mainActivity = this.getActivity();
-		Fragment2worklog.progressDialog = ProgressDialog.show(mainActivity,
-				"",
-				mainActivity.getString(R.string.creatingWorkout),
-				true);
+		boolean databaseExists = WorkoutManagerSingleton.databaseExists();
+		if(!databaseExists){
+			Fragment2worklog.progressDialog = ProgressDialog.show(mainActivity,
+					"",
+					mainActivity.getString(R.string.creatingWorkout),
+					true);
+		}
 		WorkoutManagerSingleton.getInstance().setLevelChoice(0);
 		new RetrieveProgramsTask().execute();
 		View view = super.onCreateView(inflater, container, savedInstanceState);
@@ -57,7 +60,6 @@ public class Fragment2worklog extends ListFragment {
 		if(programNames == null || programNames.size() <= 0){
 		}else{
 			this.texts = new ArrayList<HashMap<String, String>>();
-			
 			for(String programName:programNames){
 				HashMap<String, String> map = new HashMap<String, String>();
 				map.put(TAG_TEXT_WORKLOG, programName);
@@ -74,7 +76,10 @@ public class Fragment2worklog extends ListFragment {
 					new int[] { R.id.textWorklog});
 			setListAdapter(this.adapter);
 		}
-		Fragment2worklog.progressDialog.dismiss();
+		if(Fragment2worklog.progressDialog != null){
+			Fragment2worklog.progressDialog.dismiss();
+			Fragment2worklog.progressDialog = null;
+		}
 		Log.d("Fragment2worklog", "public void setEntries(List<RssItem> entries) end");
 	
 	}

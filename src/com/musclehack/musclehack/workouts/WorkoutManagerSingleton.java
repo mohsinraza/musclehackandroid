@@ -1,5 +1,6 @@
 package com.musclehack.musclehack.workouts;
 
+import java.io.File;
 import java.util.List;
 
 import android.app.Activity;
@@ -65,6 +66,12 @@ public class WorkoutManagerSingleton{
 			WorkoutManagerSingleton.instance.databaseDeleted = true;
 			WorkoutManagerSingleton.instance.dbHelper = new ProgramDbHelper(WorkoutManagerSingleton.context);
 		}
+	}
+	
+	public static boolean databaseExists(){
+		File dbFile = context.getDatabasePath(ProgramDbHelper.DATABASE_NAME);
+	    boolean exists = dbFile.exists();
+	    return exists;
 	}
 	
 	public static WorkoutManagerSingleton getInstance(){
