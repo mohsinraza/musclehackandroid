@@ -55,6 +55,7 @@ public class FragmentListFeed extends ListFragment {
 		}
 		View view = super.onCreateView(inflater, container, savedInstanceState);
 		Log.d("FragmentListFeed", "protected void onCreateView(...) end");
+
 		return view;
 	
 	}
@@ -66,47 +67,54 @@ public class FragmentListFeed extends ListFragment {
 
 	public void setEntries(List<RssItem> entries){
 		Log.d("FragmentListFeed", "public void setEntries(List<RssItem> entries) called");
+		Activity activity = this.getActivity();
+		if(activity != null){
+			ListView lv = this.getListView();
+			//lv.setFastScrollEnabled(true);
+			lv.setScrollingCacheEnabled(true);
+			this.entries = entries;
+			rssFeedList = new ArrayList<HashMap<String, String>>();
+			if(this.entries == null || this.entries.size() <= 0){
+				if(activity != null){
+					new AlertDialog.Builder(activity)
+					.setTitle("No data")
+					.setMessage("No data could be retrieve. Please check your internet connection.")
+					.setNeutralButton("Ok",
+					new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int which) {
+						}
+					}).show();
+				}
+			}else{
+
+				// adding each child node to HashMap key => value
+				for (RssItem entry : entries) {
+					HashMap<String, String> map = new HashMap<String, String>();
+					map.put(TAG_TITLE, entry.title);
+					map.put(TAG_TEXT, entry.getShortDescription());
+					map.put(TAG_IMAGE_URL, entry.getImageUrl());
+					rssFeedList.add(map);
+				}
+				RssNotificationsService.updateLastDate(this.getActivity(), entries, this.urlFeed);
+				//((SimpleHtmlAdapter)adapter).notifyDataSetChanged();
+			}
+
+			activity = this.getActivity();
+			if(activity != null){
+				ListAdapter adapter = new SimpleRssAdapter(activity,
+						rssFeedList,
+						R.layout.fragment1rss_row,
+						new String[] { TAG_TITLE, TAG_TEXT, TAG_IMAGE_URL },
+						new int[] { R.id.title, R.id.text, R.id.image_rss_article2});
+				setListAdapter(adapter);
+			}
+			Log.d("FragmentListFeed", "public void setEntries(List<RssItem> entries) end");
+		}
+		
 		//if(FragmentListFeed.progressDialog != null){
 			//FragmentListFeed.progressDialog.dismiss();
 		//}
-		this.entries = entries;
-		rssFeedList = new ArrayList<HashMap<String, String>>();
-		if(this.entries == null || this.entries.size() <= 0){
-			Activity activity = this.getActivity();
-			if(activity != null){
-				new AlertDialog.Builder(activity)
-				.setTitle("No data")
-				.setMessage("No data could be retrieve. Please check your internet connection.")
-				.setNeutralButton("Ok",
-				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int which) {
-					}
-				}).show();
-			}
-		}else{
-
-			// adding each child node to HashMap key => value
-			for (RssItem entry : entries) {
-				HashMap<String, String> map = new HashMap<String, String>();
-				map.put(TAG_TITLE, entry.title);
-				map.put(TAG_TEXT, entry.getShortDescription());
-				map.put(TAG_IMAGE_URL, entry.getImageUrl());
-				rssFeedList.add(map);
-			}
-			RssNotificationsService.updateLastDate(this.getActivity(), entries, this.urlFeed);
-			//((SimpleHtmlAdapter)adapter).notifyDataSetChanged();
-		}
-
-		Activity activity = this.getActivity();
-		if(activity != null){
-			ListAdapter adapter = new SimpleRssAdapter(activity,
-					rssFeedList,
-					R.layout.fragment1rss_row,
-					new String[] { TAG_TITLE, TAG_TEXT, TAG_IMAGE_URL },
-					new int[] { R.id.title, R.id.text, R.id.image_rss_article2});
-			setListAdapter(adapter);
-		}
-		Log.d("FragmentListFeed", "public void setEntries(List<RssItem> entries) end");
+		
 	}
 	
 	@Override

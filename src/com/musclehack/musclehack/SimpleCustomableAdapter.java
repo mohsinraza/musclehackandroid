@@ -28,6 +28,8 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import com.musclehack.musclehack.images.ImageLoader;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -38,6 +40,7 @@ import android.os.AsyncTask;
 import android.text.Html;
 import android.text.Html.ImageGetter;
 import android.text.Spanned;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,14 +69,18 @@ public class SimpleCustomableAdapter extends BaseAdapter implements Filterable {
 	protected SimpleFilter mFilter;
 	protected ArrayList<Map<String, ?>> mUnfilteredData;
 
-
+	public ImageLoader imageLoader; 
+	
 	public SimpleCustomableAdapter(Context context, List<? extends Map<String, ?>> data,
 			int resource, String[] from, int[] to) {
+		Log.d("SimpleCustomableAdapter", "public SimpleCustomableAdapter(...) called");
 		mData = data;
 		mResource = mDropDownResource = resource;
 		mFrom = from;
 		mTo = to;
+		this.imageLoader = new ImageLoader(context);
 		mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		Log.d("SimpleCustomableAdapter", "public SimpleCustomableAdapter(...) end");
 	}
 
 
@@ -94,11 +101,13 @@ public class SimpleCustomableAdapter extends BaseAdapter implements Filterable {
 
 
 	public View getView(int position, View convertView, ViewGroup parent) {
+		Log.d("SimpleCustomableAdapter", "public View getView(int position, View convertView, ViewGroup parent)...");
 		return createViewFromResource(position, convertView, parent, mResource);
 	}
 
 	private View createViewFromResource(int position, View convertView,
 			ViewGroup parent, int resource) {
+		Log.d("SimpleCustomableAdapter", "private View createViewFromResource(...) called");
 		View v;
 		if (convertView == null) {
 			v = mInflater.inflate(resource, parent, false);
@@ -116,7 +125,7 @@ public class SimpleCustomableAdapter extends BaseAdapter implements Filterable {
 			v = convertView;
 		}
 		bindView(position, v);
-
+		Log.d("SimpleCustomableAdapter", "private View createViewFromResource(...) end");
 		return v;
 	}
 
@@ -132,10 +141,12 @@ public class SimpleCustomableAdapter extends BaseAdapter implements Filterable {
 
 	@Override
 	public View getDropDownView(int position, View convertView, ViewGroup parent) {
+		Log.d("SimpleCustomableAdapter", "public View getDropDownView(...) ...return");
 		return createViewFromResource(position, convertView, parent, mDropDownResource);
 	}
 
 	protected void bindView(int position, View view) {
+		Log.d("SimpleCustomableAdapter", "protected void bindView(int position, View view) called");
 		final Map dataSet = mData.get(position);
 		if (dataSet == null) {
 			return;
@@ -189,6 +200,7 @@ public class SimpleCustomableAdapter extends BaseAdapter implements Filterable {
 				}
 			}
 		}
+		Log.d("SimpleCustomableAdapter", "protected void bindView(int position, View view) end");
 	}
 
 
@@ -208,17 +220,22 @@ public class SimpleCustomableAdapter extends BaseAdapter implements Filterable {
 
 
 	public void setViewImage(ImageView imageView, String value) {
+		Log.d("SimpleCustomableAdapter", "public void setViewImage(ImageView imageView, String value) called");
 		try {
 			imageView.setImageResource(Integer.parseInt(value));
 		} catch (NumberFormatException nfe) {
 			//v.setImageURI(Uri.parse(value));
 			//String imageUrl ="http://ioe.edu.np/exam/notices/8560Result Diploma I_I.jpg";
 			String imageUrl = value;
+			imageLoader.DisplayImage(value, imageView);
+			/*
 			SetImageAsyncTask setImageAsyncTask = new SetImageAsyncTask(imageView);
 			setImageAsyncTask.execute(imageUrl);
+			//*/
 		}
+		Log.d("SimpleCustomableAdapter", "public void setViewImage(ImageView imageView, String value) end");
 	}
-	
+
 	public class SetImageAsyncTask extends AsyncTask<String, Void, Bitmap>  {
 		ImageView imageView;
 
