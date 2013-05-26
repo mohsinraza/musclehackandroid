@@ -15,6 +15,7 @@ public class WorkoutManagerSingleton{
 	public static final String LAST_SUB_PROGRAM_SHORTCUT_NAME = "lastSubProgramShortcutName";
 	public static final String LAST_SUB_PROGRAM = "lastSubProgram";
 	public static final String LAST_PROGRAM = "lastProgram";
+	public static final String PREF_NAME = "MuscleHackPreferences";
 
 	protected static WorkoutManagerSingleton instance = new WorkoutManagerSingleton();
 	protected static Context context = null;
@@ -104,11 +105,11 @@ public class WorkoutManagerSingleton{
 		}
 		return programs;
 	}
-	
+
 	public static String getPrefName(){
-		return "MuscleHackPreferences";
-	}	
-	
+		return WorkoutManagerSingleton.PREF_NAME;
+	}
+
 	public String getLastSubProgramShortcutName(){
 		String prefName = getPrefName();
 		SharedPreferences settings = WorkoutManagerSingleton.context.getSharedPreferences(prefName, 0);
@@ -127,7 +128,7 @@ public class WorkoutManagerSingleton{
 		settingsEditor.putString(LAST_SUB_PROGRAM_SHORTCUT_NAME, lastSubPRogramShortcutName);
 		settingsEditor.commit();
 	}
-	
+
 	public String selectLastSubProgram(){
 		String prefName = getPrefName();
 		SharedPreferences settings = WorkoutManagerSingleton.context.getSharedPreferences(prefName, 0);

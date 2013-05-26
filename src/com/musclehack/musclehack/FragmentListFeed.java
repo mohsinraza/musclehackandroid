@@ -93,7 +93,7 @@ public class FragmentListFeed extends ListFragment {
 				map.put(TAG_IMAGE_URL, entry.getImageUrl());
 				rssFeedList.add(map);
 			}
-
+			RssNotificationsService.updateLastDate(this.getActivity(), entries, this.urlFeed);
 			//((SimpleHtmlAdapter)adapter).notifyDataSetChanged();
 		}
 

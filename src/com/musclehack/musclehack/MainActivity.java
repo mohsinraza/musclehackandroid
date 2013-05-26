@@ -34,6 +34,11 @@ public class MainActivity extends FragmentActivity {
 	static String TAB_D = "Recipes Tab";
 	static String TAB_E = "Archives Tab";
 	static String TAB_F = "Book Tab";
+	
+
+	static public final String urlArticles = "http://feeds.feedburner.com/MuscleHack/";
+	static public final String urlRecipes = "http://www.musclehack.com/category/recipes/feed";
+	static public final String urlSuccesses = "http://www.musclehack.com/category/testimonials-2/feed";
 
 	TabHost mTabHost;
 	
@@ -62,7 +67,7 @@ public class MainActivity extends FragmentActivity {
 		WorkoutManagerSingleton.setMainActivity(this);
 		this.setContentView(R.layout.activity_main);
 		this.fragment1rss = new FragmentListFeed();
-		this.fragment1rss.setUrlFeed("http://feeds.feedburner.com/MuscleHack");
+		this.fragment1rss.setUrlFeed(MainActivity.urlArticles);
 		this.fragment2worklog = null;
 		if(savedInstanceState != null){
 			int tabPosition = savedInstanceState.getInt("TAB_POSITION");
@@ -76,9 +81,9 @@ public class MainActivity extends FragmentActivity {
 		this.fragment2worklog = new Fragment2worklog();
 		
 		this.fragment3testimonials = new FragmentListFeed();
-		this.fragment3testimonials.setUrlFeed("http://www.musclehack.com/category/testimonials-2/feed");
+		this.fragment3testimonials.setUrlFeed(MainActivity.urlSuccesses);
 		this.fragment4recipe = new FragmentListFeed();
-		this.fragment4recipe.setUrlFeed("http://www.musclehack.com/category/recipes/feed");
+		this.fragment4recipe.setUrlFeed(MainActivity.urlRecipes);
 		this.fragment5archives = new Fragment4archives();
 		this.fragment6book = new Fragment6book();
 
@@ -105,9 +110,9 @@ public class MainActivity extends FragmentActivity {
 		am.cancel(pi);
 		// by my own convention, minutes <= 0 means notifications are disabled
 		if (minutes > 0) {
-			am.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+			am.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
 				SystemClock.elapsedRealtime() + minutes*10*1000,
-				minutes*10*1000, pi);
+				minutes*60*1000, pi);
 		}
 		//*/
 		Log.d("MainActivity","public void onResume() end");

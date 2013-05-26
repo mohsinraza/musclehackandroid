@@ -24,6 +24,7 @@ import android.webkit.WebViewClient;
 
 public class Fragment4archives extends Fragment {
 	static protected ProgressDialog progressDialog;
+	static public final String url = "http://www.musclehack.com/archives/";
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -43,7 +44,7 @@ public class Fragment4archives extends Fragment {
 			//webView.loadUrl("http://www.musclehack.com/archives/");
 			//String archivesFeedUrl = "http://feeds.feedburner.com/MuscleHack?max-results=10";
 			//new DownloadXmlTask().execute(archivesFeedUrl);
-			new RetrieveWebContentTask().execute("http://www.musclehack.com/archives/");
+			new RetrieveWebContentTask().execute(Fragment4archives.url);
 		return view;
 	}
 	
