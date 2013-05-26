@@ -129,6 +129,15 @@ public class SimpleExerciseAdapter extends SimpleCustomableAdapter {
 																	weightText,
 																	nRepsText);
 									workoutManager.saveLastSubWorkout();
+								}else{
+									EditText editText = (EditText) v;
+									editText.selectAll();
+									/*
+									String value = editText.getText().toString();
+									if(Float.parseFloat(value) == 0.f){
+										editText.setText("");
+									}
+									//*/
 								}
 							}
 						});

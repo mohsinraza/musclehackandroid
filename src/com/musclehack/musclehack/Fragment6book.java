@@ -16,13 +16,12 @@ public class Fragment6book extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		
 			super.onCreateView(inflater, container, savedInstanceState);
 			//setContentView(R.layout.activity_main);
 			View view = inflater.inflate(R.layout.fragment4archives, container, false);
 			WebView webView = (WebView) view.findViewById(R.id.webViewArchives);
-			Fragment6book.progressDialog = ProgressDialog.show(this.getActivity(), "",
-					getString(R.string.loading), true);
+			//Fragment6book.progressDialog = ProgressDialog.show(this.getActivity(), "",
+					//getString(R.string.loading), true);
 
 			webView.getSettings().setJavaScriptEnabled(true);
 			webView.getSettings().setPluginState(PluginState.ON);
@@ -36,10 +35,14 @@ public class Fragment6book extends Fragment {
 			String pdfURL = "http://www.musclehack.com/wp-content/uploads/2013/03/THT5point1.pdf";
 			webView.setWebViewClient(new WebViewClient() {
 				public void onPageFinished(WebView view, String url) {
-					Fragment6book.progressDialog.dismiss();
+					//Fragment6book.progressDialog.dismiss();
 				}
 			});
 			webView.loadUrl("http://docs.google.com/gview?embedded=true&url=" + pdfURL);
+			//webView.loadUrl("http://www.magicscroll.net/#reader;md5=597e52af574ea413a5886342baaaa9ed");
+			//webView.loadUrl("https://tour-80a6e530e17267738ff08a925fba439d.read.overdrive.com/");
+			//webView.loadUrl("https://play.google.com/books/reader?printsec=frontcover&output=reader&id=1NMOAAAAIAAJ&pg=GBS.PA1.w.2.0.0");
+			
 
 
 		/*

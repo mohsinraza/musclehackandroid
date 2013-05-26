@@ -44,9 +44,9 @@ public final class R {
         public static final int image_rss_article2=0x7f0a0002;
         public static final int mainLayout=0x7f0a0004;
         public static final int nreps=0x7f0a000e;
-        public static final int previousNreps=0x7f0a0013;
-        public static final int previousRest=0x7f0a0011;
-        public static final int previousWeight=0x7f0a0012;
+        public static final int previousNreps=0x7f0a0012;
+        public static final int previousRest=0x7f0a0013;
+        public static final int previousWeight=0x7f0a0011;
         public static final int range=0x7f0a000b;
         public static final int recipes_fragment=0x7f0a0014;
         public static final int rest=0x7f0a0010;

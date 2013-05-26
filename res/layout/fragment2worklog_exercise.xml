@@ -31,6 +31,7 @@
 			android:layout_height="wrap_content"
 			android:weightSum="1.0"
 			android:orientation="horizontal"
+			android:layout_marginBottom="6dp"
 			>
 	
 				<TextView
@@ -38,8 +39,9 @@
 					android:layout_width="0dp"
 					android:layout_height="wrap_content"
 					android:layout_weight="0.70"
-					android:textSize="16sp"
+					android:textSize="18sp"
 					android:textColor="#0B0A32"
+					android:layout_marginRight="4dp"
 					/>
 				<TextView
 					android:id="@+id/exerciseId"
@@ -146,20 +148,20 @@
 				<TextView
 					android:layout_width="0dp"
 					android:layout_height="wrap_content"
-					android:layout_weight="0.20"
+					android:layout_weight="0.18"
 					android:textSize="12sp"
 					android:layout_marginLeft="12dp"
 					android:text="@string/previous"
                     android:textColor="#73182C"
-					android:layout_marginRight="20dp"
+					android:layout_marginRight="6dp"
 				/>
 
 				
 				<TextView
-					android:id="@+id/previousRest"
+					android:id="@+id/previousWeight"
 					android:layout_width="0dp"
 					android:layout_height="wrap_content"
-					android:layout_weight="0.17"
+					android:layout_weight="0.19"
 					android:textColor="#682003"
 					android:textAlignment="center"
                     android:textIsSelectable="false"
@@ -168,17 +170,17 @@
 				<TextView
 					android:layout_width="0dp"
 					android:layout_height="wrap_content"
-					android:layout_weight="0.14"
+					android:layout_weight="0.09"
 					android:textSize="12sp"
 					android:layout_marginLeft="4dp"
 					android:layout_marginRight="20dp"
 				/>
 				  
 				<TextView
-					android:id="@+id/previousWeight"
+					android:id="@+id/previousNreps"
 					android:layout_width="0dp"
 					android:layout_height="wrap_content"
-					android:layout_weight="0.22"
+					android:layout_weight="0.27"
                     android:textColor="#73182C"
 					android:textAlignment="center"
                     android:textIsSelectable="false"
@@ -194,7 +196,7 @@
 				/>
 				  
 				<TextView
-					android:id="@+id/previousNreps"
+					android:id="@+id/previousRest"
 					android:layout_width="0dp"
 					android:layout_height="wrap_content"
 					android:layout_weight="0.17"

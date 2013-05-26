@@ -1,10 +1,7 @@
-﻿- Voir pour les listes pour qu'il y est pas d'intervertion des items et images...pour quand on rempli vite par exemple
-- Lire le livre au format epub
+﻿- Read an epub ebook version instead of a pdf one
+- Fixe the crash that happens while creating the workout and rotating the application
 
-- Générer une page html à partir du flux archives depuis flux rss
-- Test that when a week and subworkout is complete, so is the color
 - About the shortcut, it should be colored eventually
-- Remove all warnings
 - Add icone for all screen resolution
 - Check I used all of the best practises
 

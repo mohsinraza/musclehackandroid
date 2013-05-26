@@ -78,9 +78,9 @@ public class Fragment2worklog_4exercices extends ListFragment {
 				prevWeight = previousExercise.getWeight();
 				prevNReps = previousExercise.getNRep();
 			}
-			map.put(TAG_EXERCICE_PREV_REST, "" + prevRest);
 			map.put(TAG_EXERCICE_PREV_WEIGHT, "" + prevWeight);
 			map.put(TAG_EXERCICE_PREV_NREPS, "" + prevNReps);
+			map.put(TAG_EXERCICE_PREV_REST, "" + prevRest);
 			this.texts.add(map);
 			exerciseNumber++;
 		}

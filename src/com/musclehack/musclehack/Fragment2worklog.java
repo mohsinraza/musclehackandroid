@@ -33,6 +33,7 @@ public class Fragment2worklog extends ListFragment {
 	protected ArrayList<HashMap<String, String>> texts;
 	protected ListAdapter adapter;
 	static protected ProgressDialog progressDialog = null;
+	protected RetrieveProgramsTask retrieveProgramsTask;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -47,7 +48,8 @@ public class Fragment2worklog extends ListFragment {
 					true);
 		}
 		WorkoutManagerSingleton.getInstance().setLevelChoice(0);
-		new RetrieveProgramsTask().execute();
+		retrieveProgramsTask = new RetrieveProgramsTask();
+		retrieveProgramsTask.execute();
 		View view = super.onCreateView(inflater, container, savedInstanceState);
 		
 		Log.d("Fragment2worklog", "public View onCreateView(...) end");
@@ -55,34 +57,38 @@ public class Fragment2worklog extends ListFragment {
 	}
 	
 	public void setPrograms(List<String> programNames){
-		Log.d("Fragment2worklog", "public void setList(List<String> items) called");
-
-		if(programNames == null || programNames.size() <= 0){
-		}else{
-			this.texts = new ArrayList<HashMap<String, String>>();
-			for(String programName:programNames){
-				HashMap<String, String> map = new HashMap<String, String>();
-				map.put(TAG_TEXT_WORKLOG, programName);
-				this.texts.add(map);
-			}
-		}
-
+		Log.d("Fragment2worklog", "public void setPrograms(List<String> programNames) called");
 		Activity activity = this.getActivity();
 		if(activity != null){
-			this.adapter = new SimpleCustomableAdapter(this.getActivity(),
-					this.texts,
-					R.layout.fragment2worklog,
-					new String[] { TAG_TEXT_WORKLOG },
-					new int[] { R.id.textWorklog});
-			setListAdapter(this.adapter);
+
+			if(programNames == null || programNames.size() <= 0){
+			}else{
+				this.texts = new ArrayList<HashMap<String, String>>();
+				for(String programName:programNames){
+					HashMap<String, String> map = new HashMap<String, String>();
+					map.put(TAG_TEXT_WORKLOG, programName);
+					this.texts.add(map);
+				}
+			}
+
+			
+			if(activity != null){
+				this.adapter = new SimpleCustomableAdapter(this.getActivity(),
+						this.texts,
+						R.layout.fragment2worklog,
+						new String[] { TAG_TEXT_WORKLOG },
+						new int[] { R.id.textWorklog});
+				setListAdapter(this.adapter);
+			}
+			if(Fragment2worklog.progressDialog != null){
+				Fragment2worklog.progressDialog.dismiss();
+				Fragment2worklog.progressDialog = null;
+			}
+			Log.d("Fragment2worklog", "public void setPrograms(List<RssItem> programNames) end");
+		
 		}
-		if(Fragment2worklog.progressDialog != null){
-			Fragment2worklog.progressDialog.dismiss();
-			Fragment2worklog.progressDialog = null;
-		}
-		Log.d("Fragment2worklog", "public void setEntries(List<RssItem> entries) end");
-	
 	}
+	
 	private class RetrieveProgramsTask extends AsyncTask<Void, Void, List<String>> {
 		//protected List<RssItem> entries = null;
 		@Override
@@ -100,7 +106,7 @@ public class Fragment2worklog extends ListFragment {
 			if(items == null){
 				this.cancel(true);
 			}
-			Log.d("DownloadXmlTask", "protected void onPostExecute(...) end");
+			Log.d("Fragment2worklog", "protected void onPostExecute(...) end");
 		}
 	}
 	@Override
@@ -112,7 +118,15 @@ public class Fragment2worklog extends ListFragment {
 	public void onStart() {
 		super.onStart();
 	}
-
+	
+	@Override
+	public void onDestroyView(){
+		Log.d("Fragment2worklog", "public void onDestroyView() called");
+		retrieveProgramsTask.cancel(true);
+		super.onDestroyView();
+		Log.d("Fragment2worklog", "public void onDestroyView() end");
+	}
+	
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id){
 		Log.d("Fragment2worklog", "public void onListItemClick(...) called");
