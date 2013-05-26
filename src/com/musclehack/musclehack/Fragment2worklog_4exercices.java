@@ -57,7 +57,7 @@ public class Fragment2worklog_4exercices extends ListFragment {
 			}else if(exerciseNumber%10 == 3){
 				end = "rd";
 			}
-			String exerciseNumberString = "Set\n" + exerciseNumber + end;
+			String exerciseNumberString = exerciseNumber + end + "\nset";
 			map.put(TAG_EXERCICE_NUMBER, "" + exerciseNumberString);
 			String exerciceName = exercise.getName();
 			map.put(TAG_EXERCICE_NAME, exerciceName);
