@@ -127,6 +127,7 @@ public class MainActivity extends FragmentActivity {
 	public void onBackPressed() {
 		Log.d("MainActivity","public void onBackPressed called");
 
+
 		super.onBackPressed();
 		Log.d("MainActivity","public void onBackPressed end");
 	}
@@ -256,6 +257,15 @@ public class MainActivity extends FragmentActivity {
 	TabHost.OnTabChangeListener listener = new TabHost.OnTabChangeListener() {
 		public void onTabChanged(String tabId) {
 			Log.d("MainActivity","public void onTabChanged(String tabId) { called");
+			if(!tabId.equals(TAB_B)){
+				int tabPosition = MainActivity.this.mTabHost.getCurrentTab();
+				if(tabPosition != 1){
+					FragmentManager manager = MainActivity.this.getSupportFragmentManager();
+					for(int i = 0; i < manager.getBackStackEntryCount(); ++i) {	
+						manager.popBackStack();
+					}
+				}
+			}
 			if(tabId.equals(TAB_A)){
 				pushFragments(getString(R.string.rss), fragment1rss);
 			}else if(tabId.equals(TAB_B)){
@@ -324,6 +334,9 @@ public class MainActivity extends FragmentActivity {
 	protected void onSaveInstanceState(Bundle outState) {
 		int idTab = this.mTabHost.getCurrentTab();
 		outState.putInt("TAB_POSITION", idTab);
+		//* //todo test that
+
+		//*/
 		super.onSaveInstanceState(outState);
 	}
 }
