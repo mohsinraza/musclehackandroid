@@ -11,7 +11,7 @@
 	<PreferenceCategory android:title="@string/settingsCatNotifications" >
 	    <EditTextPreference 
 			android:key="notificationIntervalInMinutes"
-			android:defaultValue="1"
+			android:defaultValue="20"
 			android:numeric="integer" 
 			android:title="@string/settingsNotificationInterval"
 			android:summary="@string/settingsNotificationIntervalDesc"
