@@ -1,5 +1,16 @@
-﻿- Read an epub ebook version instead of a pdf one
+﻿- fixe the sound bug
+- rewritte the adapter properly
+- Add vibration on the timer sound
+- Timer: i shouldn't use the edit text stored value
+- Investigate on the restore instance
+- Ask advice before releasing android beta app + on market + improve design + workout edition
+- Put it on google market
+- Improve the design of exercise area
+- Add a way to custom the workout
+- Improve the request and database
+- Read an epub ebook version instead of a pdf one
 - Fixe the crash that happens while creating the workout and rotating the application
+- On pourrait créé une fenêtre bien plus large des exercice avec un bouton éditer, supprimer et add under avec une check box pour dire si on veut répértorier la modification sur tous les exercises
 
 - About the shortcut, it should be colored eventually
 - Add icone for all screen resolution

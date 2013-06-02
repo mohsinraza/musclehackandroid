@@ -13,6 +13,7 @@ import android.media.MediaPlayer.OnCompletionListener;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewParent;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Button;
@@ -101,19 +102,37 @@ public class SimpleExerciseAdapter extends SimpleCustomableAdapter {
 									//TextView textView = (TextView) ((LinearLayout)v.getParent()).findViewById(R.id.exerciseName);
 
 									LinearLayout topLayout = (LinearLayout)v.getParent().getParent();
-									LinearLayout firstLayout = (LinearLayout)topLayout.getChildAt(0);
-									LinearLayout secondLayout = (LinearLayout)topLayout.getChildAt(1);
-									TextView textView = (TextView)firstLayout.getChildAt(0);
+									//
+									View topParent = (View)v.getParent();
+									try{
+										while(topParent.getParent() != null){
+											topParent = (View)topParent.getParent();
+										}
+									}catch(ClassCastException e){
+									}
+									Log.d("SimpleExerciseAdapter", "topPArent id:" + topParent.getId() +", main id:" + R.id.mainLayout);
+									//RelativeLayout mainLayout = (RelativeLayout)topParent.findViewById(R.id.mainLayout);
+									//*/
+
+									//TODO use that:topLayout.findViewById(R.id.weight);
+									//LinearLayout firstLayout = (LinearLayout)topLayout.getChildAt(0);
+									//LinearLayout secondLayout = (LinearLayout)topLayout.getChildAt(1);
+									//TextView textView = (TextView)firstLayout.getChildAt(0);
+									TextView textView = (TextView)topParent.findViewById(R.id.exerciseName);
 									String exerciseName = textView.getText().toString();
-									textView = (TextView)firstLayout.getChildAt(1);
+									//textView = (TextView)firstLayout.getChildAt(1);
+									textView = (TextView)topParent.findViewById(R.id.exerciseId);
 									String exerciseId = textView.getText().toString();
-									EditText editText = (EditText) secondLayout.getChildAt(5);
+									//EditText editText = (EditText) secondLayout.getChildAt(5);
+									EditText editText = (EditText)topParent.findViewById(R.id.rest);
 									String restText = editText.getText().toString();
 									//int rest = Integer.parseInt(restText);
-									editText = (EditText) secondLayout.getChildAt(1);
+									//editText = (EditText) secondLayout.getChildAt(1);
+									editText = (EditText) topParent.findViewById(R.id.weight);
 									String weightText = editText.getText().toString();
 									float weight = Float.parseFloat(weightText);
-									editText = (EditText) secondLayout.getChildAt(3);
+									//editText = (EditText) secondLayout.getChildAt(3);
+									editText = (EditText) topParent.findViewById(R.id.nreps);
 									String nRepsText = editText.getText().toString();
 									int nReps = Integer.parseInt(nRepsText);
 									boolean exerciseDone = weight > 0 && nReps > 0;
@@ -215,14 +234,19 @@ public class SimpleExerciseAdapter extends SimpleCustomableAdapter {
 		}
 	}
 
-	protected class TimerRestButtonTask extends TimerTask {
+	static protected class TimerRestButtonTask extends TimerTask {
 		protected EditText restEditText;
 		protected int initialRestValue;
 		protected Boolean[] timerStarted;
+		static protected TimerRestButtonTask lastTask = null;
 		public TimerRestButtonTask(EditText restEditText,
 									int initialRestValue,
 									Boolean[] timerStarted){
 			super();
+			if(TimerRestButtonTask.lastTask != null){
+				TimerRestButtonTask.lastTask.cancel();
+			}
+			TimerRestButtonTask.lastTask = this;
 			this.restEditText = restEditText;
 			this.initialRestValue = initialRestValue;
 			this.timerStarted = timerStarted;
@@ -238,7 +262,7 @@ public class SimpleExerciseAdapter extends SimpleCustomableAdapter {
 		}
 	}
 
-	protected class RestButtonRunnable implements Runnable {
+	static protected class RestButtonRunnable implements Runnable {
 		protected EditText restEditText;
 		protected int initialRestValue;
 		protected Boolean[] timerStarted;
@@ -247,10 +271,12 @@ public class SimpleExerciseAdapter extends SimpleCustomableAdapter {
 									EditText restEditText,
 									int initialRestValue,
 									Boolean[] timerStarted){
+			Log.d("RestButtonRunnable", "public RestButtonRunnable(...){ called");
 			this.timerTask = timerTask;
 			this.restEditText = restEditText;
 			this.initialRestValue = initialRestValue;
 			this.timerStarted = timerStarted;
+			Log.d("RestButtonRunnable", "public RestButtonRunnable(...){ end");
 		}
 		@Override
 		public void run() {

@@ -122,39 +122,6 @@ public class Fragment2worklog_4exercices extends ListFragment {
 		Log.d("Fragment2worklog_4exercices", "public void onViewCreated(...) called");
 		super.onViewCreated(viewTop, savedInstanceState);
 		Log.d("Fragment2worklog_4exercices", "public void onViewCreated(...) end");
-		/*
-		ListView listView = this.getListView();
-		if(listView != null){
-			int nChilds = listView.getCount();
-			for(int i=0; i<nChilds; i++){
-				Class className = listView.getItemAtPosition(i).getClass();
-				HashMap<String, String> map = (HashMap<String, String>)listView.getItemAtPosition(i);
-				View view = (View)listView.getItemAtPosition(i);
-		        if(view instanceof LinearLayout && ((LinearLayout)view).getChildAt(1) instanceof LinearLayout){
-		            LinearLayout topLayout = (LinearLayout)view;
-		            LinearLayout secondLayout = (LinearLayout)topLayout.getChildAt(1);
-		    		EditText editText = (EditText) secondLayout.getChildAt(1);
-		    		String restText = editText.getText().toString();
-		    		//int rest = Integer.parseInt(restText);
-		    		editText = (EditText) secondLayout.getChildAt(3);
-		    		String weightText = editText.getText().toString();
-		    		editText = (EditText) secondLayout.getChildAt(5);
-		    		String nRepsText = editText.getText().toString();
-		    		boolean exerciseDone = false;
-		    		if(!weightText.equals("") && !nRepsText.equals("")){
-		        		float weight = Float.parseFloat(weightText);
-		        		int nReps = Integer.parseInt(nRepsText);
-		        		exerciseDone = weight > 0 && nReps > 0;
-		    		}
-		    		if(exerciseDone){
-		    			topLayout.setBackgroundColor(Color.CYAN);
-		    		}else{
-		    			topLayout.setBackgroundColor(Color.WHITE);
-		    		}
-		        }
-			}
-		}
-		//*/
 	}
 	
 	@Override
@@ -162,6 +129,14 @@ public class Fragment2worklog_4exercices extends ListFragment {
 		Log.d("Fragment2worklog_4exercices", "public void onListItemClick(...) called");
 		super.onListItemClick(l, v, position, id);
 		Log.d("Fragment2worklog_4exercices", "public void onListItemClick(...) end");
+	}
+	
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		Log.d("Fragment2worklog_4exercices", "protected void onSaveInstanceState(Bundle outState) called");
+		super.onSaveInstanceState(outState);
+		//TODO save the timer and reload it
+		Log.d("Fragment2worklog_4exercices", "protected void onSaveInstanceState(Bundle outState) end");
 	}
 
 }
