@@ -4,15 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
@@ -57,7 +54,7 @@ public class Fragment2worklog_4exercices extends ListFragment {
 			}else if(exerciseNumber == 3){
 				end = "rd";
 			}
-			String exerciseNumberString = exerciseNumber + end + "\nset";
+			String exerciseNumberString = exerciseNumber + end + " set";
 			map.put(TAG_EXERCICE_NUMBER, "" + exerciseNumberString);
 			String exerciceName = exercise.getName();
 			map.put(TAG_EXERCICE_NAME, exerciceName);

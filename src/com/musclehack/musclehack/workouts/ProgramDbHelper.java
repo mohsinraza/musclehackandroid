@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -13,11 +11,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.musclehack.musclehack.R;
 import com.musclehack.musclehack.workouts.ContractProgram.ContractExercise;
 import com.musclehack.musclehack.workouts.ContractProgram.ContractSubProgram;
 import com.musclehack.musclehack.workouts.ContractProgram.ContractWorkoutDay;
 import com.musclehack.musclehack.workouts.ContractProgram.ContractWorkoutWeek;
+
 
 public class ProgramDbHelper extends SQLiteOpenHelper {
 	public static final int DATABASE_VERSION = 1;

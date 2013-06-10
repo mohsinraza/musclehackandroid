@@ -1,4 +1,6 @@
-﻿- fixe the sound bug
+﻿- Supress workout group
+- redesign the workout area
+- fixe the sound bug
 - rewritte the adapter properly
 - Add vibration on the timer sound
 - Timer: i shouldn't use the edit text stored value

@@ -13,12 +13,12 @@ import android.media.MediaPlayer.OnCompletionListener;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewParent;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.Checkable;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -101,7 +101,7 @@ public class SimpleExerciseAdapter extends SimpleCustomableAdapter {
 									String value = ((EditText) v).getText().toString();		 // get the value from the EditText
 									//TextView textView = (TextView) ((LinearLayout)v.getParent()).findViewById(R.id.exerciseName);
 
-									LinearLayout topLayout = (LinearLayout)v.getParent().getParent();
+									//LinearLayout topLayout = (LinearLayout)v.getParent().getParent();
 									//
 									View topParent = (View)v.getParent();
 									try{
@@ -111,32 +111,18 @@ public class SimpleExerciseAdapter extends SimpleCustomableAdapter {
 									}catch(ClassCastException e){
 									}
 									Log.d("SimpleExerciseAdapter", "topPArent id:" + topParent.getId() +", main id:" + R.id.mainLayout);
-									//RelativeLayout mainLayout = (RelativeLayout)topParent.findViewById(R.id.mainLayout);
-									//*/
-
-									//TODO use that:topLayout.findViewById(R.id.weight);
-									//LinearLayout firstLayout = (LinearLayout)topLayout.getChildAt(0);
-									//LinearLayout secondLayout = (LinearLayout)topLayout.getChildAt(1);
-									//TextView textView = (TextView)firstLayout.getChildAt(0);
-									TextView textView = (TextView)topParent.findViewById(R.id.exerciseName);
-									String exerciseName = textView.getText().toString();
-									//textView = (TextView)firstLayout.getChildAt(1);
-									textView = (TextView)topParent.findViewById(R.id.exerciseId);
+									TextView textView = (TextView)topParent.findViewById(R.id.exerciseId);
 									String exerciseId = textView.getText().toString();
-									//EditText editText = (EditText) secondLayout.getChildAt(5);
 									EditText editText = (EditText)topParent.findViewById(R.id.rest);
 									String restText = editText.getText().toString();
-									//int rest = Integer.parseInt(restText);
-									//editText = (EditText) secondLayout.getChildAt(1);
 									editText = (EditText) topParent.findViewById(R.id.weight);
 									String weightText = editText.getText().toString();
 									float weight = Float.parseFloat(weightText);
-									//editText = (EditText) secondLayout.getChildAt(3);
 									editText = (EditText) topParent.findViewById(R.id.nreps);
 									String nRepsText = editText.getText().toString();
 									int nReps = Integer.parseInt(nRepsText);
 									boolean exerciseDone = weight > 0 && nReps > 0;
-									RelativeLayout mainLayout = (RelativeLayout)v.getParent().getParent().getParent();
+									RelativeLayout mainLayout = (RelativeLayout)v.getParent().getParent();
 									if(exerciseDone){
 										mainLayout.setBackgroundColor(Color.CYAN);
 									}else{
@@ -166,8 +152,12 @@ public class SimpleExerciseAdapter extends SimpleCustomableAdapter {
 		}
 		
 		Log.d("SimpleExerciseAdapter", "Button button = (Button) view.findViewById(R.id.buttonRest);...");
-		Button button = (Button) view.findViewById(R.id.buttonRest);
+		ImageButton button = (ImageButton) view.findViewById(R.id.buttonRest);
+		Log.d("SimpleExerciseAdapter", "ok 1");
+		View tmp = view.findViewById(R.id.rest);
+		Log.d("SimpleExerciseAdapter", "ok 2");
 		EditText restEditText = (EditText)view.findViewById(R.id.rest);
+		Log.d("SimpleExerciseAdapter", "ok 3");
 		OnClickListener restButtonOnClickListener = new OnRestButtonClickListener(restEditText);
 		button.setOnClickListener(restButtonOnClickListener);
 		
@@ -191,7 +181,7 @@ public class SimpleExerciseAdapter extends SimpleCustomableAdapter {
 		if(exerciseDone){
 			backgroundColor = Color.CYAN;
 		}
-		RelativeLayout mainLayout = (RelativeLayout)view.findViewById(R.id.mainLayout);
+		LinearLayout mainLayout = (LinearLayout)view.findViewById(R.id.mainLayout);
 		mainLayout.setBackgroundColor(backgroundColor);
 		Log.d("SimpleExerciseAdapter", "protected void bindView(int position, View view) end");
 		//secondLayout.setBackgroundColor(backgroundColor);
