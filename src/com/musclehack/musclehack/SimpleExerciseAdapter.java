@@ -99,10 +99,6 @@ public class SimpleExerciseAdapter extends SimpleCustomableAdapter {
 							public void onFocusChange(View v, boolean hasFocus) {
 								if (!hasFocus) {								   // run when focus is lost
 									String value = ((EditText) v).getText().toString();		 // get the value from the EditText
-									//TextView textView = (TextView) ((LinearLayout)v.getParent()).findViewById(R.id.exerciseName);
-
-									//LinearLayout topLayout = (LinearLayout)v.getParent().getParent();
-									//
 									View topParent = (View)v.getParent();
 									try{
 										while(topParent.getParent() != null){
@@ -122,7 +118,7 @@ public class SimpleExerciseAdapter extends SimpleCustomableAdapter {
 									String nRepsText = editText.getText().toString();
 									int nReps = Integer.parseInt(nRepsText);
 									boolean exerciseDone = weight > 0 && nReps > 0;
-									RelativeLayout mainLayout = (RelativeLayout)v.getParent().getParent();
+									View mainLayout = (View)v.getParent().getParent();
 									if(exerciseDone){
 										mainLayout.setBackgroundColor(Color.CYAN);
 									}else{
@@ -181,7 +177,7 @@ public class SimpleExerciseAdapter extends SimpleCustomableAdapter {
 		if(exerciseDone){
 			backgroundColor = Color.CYAN;
 		}
-		LinearLayout mainLayout = (LinearLayout)view.findViewById(R.id.mainLayout);
+		View mainLayout = (View)view.findViewById(R.id.mainLayout);
 		mainLayout.setBackgroundColor(backgroundColor);
 		Log.d("SimpleExerciseAdapter", "protected void bindView(int position, View view) end");
 		//secondLayout.setBackgroundColor(backgroundColor);

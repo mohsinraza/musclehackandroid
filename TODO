@@ -1,5 +1,6 @@
 ﻿- Supress workout group
-- redesign the workout area
+- Now instead of 0 they should have nothing
+- See what is going on with the edit and transaction and return
 - fixe the sound bug
 - rewritte the adapter properly
 - Add vibration on the timer sound

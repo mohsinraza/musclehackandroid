@@ -242,7 +242,7 @@ containing a value of this type.
         public static final int alignBounds=0x7f060002;
         public static final int alignMargins=0x7f060003;
         public static final int bottom=0x7f060005;
-        public static final int buttonRest=0x7f060021;
+        public static final int buttonRest=0x7f060024;
         public static final int center=0x7f06000c;
         public static final int center_horizontal=0x7f06000a;
         public static final int center_vertical=0x7f060008;
@@ -250,7 +250,7 @@ containing a value of this type.
         public static final int clip_vertical=0x7f06000e;
         public static final int country_fragment=0x7f060012;
         public static final int end=0x7f060011;
-        public static final int exerciseId=0x7f06001b;
+        public static final int exerciseId=0x7f06001c;
         public static final int exerciseName=0x7f06001a;
         public static final int exerciseNumber=0x7f060019;
         public static final int fill=0x7f06000d;
@@ -260,18 +260,18 @@ containing a value of this type.
         public static final int image_rss_article2=0x7f060014;
         public static final int left=0x7f060006;
         public static final int mainLayout=0x7f060016;
-        public static final int nreps=0x7f06001f;
-        public static final int previousNreps=0x7f060020;
+        public static final int nreps=0x7f060020;
+        public static final int previousNreps=0x7f060021;
         public static final int previousRest=0x7f060023;
-        public static final int previousWeight=0x7f06001e;
-        public static final int range=0x7f060024;
+        public static final int previousWeight=0x7f06001f;
+        public static final int range=0x7f06001b;
         public static final int recipes_fragment=0x7f060025;
         public static final int rest=0x7f060022;
         public static final int right=0x7f060007;
-        public static final int secondLayout=0x7f06001c;
         public static final int start=0x7f060010;
         public static final int tab_icon=0x7f060028;
         public static final int tab_text=0x7f060029;
+        public static final int tableLayout=0x7f06001d;
         public static final int tabsLayout=0x7f060027;
         public static final int text=0x7f060015;
         public static final int textWorklog=0x7f060017;
@@ -280,7 +280,7 @@ containing a value of this type.
         public static final int topLayout=0x7f060018;
         public static final int vertical=0x7f060001;
         public static final int webViewArchives=0x7f060026;
-        public static final int weight=0x7f06001d;
+        public static final int weight=0x7f06001e;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
