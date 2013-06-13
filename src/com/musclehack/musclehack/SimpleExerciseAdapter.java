@@ -10,18 +10,16 @@ import android.content.Context;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.widget.Button;
 import android.widget.Checkable;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.musclehack.musclehack.workouts.WorkoutManagerSingleton;
@@ -99,6 +97,7 @@ public class SimpleExerciseAdapter extends SimpleCustomableAdapter {
 						throw new IllegalStateException(v.getClass().getName() + " is not a " +
 								" view that can be bounds by this SimpleAdapter");
 					}
+					//if(false){
 					if(v instanceof EditText){
 						EditText editText = (EditText)v;
 						editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -140,9 +139,10 @@ public class SimpleExerciseAdapter extends SimpleCustomableAdapter {
 																	weightText,
 																	nRepsText);
 									workoutManager.saveLastSubWorkout();
-								}else{
-									EditText editText = (EditText) v;
-									editText.selectAll();
+								//}else{
+									//EditText editText = (EditText) v;
+									//editText.selectAll();
+									//Log.d("SimpleExerciseAdapter", "editText.selectAll();");
 								}
 							}
 						});
@@ -294,6 +294,10 @@ public class SimpleExerciseAdapter extends SimpleCustomableAdapter {
 				}
 			});
 			mediaPlayer.start();
+			Vibrator vibrator;
+			Activity activity = (Activity)this.restEditText.getContext();
+			vibrator = (Vibrator) activity.getSystemService(Context.VIBRATOR_SERVICE);
+			vibrator.vibrate(800);
 			Log.d("SimpleExerciseAdapter", "protected void playSound(){ end");
 		}
 		
