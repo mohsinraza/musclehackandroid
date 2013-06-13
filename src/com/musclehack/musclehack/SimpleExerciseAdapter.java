@@ -74,7 +74,14 @@ public class SimpleExerciseAdapter extends SimpleCustomableAdapter {
 					} else if (v instanceof TextView) {
 						// Note: keep the instanceof TextView check at the bottom of these
 						// ifs since a lot of views are TextViews (e.g. CheckBoxes).
-						setViewText((TextView) v, text);
+						int id = v.getId();
+						if(id == R.id.weight || id == R.id.nreps){
+							if(Float.parseFloat(text) > 0.f){
+								setViewText((TextView) v, text);
+							}
+						}else{
+							setViewText((TextView) v, text);
+						}
 					} else if (v instanceof ImageView) {
 						if (data instanceof Integer) {
 							setViewImage((ImageView) v, (Integer) data);							
@@ -106,19 +113,22 @@ public class SimpleExerciseAdapter extends SimpleCustomableAdapter {
 										}
 									}catch(ClassCastException e){
 									}
-									Log.d("SimpleExerciseAdapter", "topPArent id:" + topParent.getId() +", main id:" + R.id.mainLayout);
+									Log.d("SimpleExerciseAdapter", "topParent id:" + topParent.getId() +", main id:" + R.id.mainLayout);
 									TextView textView = (TextView)topParent.findViewById(R.id.exerciseId);
 									String exerciseId = textView.getText().toString();
 									EditText editText = (EditText)topParent.findViewById(R.id.rest);
 									String restText = editText.getText().toString();
 									editText = (EditText) topParent.findViewById(R.id.weight);
 									String weightText = editText.getText().toString();
-									float weight = Float.parseFloat(weightText);
 									editText = (EditText) topParent.findViewById(R.id.nreps);
 									String nRepsText = editText.getText().toString();
-									int nReps = Integer.parseInt(nRepsText);
-									boolean exerciseDone = weight > 0 && nReps > 0;
-									View mainLayout = (View)v.getParent().getParent();
+									boolean exerciseDone = false;
+									if(!weightText.equals("") && !nRepsText.equals("")){
+										float weight = Float.parseFloat(weightText);
+										int nReps = Integer.parseInt(nRepsText);
+										exerciseDone = weight > 0 && nReps > 0;
+									}
+									View mainLayout = (View)v.getParent().getParent().getParent().getParent();
 									if(exerciseDone){
 										mainLayout.setBackgroundColor(Color.CYAN);
 									}else{
@@ -133,12 +143,6 @@ public class SimpleExerciseAdapter extends SimpleCustomableAdapter {
 								}else{
 									EditText editText = (EditText) v;
 									editText.selectAll();
-									/*
-									String value = editText.getText().toString();
-									if(Float.parseFloat(value) == 0.f){
-										editText.setText("");
-									}
-									//*/
 								}
 							}
 						});
@@ -149,11 +153,8 @@ public class SimpleExerciseAdapter extends SimpleCustomableAdapter {
 		
 		Log.d("SimpleExerciseAdapter", "Button button = (Button) view.findViewById(R.id.buttonRest);...");
 		ImageButton button = (ImageButton) view.findViewById(R.id.buttonRest);
-		Log.d("SimpleExerciseAdapter", "ok 1");
 		View tmp = view.findViewById(R.id.rest);
-		Log.d("SimpleExerciseAdapter", "ok 2");
 		EditText restEditText = (EditText)view.findViewById(R.id.rest);
-		Log.d("SimpleExerciseAdapter", "ok 3");
 		OnClickListener restButtonOnClickListener = new OnRestButtonClickListener(restEditText);
 		button.setOnClickListener(restButtonOnClickListener);
 		
@@ -253,6 +254,7 @@ public class SimpleExerciseAdapter extends SimpleCustomableAdapter {
 		protected int initialRestValue;
 		protected Boolean[] timerStarted;
 		protected TimerTask timerTask;
+		protected int currentRest;
 		public RestButtonRunnable(TimerTask timerTask,
 									EditText restEditText,
 									int initialRestValue,
@@ -262,15 +264,15 @@ public class SimpleExerciseAdapter extends SimpleCustomableAdapter {
 			this.restEditText = restEditText;
 			this.initialRestValue = initialRestValue;
 			this.timerStarted = timerStarted;
+			String restText = this.restEditText.getText().toString();
+			this.currentRest = Integer.parseInt(restText);
 			Log.d("RestButtonRunnable", "public RestButtonRunnable(...){ end");
 		}
 		@Override
 		public void run() {
 			Log.d("SimpleExerciseAdapter", "public void run(){ called");
-			String restText = this.restEditText.getText().toString();
-			int currentRest = Integer.parseInt(restText);
-			currentRest--;
-			if(currentRest <= 0){
+			this.currentRest--;
+			if(this.currentRest <= 0){
 				this.playSound();
 				this.restEditText.setText("" + this.initialRestValue);
 				this.timerStarted[0] = Boolean.valueOf(false);

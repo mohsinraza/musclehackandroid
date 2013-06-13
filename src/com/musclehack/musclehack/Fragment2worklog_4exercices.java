@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
@@ -132,8 +133,13 @@ public class Fragment2worklog_4exercices extends ListFragment {
 	public void onSaveInstanceState(Bundle outState) {
 		Log.d("Fragment2worklog_4exercices", "protected void onSaveInstanceState(Bundle outState) called");
 		super.onSaveInstanceState(outState);
-		//TODO save the timer and reload it
 		Log.d("Fragment2worklog_4exercices", "protected void onSaveInstanceState(Bundle outState) end");
 	}
-
+	
+	@Override
+	public void onDestroyView(){
+		Log.d("Fragment2worklog_4exercices", "public void onDestroyView() called");
+		super.onDestroyView();
+		Log.d("Fragment2worklog_4exercices", "public void onDestroyView() end");
+	}
 }
