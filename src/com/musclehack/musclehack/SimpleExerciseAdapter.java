@@ -134,6 +134,7 @@ public class SimpleExerciseAdapter extends SimpleCustomableAdapter {
 										mainLayout.setBackgroundColor(Color.WHITE);
 									}
 									WorkoutManagerSingleton workoutManager = WorkoutManagerSingleton.getInstance();
+									Log.d("SimpleExerciseAdapter", "exerciseId id:" + topParent.getId() +", main id:" + R.id.mainLayout);
 									workoutManager.setExerciceInfo(exerciseId,
 																	restText,
 																	weightText,
