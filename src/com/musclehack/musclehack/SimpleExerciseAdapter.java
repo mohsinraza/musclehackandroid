@@ -140,6 +140,9 @@ public class SimpleExerciseAdapter extends SimpleCustomableAdapter {
 																	weightText,
 																	nRepsText);
 									workoutManager.saveLastSubWorkout();
+
+									//SimpleExerciseAdapter.this.notifyDataSetInvalidated();
+									//SimpleExerciseAdapter.this.notifyDataSetChanged();
 								//}else{
 									//EditText editText = (EditText) v;
 									//editText.selectAll();
@@ -154,7 +157,6 @@ public class SimpleExerciseAdapter extends SimpleCustomableAdapter {
 		
 		Log.d("SimpleExerciseAdapter", "Button button = (Button) view.findViewById(R.id.buttonRest);...");
 		ImageButton button = (ImageButton) view.findViewById(R.id.buttonRest);
-		View tmp = view.findViewById(R.id.rest);
 		EditText restEditText = (EditText)view.findViewById(R.id.rest);
 		OnClickListener restButtonOnClickListener = new OnRestButtonClickListener(restEditText);
 		button.setOnClickListener(restButtonOnClickListener);

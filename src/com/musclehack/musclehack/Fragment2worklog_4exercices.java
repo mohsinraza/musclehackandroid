@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView.RecyclerListener;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -28,7 +29,8 @@ public class Fragment2worklog_4exercices extends ListFragment {
 	public static String TAG_EXERCICE_PREV_REST = "exercisePrevRest";
 	public static String TAG_EXERCICE_PREV_WEIGHT = "exercisePrevWeight";
 	public static String TAG_EXERCICE_PREV_NREPS = "exercisePrevNreps";
-	protected ArrayList<HashMap<String, String>> texts;
+	//protected ArrayList<HashMap<String, String>> texts;
+	protected ArrayList<HashMap<Integer, String>> texts;
 	protected ListAdapter adapter;
 
 
@@ -36,7 +38,8 @@ public class Fragment2worklog_4exercices extends ListFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		Log.d("Fragment2worklog_4exercices", "public View onCreateView(...) called");
-		this.texts = new ArrayList<HashMap<String, String>>();
+		//this.texts = new ArrayList<HashMap<String, String>>();
+		this.texts = new ArrayList<HashMap<Integer, String>>();
 		List<Exercice> exercises = WorkoutManagerSingleton.getInstance().getAvailableExercices();
 		Log.d("Fragment2worklog_4exercices", "exercises got");
 		List<Exercice> previousExercises = WorkoutManagerSingleton.getInstance().getPreviousExercices();
@@ -44,9 +47,10 @@ public class Fragment2worklog_4exercices extends ListFragment {
 		int exerciseNumber = 1;
 		for(int i=0; i<exercises.size(); i++){
 			Exercice exercise = exercises.get(i);
-			HashMap<String, String> map = new HashMap<String, String>();
+			HashMap<Integer, String> map = new HashMap<Integer, String>();
 			int exerciceId = exercise.getId();
-			map.put(TAG_EXERCICE_ID, "" + exerciceId);
+			//map.put(TAG_EXERCICE_ID, "" + exerciceId);
+			map.put(R.id.exerciseId, "" + exerciceId);
 			String end = "th";
 			if(exerciseNumber == 1){
 				end = "st";
@@ -56,17 +60,23 @@ public class Fragment2worklog_4exercices extends ListFragment {
 				end = "rd";
 			}
 			String exerciseNumberString = exerciseNumber + end + " set";
-			map.put(TAG_EXERCICE_NUMBER, "" + exerciseNumberString);
+			//map.put(TAG_EXERCICE_NUMBER, "" + exerciseNumberString);
+			map.put(R.id.exerciseNumber, "" + exerciseNumberString);
 			String exerciceName = exercise.getName();
-			map.put(TAG_EXERCICE_NAME, exerciceName);
+			//map.put(TAG_EXERCICE_NAME, exerciceName);
+			map.put(R.id.exerciseName, exerciceName);
 			String range = exercise.getRepRange();
-			map.put(TAG_EXERCICE_RANGE, range + " reps"); //TODO translate
+			//map.put(TAG_EXERCICE_RANGE, range + " reps"); //TODO translate
+			map.put(R.id.range, range + " reps"); //TODO translate
 			int rest = exercise.getRest();
-			map.put(TAG_EXERCICE_REST, "" + rest);
+			//map.put(TAG_EXERCICE_REST, "" + rest);
+			map.put(R.id.rest, "" + rest);
 			float weight = exercise.getWeight();
-			map.put(TAG_EXERCICE_WEIGHT, "" + weight);
+			//map.put(TAG_EXERCICE_WEIGHT, "" + weight);
+			map.put(R.id.weight, "" + weight);
 			int nReps = exercise.getNRep();
-			map.put(TAG_EXERCICE_NREPS, "" + nReps);
+			//map.put(TAG_EXERCICE_NREPS, "" + nReps);
+			map.put(R.id.nreps, "" + nReps);
 			int prevRest = 0;
 			float prevWeight = 0.f;
 			int prevNReps = 0;
@@ -76,13 +86,19 @@ public class Fragment2worklog_4exercices extends ListFragment {
 				prevWeight = previousExercise.getWeight();
 				prevNReps = previousExercise.getNRep();
 			}
-			map.put(TAG_EXERCICE_PREV_WEIGHT, "" + prevWeight);
-			map.put(TAG_EXERCICE_PREV_NREPS, "" + prevNReps);
-			map.put(TAG_EXERCICE_PREV_REST, "" + prevRest);
+			//map.put(TAG_EXERCICE_PREV_WEIGHT, "" + prevWeight);
+			map.put(R.id.previousWeight, "" + prevWeight);
+			//map.put(TAG_EXERCICE_PREV_NREPS, "" + prevNReps);
+			map.put(R.id.previousNreps, "" + prevNReps);
+			//map.put(TAG_EXERCICE_PREV_REST, "" + prevRest);
+			map.put(R.id.previousRest, "" + prevRest);
 			this.texts.add(map);
 			exerciseNumber++;
 		}
 		Log.d("Fragment2worklog_4exercices", "exercises added in list");
+		this.adapter = new ExercisesAdapter(this.getActivity(),
+				this.texts);
+		/*
 		this.adapter = new SimpleExerciseAdapter(this.getActivity(),
 												this.texts,
 												R.layout.fragment2worklog_exercise,
@@ -106,10 +122,12 @@ public class Fragment2worklog_4exercices extends ListFragment {
 															R.id.previousRest,
 															R.id.previousWeight,
 															R.id.previousNreps});
+															//*/
 		setListAdapter(this.adapter);
 		Log.d("Fragment2worklog_4exercices", "adapter set");
 		WorkoutManagerSingleton.getInstance().setLevelChoice(4);
 		View view = super.onCreateView(inflater, container, savedInstanceState);
+
 		Log.d("Fragment2worklog_4exercices", "public View onCreateView(...) end");
 		return view;
 	}
@@ -119,6 +137,29 @@ public class Fragment2worklog_4exercices extends ListFragment {
 	public void onViewCreated(View viewTop, Bundle savedInstanceState){
 		Log.d("Fragment2worklog_4exercices", "public void onViewCreated(...) called");
 		super.onViewCreated(viewTop, savedInstanceState);
+		//*
+		this.getListView().setRecyclerListener(new RecyclerListener() {
+		    @Override
+		    public void onMovedToScrapHeap(View view) {
+		    	Log.d("RecyclerListener", "public void onViewCreated(View viewTop, Bundle savedInstanceState){ called");
+		    	ListView listView = Fragment2worklog_4exercices.this.getListView();
+		    	int selectedItemPosition = listView.getSelectedItemPosition();
+		    	if(selectedItemPosition == ListView.INVALID_POSITION){
+			    	view.findViewById(R.id.hidenForFocus).requestFocus();
+			        // Cast the view to the type of the view we inflated.
+			    	this.resetTextView(view,  R.id.weight);
+			    	this.resetTextView(view,  R.id.nreps);
+			    	this.resetTextView(view,  R.id.rest);
+		    	}
+		        Log.d("RecyclerListener", "public void onViewCreated(View viewTop, Bundle savedInstanceState){ end");
+				
+		    }
+		    protected void resetTextView(View view, int id){
+		    	EditText editText = (EditText)view.findViewById(id);
+		    	editText.setText("");
+		    }
+		});
+		//*/
 		Log.d("Fragment2worklog_4exercices", "public void onViewCreated(...) end");
 	}
 	

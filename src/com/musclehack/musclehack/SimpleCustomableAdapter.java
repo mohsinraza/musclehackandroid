@@ -119,7 +119,12 @@ public class SimpleCustomableAdapter extends BaseAdapter implements Filterable {
 			for (int i = 0; i < count; i++) {
 				holder[i] = v.findViewById(to[i]);
 			}
-
+			/*
+			holder = (Holder) convertView.getTag();
+		    if (((ListView)arg2).getSelectedItemPosition() == ListView.INVALID_POSITION) {
+		    	arg2.requestFocus();
+		    }
+		    //*/
 			v.setTag(holder);
 		} else {
 			v = convertView;
