@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
@@ -150,6 +151,9 @@ public class Fragment2worklog_4exercices extends ListFragment {
 			    	this.resetTextView(view,  R.id.weight);
 			    	this.resetTextView(view,  R.id.nreps);
 			    	this.resetTextView(view,  R.id.rest);
+			    	View mainLayout = (View)view.findViewById(R.id.mainLayout);
+			    	mainLayout.setBackgroundColor(Color.WHITE);
+					
 		    	}
 		        Log.d("RecyclerListener", "public void onViewCreated(View viewTop, Bundle savedInstanceState){ end");
 				

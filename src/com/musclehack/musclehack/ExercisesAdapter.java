@@ -102,7 +102,7 @@ public class ExercisesAdapter extends BaseAdapter {
 		if(Float.parseFloat(value) > 0.f){
 			editText.setText(value);
 		}
-		editText.setOnFocusChangeListener(new OnWorkoutTextEditFocusChanged(position));
+		editText.setOnFocusChangeListener(new OnWorkoutTextEditFocusChanged(position, view));
 		Log.d("ExercisesAdapter", "protected void setWorkoutDataValue(…) end");
 	}
 	
@@ -137,21 +137,17 @@ public class ExercisesAdapter extends BaseAdapter {
 	
 	protected class OnWorkoutTextEditFocusChanged implements View.OnFocusChangeListener{
 		protected int position;
+		protected View rowView;
 		
-		public OnWorkoutTextEditFocusChanged(int position){
+		public OnWorkoutTextEditFocusChanged(int position, View rowView){
 			this.position = position;
+			this.rowView = rowView;
 		}
 		@Override
 		public void onFocusChange(View v, boolean hasFocus) {
 			if (!hasFocus) {								   // run when focus is lost
 				String value = ((EditText) v).getText().toString();		 // get the value from the EditText
-				View topParent = (View)v.getParent();
-				try{
-					while(topParent.getParent() != null){
-						topParent = (View)topParent.getParent();
-					}
-				}catch(ClassCastException e){
-				}
+				View topParent = this.rowView;
 				Log.d("ExercisesAdapter", "topParent id:" + topParent.getId() +", main id:" + R.id.mainLayout);
 				TextView textView = (TextView)topParent.findViewById(R.id.exerciseId);
 				String exerciseId = textView.getText().toString();
@@ -167,7 +163,7 @@ public class ExercisesAdapter extends BaseAdapter {
 					int nReps = Integer.parseInt(nRepsText);
 					exerciseDone = weight > 0 && nReps > 0;
 				}
-				View mainLayout = (View)v.getParent().getParent().getParent().getParent();
+				View mainLayout = (View)topParent.findViewById(R.id.mainLayout);
 				if(exerciseDone){
 					mainLayout.setBackgroundColor(Color.CYAN);
 				}else{
