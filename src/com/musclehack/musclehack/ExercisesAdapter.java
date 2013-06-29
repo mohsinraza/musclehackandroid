@@ -16,9 +16,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -94,8 +96,7 @@ public class ExercisesAdapter extends BaseAdapter {
 		this.setValue(position, view, R.id.previousNreps);
 		HashMap<Integer, String> row = this.data.get(position);
 		int idExercise = Integer.parseInt(row.get(R.id.exerciseId));
-		int initialRestValue = Integer.parseInt(row.get(R.id.rest));
-		this.connectTimerButton(view, idExercise, initialRestValue);
+		this.connectTimerButton(view, idExercise);
 		this.colorRowIfExerciseDone(view);
 		Log.d("ExercisesAdapter", "public View getView(…) end");
 		return view;
@@ -124,12 +125,11 @@ public class ExercisesAdapter extends BaseAdapter {
 		Log.d("ExercisesAdapter", "protected void setWorkoutDataValue(…) end");
 	}
 	
-	public void connectTimerButton(View view, int idExercise, int initialRestValue){
+	public void connectTimerButton(View view, int idExercise){
 		Log.d("ExercisesAdapter", "Button button = (Button) view.findViewById(R.id.buttonRest);...");
 		ImageButton button = (ImageButton) view.findViewById(R.id.buttonRest);
-		EditText restEditText = (EditText)view.findViewById(R.id.rest);
 		OnClickListener restButtonOnClickListener
-			= new OnRestButtonClickListener(idExercise, initialRestValue);
+			= new OnRestButtonClickListener(idExercise);
 		button.setOnClickListener(restButtonOnClickListener);
 	}
 
@@ -171,13 +171,10 @@ public class ExercisesAdapter extends BaseAdapter {
 		Log.d("ExercisesAdapter", "value: " + value);
 		String valueString = "" + value;
 		for(HashMap<Integer, String> row: this.data){
-			Log.d("ExercisesAdapter", "g1");
 			String exerciseIdString = row.get(R.id.exerciseId);
-			Log.d("ExercisesAdapter", "g2");
 			if(exerciseIdString.equals(valueString)){
 				row.put(R.id.rest, valueString);
 			}
-			Log.d("ExercisesAdapter", "g3");
 		}
 		//HashMap<Integer, String> row = this.data.get(position);
 		//row.put(R.id.rest, "" + value);
@@ -259,12 +256,10 @@ public class ExercisesAdapter extends BaseAdapter {
 	protected class OnRestButtonClickListener implements OnClickListener{
 		//protected EditText restEditText;
 		int idExercise;
-		protected int initialRestValue;
 		protected Boolean[] timerStarted;
-		public OnRestButtonClickListener(int idExercise, int initialRestValue){ 
+		public OnRestButtonClickListener(int idExercise){ 
 			Log.d("OnRestButtonClickListener", "public OnRestButtonClickListener(EditText restEditText){ called");
 			this.idExercise = idExercise;
-			this.initialRestValue = initialRestValue;
 			this.timerStarted = new Boolean [] {Boolean.valueOf(false)};
 			Log.d("OnRestButtonClickListener", "public OnRestButtonClickListener(EditText restEditText){ end");
 		}
@@ -272,14 +267,27 @@ public class ExercisesAdapter extends BaseAdapter {
 		@Override
 		public void onClick(View view) {
 			Log.d("SimpleExerciseAdapter", "public void onClick(View view){ called");
-			if(this.initialRestValue > 0){
-				if(!this.timerStarted[0]){
-					Timer timer = new Timer();
-					this.timerStarted[0] = Boolean.valueOf(true);
-					TimerTask task = new TimerRestButtonTask(this.idExercise,
-															this.initialRestValue,
-															this.timerStarted);
-					timer.scheduleAtFixedRate(task, 0, 1000);
+			ViewParent parentView = view.getParent();
+			
+			while(!(parentView instanceof LinearLayout)
+					&& ((View)parentView).getId() != R.id.mainLayout){
+				parentView = parentView.getParent();
+			}
+			View viewRow = (View)parentView;
+			viewRow.findViewById(R.id.hidenForFocus).requestFocus();
+			EditText restEditText = (EditText)viewRow.findViewById(R.id.rest);
+			String restText = restEditText.getText().toString();
+			if(!restText.equals("")){
+				int initialRestValue = Integer.parseInt(restText);
+				if(initialRestValue > 0){
+					if(!this.timerStarted[0]){
+						Timer timer = new Timer();
+						this.timerStarted[0] = Boolean.valueOf(true);
+						TimerTask task = new TimerRestButtonTask(this.idExercise,
+																initialRestValue,
+																this.timerStarted);
+						timer.scheduleAtFixedRate(task, 0, 1000);
+					}
 				}
 			}
 			Log.d("SimpleExerciseAdapter", "public void onClick(View view){ end");

@@ -1,4 +1,4 @@
-﻿- BUG: now in the workout log area, exercise data saved for several exercises instead only one.
+﻿- With a touch keyboard, the last row cannot be edited
 - In the workout log area, instead of having a program area then a subprogram area, we should have only a program area.
 - Optimize the database request
 - Add a css design to the archive list area
@@ -6,7 +6,7 @@
 - Add a way to custom the workout
 - Read an epub ebook version instead of a pdf one
 - BUG: Fixe the crash that happens while creating the workout and rotating the application
-- In the workout log area, if the shortcut link a done program, it is not colored while it should.
+- In the workout log area, if the shortcut link a done program, it is not colored while it should
 - Add icons for all screen resolution
-- Check I used all of the best practises
+- Check all of the best practises has been use
 
