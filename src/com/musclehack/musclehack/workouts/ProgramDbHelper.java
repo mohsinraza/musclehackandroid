@@ -959,7 +959,7 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 			int nRepsInt = Integer.parseInt(nReps);
 			completed = weightFloat > 0.f && nRepsInt > 0;
 		}
-		if(oldCompleted != completed){
+		if(oldCompleted != completed || completed){
 			ContentValues values = new ContentValues();
 			values.put(ContractExercise.COLUMN_NAME_REST, rest);
 			values.put(ContractExercise.COLUMN_NAME_WEIGHT, weight);
@@ -967,7 +967,7 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 	
 			values.put(ContractExercise.COLUMN_NAME_COMPLETED, completed);
 			SQLiteDatabase db = this.getWritableDatabase();
-			db.update(ContractExercise.TABLE_NAME,
+			int nRows = db.update(ContractExercise.TABLE_NAME,
 						values, ContractExercise.COLUMN_NAME_ID + "=" + exerciseId,
 						null);
 			db.close();
