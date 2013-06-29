@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.musclehack.musclehack.workouts.WorkoutManagerSingleton;
@@ -28,14 +29,27 @@ public class ExercisesAdapter extends BaseAdapter {
 	protected Context context;
 	protected ArrayList<HashMap<Integer, String>> data;
 	protected LayoutInflater inflater;
+	protected ListView listView;
+	protected static Activity currentActivity = null;
+	protected static ExercisesAdapter currentAdapter = null;
 	
 	public ExercisesAdapter(Context context,
 			ArrayList<HashMap<Integer, String>> data){
 		Log.d("ExercisesAdapter", "public ExercisesAdapter(…){ called");
 		this.context = context;
+		ExercisesAdapter.currentActivity = (Activity)this.context;
+		ExercisesAdapter.currentAdapter = this;
 		this.data = data;
 		this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		Log.d("ExercisesAdapter", "public ExercisesAdapter(…){ end");
+	}
+	
+	public static Activity getCurrentActivity(){
+		return ExercisesAdapter.currentActivity;
+	}	
+	
+	public static ExercisesAdapter getCurrentAdapter(){
+		return ExercisesAdapter.currentAdapter;
 	}
 	
 	@Override
@@ -62,6 +76,7 @@ public class ExercisesAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View view, ViewGroup listView) {
 		Log.d("ExercisesAdapter", "public View getView(…) called");
+		this.listView = (ListView)listView;
 		if(view == null){
 			view = this.inflater.inflate(R.layout.fragment2worklog_exercise,
 											listView,
@@ -77,7 +92,10 @@ public class ExercisesAdapter extends BaseAdapter {
 		this.setValue(position, view, R.id.previousRest);
 		this.setValue(position, view, R.id.previousWeight);
 		this.setValue(position, view, R.id.previousNreps);
-		this.connectTimerButton(view);
+		HashMap<Integer, String> row = this.data.get(position);
+		int idExercise = Integer.parseInt(row.get(R.id.exerciseId));
+		int initialRestValue = Integer.parseInt(row.get(R.id.rest));
+		this.connectTimerButton(view, idExercise, initialRestValue);
 		this.colorRowIfExerciseDone(view);
 		Log.d("ExercisesAdapter", "public View getView(…) end");
 		return view;
@@ -106,11 +124,12 @@ public class ExercisesAdapter extends BaseAdapter {
 		Log.d("ExercisesAdapter", "protected void setWorkoutDataValue(…) end");
 	}
 	
-	public void connectTimerButton(View view){
+	public void connectTimerButton(View view, int idExercise, int initialRestValue){
 		Log.d("ExercisesAdapter", "Button button = (Button) view.findViewById(R.id.buttonRest);...");
 		ImageButton button = (ImageButton) view.findViewById(R.id.buttonRest);
 		EditText restEditText = (EditText)view.findViewById(R.id.rest);
-		OnClickListener restButtonOnClickListener = new OnRestButtonClickListener(restEditText);
+		OnClickListener restButtonOnClickListener
+			= new OnRestButtonClickListener(idExercise, initialRestValue);
 		button.setOnClickListener(restButtonOnClickListener);
 	}
 
@@ -133,6 +152,58 @@ public class ExercisesAdapter extends BaseAdapter {
 		View mainLayout = (View)view.findViewById(R.id.mainLayout);
 		mainLayout.setBackgroundColor(backgroundColor);
 		Log.d("ExercisesAdapter", "public void colorRowIfExerciseDone(…) end");
+	}
+	
+	/*
+	public int getCurrentRestValue(int position){
+		HashMap<Integer, String> row = this.data.get(position);
+		String restString = row.get(R.id.rest);
+		int rest = 0;
+		if(!restString.equals("")){
+			rest = Integer.parseInt(restString);
+		}
+		return rest;
+	}
+	//*/
+	
+	public void setCurrentRestValue(int idExercise, int value){
+		Log.d("ExercisesAdapter", "public void setCurrentRestValue(…) called");
+		Log.d("ExercisesAdapter", "value: " + value);
+		String valueString = "" + value;
+		for(HashMap<Integer, String> row: this.data){
+			Log.d("ExercisesAdapter", "g1");
+			String exerciseIdString = row.get(R.id.exerciseId);
+			Log.d("ExercisesAdapter", "g2");
+			if(exerciseIdString.equals(valueString)){
+				row.put(R.id.rest, valueString);
+			}
+			Log.d("ExercisesAdapter", "g3");
+		}
+		//HashMap<Integer, String> row = this.data.get(position);
+		//row.put(R.id.rest, "" + value);
+		//int idExercise = Integer.parseInt(row.get(R.id.exerciseId));
+		int nViews = this.listView.getCount();
+		Log.d("ExercisesAdapter", "nViews: " + nViews);
+		for(int i=0; i<nViews; i++){
+			View view = listView.getChildAt(i);
+			if(view != null){
+				TextView textView = (TextView)view.findViewById(R.id.exerciseId);
+				String currentIdExesciseText = textView.getText().toString();
+				int currentIdExercise = -1;
+				if(!currentIdExesciseText.equals("")){
+					currentIdExercise = Integer.parseInt(currentIdExesciseText);
+				}
+				
+				if(currentIdExercise == idExercise){
+					Log.d("ExercisesAdapter", "Position rest value:: " + i);
+					EditText restEditText = (EditText)view.findViewById(R.id.rest);
+					restEditText.setText("" + value);
+					Log.d("ExercisesAdapter", "Rest value set");
+					break;
+				}
+			}
+		}
+		Log.d("ExercisesAdapter", "public void setCurrentRestValue(…) end");
 	}
 	
 	protected class OnWorkoutTextEditFocusChanged implements View.OnFocusChangeListener{
@@ -180,25 +251,22 @@ public class ExercisesAdapter extends BaseAdapter {
 												weightText,
 												nRepsText);
 				workoutManager.saveLastSubWorkout();
+				
 			}
 		}
 	}
 	
 	protected class OnRestButtonClickListener implements OnClickListener{
-		protected EditText restEditText;
+		//protected EditText restEditText;
+		int idExercise;
 		protected int initialRestValue;
 		protected Boolean[] timerStarted;
-		public OnRestButtonClickListener(EditText restEditText){
-			Log.d("SimpleExerciseAdapter", "public OnRestButtonClickListener(EditText restEditText){ called");
-			this.restEditText = restEditText;
+		public OnRestButtonClickListener(int idExercise, int initialRestValue){ 
+			Log.d("OnRestButtonClickListener", "public OnRestButtonClickListener(EditText restEditText){ called");
+			this.idExercise = idExercise;
+			this.initialRestValue = initialRestValue;
 			this.timerStarted = new Boolean [] {Boolean.valueOf(false)};
-			String restText = this.restEditText.getText().toString();
-			if(!restText.equals("")){
-				this.initialRestValue = Integer.parseInt(restText);
-			}else{
-				this.initialRestValue = 0;
-			}
-			Log.d("SimpleExerciseAdapter", "public OnRestButtonClickListener(EditText restEditText){ end");
+			Log.d("OnRestButtonClickListener", "public OnRestButtonClickListener(EditText restEditText){ end");
 		}
 
 		@Override
@@ -208,7 +276,7 @@ public class ExercisesAdapter extends BaseAdapter {
 				if(!this.timerStarted[0]){
 					Timer timer = new Timer();
 					this.timerStarted[0] = Boolean.valueOf(true);
-					TimerTask task = new TimerRestButtonTask(this.restEditText,
+					TimerTask task = new TimerRestButtonTask(this.idExercise,
 															this.initialRestValue,
 															this.timerStarted);
 					timer.scheduleAtFixedRate(task, 0, 1000);
@@ -219,27 +287,30 @@ public class ExercisesAdapter extends BaseAdapter {
 	}
 
 	static protected class TimerRestButtonTask extends TimerTask {
-		protected EditText restEditText;
+		//protected EditText restEditText;
+		protected int idExercise;
 		protected int initialRestValue;
 		protected Boolean[] timerStarted;
 		static protected TimerRestButtonTask lastTask = null;
-		public TimerRestButtonTask(EditText restEditText,
+		public TimerRestButtonTask(int idExercise,
 									int initialRestValue,
 									Boolean[] timerStarted){
 			super();
 			if(TimerRestButtonTask.lastTask != null){
+				Log.d("TimerRestButtonTask", "Cancelling last task");
 				TimerRestButtonTask.lastTask.cancel();
 			}
 			TimerRestButtonTask.lastTask = this;
-			this.restEditText = restEditText;
+			this.idExercise = idExercise;
 			this.initialRestValue = initialRestValue;
+			RestButtonRunnable.currentRest = this.initialRestValue;
 			this.timerStarted = timerStarted;
 		}
 		
 		public void run() {
-			Activity activity = (Activity)this.restEditText.getContext();
+			Activity activity = (Activity)ExercisesAdapter.getCurrentActivity();
 			Runnable runnable = new RestButtonRunnable(this,
-														this.restEditText,
+														this.idExercise,
 														this.initialRestValue,
 														this.timerStarted);
 			activity.runOnUiThread(runnable);
@@ -247,43 +318,58 @@ public class ExercisesAdapter extends BaseAdapter {
 	}
 
 	static protected class RestButtonRunnable implements Runnable {
-		protected EditText restEditText;
+		//protected EditText restEditText;
+		int idExercise;
 		protected int initialRestValue;
 		protected Boolean[] timerStarted;
 		protected TimerTask timerTask;
-		protected int currentRest;
+		public static int currentRest;
 		public RestButtonRunnable(TimerTask timerTask,
-									EditText restEditText,
+									int idExercise,
 									int initialRestValue,
 									Boolean[] timerStarted){
 			Log.d("RestButtonRunnable", "public RestButtonRunnable(...){ called");
 			this.timerTask = timerTask;
-			this.restEditText = restEditText;
+			this.idExercise = idExercise;
 			this.initialRestValue = initialRestValue;
 			this.timerStarted = timerStarted;
-			String restText = this.restEditText.getText().toString();
-			this.currentRest = Integer.parseInt(restText);
+			/*
+			View view = this.listView.getChildAt(this.position);
+			if(view != null){
+				EditText restEditText = (EditText)view.findViewById(R.id.rest);
+				String restText = restEditText.getText().toString();
+				Log.d("RestButtonRunnable", " rest :'" + restText + "'");
+				this.currentRest = Integer.parseInt(restText); ///TODO adapter get rest value
+			}
+			//*/
 			Log.d("RestButtonRunnable", "public RestButtonRunnable(...){ end");
 		}
 
 		@Override
 		public void run() {
 			Log.d("SimpleExerciseAdapter", "public void run(){ called");
-			this.currentRest--;
-			if(this.currentRest <= 0){
+			RestButtonRunnable.currentRest--;
+			ExercisesAdapter adapter = ExercisesAdapter.getCurrentAdapter();
+			if(RestButtonRunnable.currentRest <= 0){
 				this.playSound();
-				this.restEditText.setText("" + this.initialRestValue);
+				adapter.setCurrentRestValue(this.idExercise, this.initialRestValue);
 				this.timerStarted[0] = Boolean.valueOf(false);
 				this.timerTask.cancel();
 			}else{
-				this.restEditText.setText("" + currentRest);
+				//if(view != null){
+					//EditText restEditText = (EditText)view.findViewById(R.id.rest);
+					//restEditText.setText("" + currentRest);
+				//}
+				adapter.setCurrentRestValue(this.idExercise, this.currentRest);
+				//adapter.notifyDataSetInvalidated();
 			}
 			Log.d("SimpleExerciseAdapter", "public void run(){ end");
 		}
 		
 		protected void playSound(){
 			Log.d("SimpleExerciseAdapter", "protected void playSound(){ called");
-			MediaPlayer mediaPlayer = MediaPlayer.create(restEditText.getContext(),
+			Context context = (Context)ExercisesAdapter.getCurrentActivity();
+			MediaPlayer mediaPlayer = MediaPlayer.create(context,
 					R.raw.power_up);
 			mediaPlayer.setOnCompletionListener(new OnCompletionListener() {
 				@Override
@@ -293,7 +379,7 @@ public class ExercisesAdapter extends BaseAdapter {
 			});
 			mediaPlayer.start();
 			Vibrator vibrator;
-			Activity activity = (Activity)this.restEditText.getContext();
+			Activity activity = (Activity)context;
 			vibrator = (Vibrator) activity.getSystemService(Context.VIBRATOR_SERVICE);
 			vibrator.vibrate(800);
 			Log.d("SimpleExerciseAdapter", "protected void playSound(){ end");
