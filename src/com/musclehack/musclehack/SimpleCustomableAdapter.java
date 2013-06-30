@@ -86,7 +86,11 @@ public class SimpleCustomableAdapter extends BaseAdapter implements Filterable {
 
 
 	public int getCount() {
-		return mData.size();
+		int count = 0;
+		if(this.mData != null){
+			count = this.mData.size();
+		}
+		return count;
 	}
 
 

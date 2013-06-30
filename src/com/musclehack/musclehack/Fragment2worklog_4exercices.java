@@ -126,7 +126,7 @@ public class Fragment2worklog_4exercices extends ListFragment {
 															//*/
 		setListAdapter(this.adapter);
 		Log.d("Fragment2worklog_4exercices", "adapter set");
-		WorkoutManagerSingleton.getInstance().setLevelChoice(4);
+		WorkoutManagerSingleton.getInstance().setLevelChoice(3);
 		View view = super.onCreateView(inflater, container, savedInstanceState);
 
 		Log.d("Fragment2worklog_4exercices", "public View onCreateView(...) end");

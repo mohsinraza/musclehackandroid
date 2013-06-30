@@ -57,7 +57,10 @@ public class ExercisesAdapter extends BaseAdapter {
 	@Override
 	public int getCount() {
 		Log.d("ExercisesAdapter", "public int getCount()  called");
-		int count = data.size();
+		int count = 0;
+		if(data != null){
+			count = data.size();
+		}
 		Log.d("ExercisesAdapter", "public int getCount()  end");
 		return count;
 	}
@@ -247,7 +250,7 @@ public class ExercisesAdapter extends BaseAdapter {
 												restText,
 												weightText,
 												nRepsText);
-				workoutManager.saveLastSubWorkout();
+				workoutManager.saveLastProgram();
 				
 			}
 		}

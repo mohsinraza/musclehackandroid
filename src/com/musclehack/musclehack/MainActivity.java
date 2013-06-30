@@ -273,18 +273,14 @@ public class MainActivity extends FragmentActivity {
 				int levelChoice = WorkoutManagerSingleton.getInstance().getLevelChoice();
 				ListFragment nextFragment = null;
 				if(levelChoice > 0){
-					nextFragment = new Fragment2worklog_1subProg();
-					pushFragmentsRegisterInStack(nextFragment);
-				}
-				if(levelChoice > 1){
 					nextFragment = new Fragment2worklog_2week();
 					pushFragmentsRegisterInStack(nextFragment);
 				}
-				if(levelChoice > 2){
+				if(levelChoice > 1){
 					nextFragment = new Fragment2worklog_3day();
 					pushFragmentsRegisterInStack(nextFragment);
 				}
-				if(levelChoice > 3){
+				if(levelChoice > 2){
 					nextFragment = new Fragment2worklog_4exercices();
 					pushFragmentsRegisterInStack(nextFragment);
 				}

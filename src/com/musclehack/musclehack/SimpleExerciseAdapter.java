@@ -139,7 +139,7 @@ public class SimpleExerciseAdapter extends SimpleCustomableAdapter {
 																	restText,
 																	weightText,
 																	nRepsText);
-									workoutManager.saveLastSubWorkout();
+									workoutManager.saveLastProgram();
 
 									//SimpleExerciseAdapter.this.notifyDataSetInvalidated();
 									//SimpleExerciseAdapter.this.notifyDataSetChanged();

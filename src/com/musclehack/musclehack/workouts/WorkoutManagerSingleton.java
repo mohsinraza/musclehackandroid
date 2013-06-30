@@ -13,8 +13,7 @@ import com.musclehack.musclehack.R;
 
 
 public class WorkoutManagerSingleton{
-	public static final String LAST_SUB_PROGRAM_SHORTCUT_NAME = "lastSubProgramShortcutName";
-	public static final String LAST_SUB_PROGRAM = "lastSubProgram";
+	public static final String LAST_PROGRAM_SHORTCUT_NAME = "lastProgramShortcutName";
 	public static final String LAST_PROGRAM = "lastProgram";
 	public static final String PREF_NAME = "MuscleHackPreferences";
 
@@ -24,7 +23,6 @@ public class WorkoutManagerSingleton{
 	//public HashMap<String, SubProgram> programs;
 	protected ProgramDbHelper dbHelper;
 	protected String selectedProgramName;
-	protected String selectedSubProgramName;
 	protected String selectedWeek;
 	protected String selectedDay;
 	protected int levelChoice;
@@ -61,7 +59,7 @@ public class WorkoutManagerSingleton{
 			String prefName = getPrefName();
 			SharedPreferences settings = WorkoutManagerSingleton.context.getSharedPreferences(prefName, 0);
 			SharedPreferences.Editor settingsEditor = settings.edit();
-			settingsEditor.putString(LAST_SUB_PROGRAM_SHORTCUT_NAME, "");
+			settingsEditor.putString(LAST_PROGRAM_SHORTCUT_NAME, "");
 			settingsEditor.commit();
 			WorkoutManagerSingleton.instance.databaseDeleted = true;
 			WorkoutManagerSingleton.instance.dbHelper = new ProgramDbHelper(WorkoutManagerSingleton.context);
@@ -105,9 +103,9 @@ public class WorkoutManagerSingleton{
 	public List<String> getAvailableProgramNames(){
 		List<String> programs = this.dbHelper.getAvailableProgramNames();
 		if(WorkoutManagerSingleton.context != null){
-			String lastSubProgram = this.getLastSubProgramShortcutName();
-			if(!lastSubProgram.equals("")){
-				programs.add(0, lastSubProgram);
+			String lastProgram = this.getLastProgramShortcutName();
+			if(!lastProgram.equals("")){
+				programs.add(0, lastProgram);
 			}
 		}
 		return programs;
@@ -117,43 +115,36 @@ public class WorkoutManagerSingleton{
 		return WorkoutManagerSingleton.PREF_NAME;
 	}
 
-	public String getLastSubProgramShortcutName(){
+	public String getLastProgramShortcutName(){
 		String prefName = getPrefName();
 		SharedPreferences settings = WorkoutManagerSingleton.context.getSharedPreferences(prefName, 0);
-		String lastSubProgram = settings.getString(LAST_SUB_PROGRAM_SHORTCUT_NAME, "");
-		return lastSubProgram;
+		String lastProgram = settings.getString(LAST_PROGRAM_SHORTCUT_NAME, "");
+		return lastProgram;
 	}	
 	
-	public void saveLastSubWorkout(){
+	public void saveLastProgram(){
 		String prefName = getPrefName();
 		SharedPreferences settings = WorkoutManagerSingleton.context.getSharedPreferences(prefName, 0);
 		SharedPreferences.Editor settingsEditor = settings.edit();
 		settingsEditor.putString(LAST_PROGRAM, this.selectedProgramName);
-		settingsEditor.putString(LAST_SUB_PROGRAM, this.selectedSubProgramName);
-		String lastSubPRogramShortcutName = WorkoutManagerSingleton.context.getString(R.string.currentSubWorkout)
-											+ " " + this.selectedSubProgramName;
-		settingsEditor.putString(LAST_SUB_PROGRAM_SHORTCUT_NAME, lastSubPRogramShortcutName);
+		String lastPRogramShortcutName = WorkoutManagerSingleton.context.getString(R.string.currentSubWorkout)
+											+ " " + this.selectedProgramName;
+		settingsEditor.putString(LAST_PROGRAM_SHORTCUT_NAME, lastPRogramShortcutName);
 		settingsEditor.commit();
 	}
 
-	public String selectLastSubProgram(){
+	public String selectLastProgram(){
 		String prefName = getPrefName();
 		SharedPreferences settings = WorkoutManagerSingleton.context.getSharedPreferences(prefName, 0);
 		String lastProgram = settings.getString(LAST_PROGRAM, "");
-		String lastSubProgram = settings.getString(LAST_SUB_PROGRAM, "");
-		if(!lastProgram.equals("") && !lastSubProgram.equals("")){
+		if(!lastProgram.equals("")){
 			this.selectProgram(lastProgram);
-			this.selectSubProgram(lastSubProgram);
 		}
-		return lastSubProgram;
+		return lastProgram;
 	}	
 
 	public void selectProgram(String programName){
 		this.selectedProgramName = programName;
-	}
-	
-	public void selectSubProgram(String subProgramName){
-		this.selectedSubProgramName = subProgramName;
 	}
 
 	public void selectWeek(String weekName){
@@ -170,7 +161,6 @@ public class WorkoutManagerSingleton{
 								String weight,
 								String nReps){
 		this.dbHelper.setExerciceInfo(this.selectedProgramName,
-										this.selectedSubProgramName,
 										this.selectedWeek,
 										this.selectedDay,
 										exerciseId,
@@ -180,45 +170,31 @@ public class WorkoutManagerSingleton{
 
 	}
 
-	public List<String> getAvailableSubProgramNames(){
-		List<String> subPrograms = this.dbHelper.getAvailableSubProgramNames(this.selectedProgramName);
-		return subPrograms;
-	}
-
-	public List<String> getAvailableSubProgramNames(String programName){
-		List<String> subPrograms = this.dbHelper.getAvailableSubProgramNames(programName);
-		return subPrograms;
-	}
 	
-	public boolean isSubProgramCompleted(String subProgramName){
-		boolean completed = this.dbHelper.isSubProgramCompleted(this.selectedProgramName,
-																subProgramName);
+	public boolean isProgramCompleted(String programName){
+		boolean completed = this.dbHelper.isProgramCompleted(this.selectedProgramName);
 		return completed;
 	}
 	
 	public List<String> getAvailableWeeks(){
-		List<String> weeks = this.dbHelper.getAvailableWeeks(this.selectedProgramName,
-															 this.selectedSubProgramName);
+		List<String> weeks = this.dbHelper.getAvailableWeeks(this.selectedProgramName);
 		return weeks;
 	}
 	
 	public boolean isWeekCompleted(String week){
 		boolean completed = this.dbHelper.isWeekCompleted(this.selectedProgramName,
-															this.selectedSubProgramName,
 															week);
 		return completed;
 	}
 	
 	public List<String> getAvailableDays(){
 		List<String> days = this.dbHelper.getAvailableDays(this.selectedProgramName,
-															this.selectedSubProgramName,
 															this.selectedWeek);
 		return days;
 	}
 	
 	public boolean isDayCompleted(String day){
 		boolean completed = this.dbHelper.isDayCompleted(this.selectedProgramName,
-															this.selectedSubProgramName,
 															this.selectedWeek,
 															day);
 		return completed;
@@ -226,7 +202,6 @@ public class WorkoutManagerSingleton{
 	
 	public List<Exercice> getAvailableExercices(){
 		List<Exercice> exercices = this.dbHelper.getAvailableExercices(this.selectedProgramName,
-																	this.selectedSubProgramName,
 																	this.selectedWeek,
 																	this.selectedDay);
 		return exercices;
@@ -239,7 +214,6 @@ public class WorkoutManagerSingleton{
 	
 	public List<Exercice> getPreviousExercices(){
 		List<Exercice> exercices = this.dbHelper.getPreviousExercices(this.selectedProgramName,
-																	this.selectedSubProgramName,
 																	this.selectedWeek,
 																	this.selectedDay);
 		return exercices;

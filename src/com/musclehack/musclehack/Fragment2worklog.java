@@ -145,21 +145,20 @@ public class Fragment2worklog extends ListFragment {
 		Log.d("Fragment2worklog", "public void doTransaction(String rowText) called");
 		if(!rowText.equals("")){
 			WorkoutManagerSingleton workoutManager = WorkoutManagerSingleton.getInstance();
-			String lastSubProgramShortcutName = workoutManager.getLastSubProgramShortcutName();
+			String lastSubProgramShortcutName = workoutManager.getLastProgramShortcutName();
 			ListFragment newFragment = null;
 			if(rowText.equals(lastSubProgramShortcutName)){
-				workoutManager.selectLastSubProgram();
-				newFragment = new Fragment2worklog_2week();
+				workoutManager.selectLastProgram();
 			}else{
 				workoutManager.selectProgram(rowText);
-				newFragment = new Fragment2worklog_1subProg();
 			}
+			newFragment = new Fragment2worklog_2week();
 			
 			FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
 			transaction.replace(this.getId(), newFragment);
 			//transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-			transaction.addToBackStack("progToSubProg");
+			transaction.addToBackStack("progToWeek");
 
 			transaction.commit();
 		}
