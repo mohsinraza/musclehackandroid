@@ -15,6 +15,9 @@ import com.musclehack.musclehack.R;
 public class WorkoutManagerSingleton{
 	public static final String LAST_PROGRAM_SHORTCUT_NAME = "lastProgramShortcutName";
 	public static final String LAST_PROGRAM = "lastProgram";
+	public static final String CREATE_PROGRAM = "Create/Edit a workout";
+	public static final String NEW_PROGRAM = "New";
+	public static final String NEW_PROGRAM_FROM_EXISTING = "New from an existing one";
 	public static final String PREF_NAME = "MuscleHackPreferences";
 
 	protected static WorkoutManagerSingleton instance = new WorkoutManagerSingleton();
@@ -108,6 +111,15 @@ public class WorkoutManagerSingleton{
 				programs.add(0, lastProgram);
 			}
 		}
+		programs.add(WorkoutManagerSingleton.CREATE_PROGRAM);
+		return programs;
+	}
+
+	public List<String> getAvailableProgramNamesToCustomize(){
+		List<String> programs = this.dbHelper.getAvailableProgramNames();
+		programs.add(WorkoutManagerSingleton.CREATE_PROGRAM);
+		programs.add(0, NEW_PROGRAM_FROM_EXISTING);
+		programs.add(0, NEW_PROGRAM);
 		return programs;
 	}
 

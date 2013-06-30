@@ -684,10 +684,36 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 												String week,
 												String day){
 		Log.d("ProgramDbHelper", "public List<Exercice> getAvailableExercices(...) called");
-		int idDay = this.getIdDay(programName, week, day);
-		List<Exercice> exercises = this.getAvailableExercices(programName,
-															week,
-															idDay);
+		String rawQuery = "SELECT * FROM "
+				+ "(SELECT id_day FROM "
+				+ "(SELECT id_week FROM program P"
+				+ " INNER JOIN week W"
+				+ " ON P.name = '" + programName + "'"
+				+ " AND P.id_program = W.id_program"
+				+ " AND W.name = '" + week + "'"
+				+ ") AS w1 INNER JOIN day"
+				+ " ON w1.id_week = day.id_week"
+				+ " AND day.name = '" + day + "'"
+				+ ") AS d1 INNER JOIN exercice E "
+				+ " ON E.id_day = d1.id_day";
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor cursorExercise = db.rawQuery(rawQuery, null);
+		List<Exercice> exercises = new ArrayList<Exercice>();
+		while(cursorExercise.moveToNext()){
+			int exerciceId = cursorExercise.getInt(1);
+			String exerciseName = cursorExercise.getString(2);
+			int nRep = cursorExercise.getInt(4);
+			float weight = cursorExercise.getFloat(5);
+			String repRange = cursorExercise.getString(6);
+			int rest = cursorExercise.getInt(7);
+			Exercice exercice = new Exercice(exerciceId, exerciseName, nRep, weight, repRange, rest);
+			exercises.add(exercice);
+		}
+		cursorExercise.close();
+		//int idDay = this.getIdDay(programName, week, day);
+		//List<Exercice> exercises = this.getAvailableExercices(programName,
+		//													week,
+		//													idDay);
 		Log.d("ProgramDbHelper", "public List<Exercice> getAvailableExercices(...) end");
 		return exercises;
 	}
@@ -698,6 +724,24 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 		Log.d("ProgramDbHelper", "public List<Exercice> getAvailableExercices id(...) called");
 		List<Exercice> exercises = null;
 		if(idDay != -1){
+			String rawQuery = "SELECT * FROM "
+					+ "exercice E "
+					+ "WHERE E.id_day = " + idDay;
+			SQLiteDatabase db = this.getReadableDatabase();
+			Cursor cursorExercise = db.rawQuery(rawQuery, null);
+			exercises = new ArrayList<Exercice>();
+			while(cursorExercise.moveToNext()){
+				int exerciceId = cursorExercise.getInt(0);
+				String exerciseName = cursorExercise.getString(1);
+				int nRep = cursorExercise.getInt(3);
+				float weight = cursorExercise.getFloat(4);
+				String repRange = cursorExercise.getString(5);
+				int rest = cursorExercise.getInt(6);
+				Exercice exercice = new Exercice(exerciceId, exerciseName, nRep, weight, repRange, rest);
+				exercises.add(exercice);
+			}
+			cursorExercise.close();
+			/*
 			SQLiteDatabase db = this.getReadableDatabase();
 			String[] projectionExercice = {
 					ContractExercise.COLUMN_NAME_ID,
@@ -731,6 +775,7 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 				}
 			}
 			cursorExercise.close();
+			//*/
 		}
 		Log.d("ProgramDbHelper", "public List<Exercice> getAvailableExercices id(...) end");
 		return exercises;

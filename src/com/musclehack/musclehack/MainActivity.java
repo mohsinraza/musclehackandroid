@@ -272,17 +272,23 @@ public class MainActivity extends FragmentActivity {
 				pushFragments(getString(R.string.worklog), fragment2worklog);
 				int levelChoice = WorkoutManagerSingleton.getInstance().getLevelChoice();
 				ListFragment nextFragment = null;
-				if(levelChoice > 0){
-					nextFragment = new Fragment2worklog_2week();
-					pushFragmentsRegisterInStack(nextFragment);
-				}
-				if(levelChoice > 1){
-					nextFragment = new Fragment2worklog_3day();
-					pushFragmentsRegisterInStack(nextFragment);
-				}
-				if(levelChoice > 2){
-					nextFragment = new Fragment2worklog_4exercices();
-					pushFragmentsRegisterInStack(nextFragment);
+				if(levelChoice < 10){ // means we are in filling workout branch
+					if(levelChoice > 0){
+						nextFragment = new Fragment2worklog_2week();
+						pushFragmentsRegisterInStack(nextFragment);
+					}
+					if(levelChoice > 1){
+						nextFragment = new Fragment2worklog_3day();
+						pushFragmentsRegisterInStack(nextFragment);
+					}
+					if(levelChoice > 2){
+						nextFragment = new Fragment2worklog_4exercices();
+						pushFragmentsRegisterInStack(nextFragment);
+					}
+				}else if(levelChoice < 20){ // means we are in the workout edition of a new workout branch
+					
+				}else if(levelChoice < 30){ // means we are in the workout edition of an existing workout branch
+					
 				}
 			}else if(tabId.equals(TAB_C)){
 				pushFragments(getString(R.string.testimonials), fragment3testimonials);

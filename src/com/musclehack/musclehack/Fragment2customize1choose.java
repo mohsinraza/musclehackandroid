@@ -17,8 +17,8 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class Fragment2worklog_2week extends ListFragment {
-	public static String TAG_TEXT_WORKLOG = "textWorklog";
+public class Fragment2customize1choose extends ListFragment {
+	public static String TAG_TEXT_WORKLOG = "textCustomize";
 	protected ArrayList<HashMap<String, String>> texts;
 	protected ListAdapter adapter;
 
@@ -26,12 +26,14 @@ public class Fragment2worklog_2week extends ListFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		Log.d("Fragment2worklog_2week", "public View onCreateView(...) called");
+		Log.d("Fragment2customize1choose", "public View onCreateView(...) called");
 		this.texts = new ArrayList<HashMap<String, String>>();
-		List<String> weekNames = WorkoutManagerSingleton.getInstance().getAvailableWeeks();
-		for(String weekName:weekNames){
+		List<String> choices
+		= WorkoutManagerSingleton.getInstance()
+		.getAvailableProgramNamesToCustomize();
+		for(String choice:choices){
 			HashMap<String, String> map = new HashMap<String, String>();
-			map.put(TAG_TEXT_WORKLOG, weekName);
+			map.put(TAG_TEXT_WORKLOG, choice);
 			this.texts.add(map);
 		}
 
@@ -41,17 +43,18 @@ public class Fragment2worklog_2week extends ListFragment {
 												new String[] { TAG_TEXT_WORKLOG },
 												new int[] { R.id.textWorklog});
 		setListAdapter(this.adapter);
-		WorkoutManagerSingleton.getInstance().setLevelChoice(1);
+		WorkoutManagerSingleton.getInstance().setLevelChoice(11); // it will go from 11 to more for this branch
 		View view = super.onCreateView(inflater, container, savedInstanceState);
-		Log.d("Fragment2worklog_2week", "public View onCreateView(...) end");
+		Log.d("Fragment2customize1choose", "public View onCreateView(...) end");
 		return view;
 	}
 	
 	
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id){
-		Log.d("Fragment2worklog_2week", "public void onListItemClick(...) called");
+		Log.d("Fragment2customize1choose", "public void onListItemClick(...) called");
 		super.onListItemClick(l, v, position, id);
+		/*//TODO
 		ListFragment newFragment = new Fragment2worklog_3day();
 		TextView textView = (TextView) v.findViewById(R.id.textWorklog); 
 		String clickedText = textView.getText().toString();
@@ -60,9 +63,10 @@ public class Fragment2worklog_2week extends ListFragment {
 
 		transaction.replace(this.getId(), newFragment);
 		//transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-		transaction.addToBackStack("weekToDay");
+		transaction.addToBackStack("workoutCreation");
 
 		transaction.commit();
-		Log.d("Fragment2worklog_2week", "public void onListItemClick(...) end");
+		//*/
+		Log.d("Fragment2customize1choose", "public void onListItemClick(...) end");
 	}
 }

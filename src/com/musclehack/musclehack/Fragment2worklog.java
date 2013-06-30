@@ -149,10 +149,14 @@ public class Fragment2worklog extends ListFragment {
 			ListFragment newFragment = null;
 			if(rowText.equals(lastSubProgramShortcutName)){
 				workoutManager.selectLastProgram();
+				newFragment = new Fragment2worklog_2week();
+			}else if(rowText.equals(WorkoutManagerSingleton.CREATE_PROGRAM)){
+				//TODO notify data manager we are in workout edition mode
+				newFragment = new Fragment2customize1choose();
 			}else{
 				workoutManager.selectProgram(rowText);
+				newFragment = new Fragment2worklog_2week();
 			}
-			newFragment = new Fragment2worklog_2week();
 			
 			FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
