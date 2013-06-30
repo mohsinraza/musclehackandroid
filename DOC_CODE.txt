@@ -1,0 +1,30 @@
+Here is a list of the source code file:
+=======================================
+.:
+ExercisesAdapter.java             images
+Fragment2customize1choose.java    MainActivity.java
+Fragment2worklog_2week.java       rss
+Fragment2worklog_3day.java        RssNotificationsService.java
+Fragment2worklog_4exercices.java  RssReceiver.java
+Fragment2worklog.java             SimpleCustomableAdapter.java
+Fragment4archives.java            SimpleDayAdapter.java
+Fragment6book.java                SimpleRssAdapter.java
+FragmentListFeed.java             SimpleWeekAdapter.java
+//MainActivity is the first activity launch. It contains the top fragment + the bottom tabs
+//The top fragment can be at first FragmentListFeed.java (used by the three rss list area: articles, recipe and success), Fragment2worklog.java, Fragment4archives.java, Fragment6book.java
+//Once a Fragment2worlog is displayed, it is possible to navigate through all Frament2*.java classes.
+//RssRecuiver.java and RssNotificationsService.java are used for the rss notification
+//All the classes with Adapter en their name are classes used by list view bazed on the android list view design pattern.
+
+./images:
+FileCache.java  ImageLoader.java  MemoryCache.java  Utils.java
+//All of the classes for the image cache of the rss listes . This is low-level code due to issue with the basic android components
+
+./rss:
+StackOverflowXmlParser.java
+//Used to retrieve the rss xml data
+
+./workouts:
+ContractProgram.java  Exercice.java  ProgramDbHelper.java  WorkoutManagerSingleton.java
+//Classes that contain and manage all of the workout data used by Fragment2*.java
+
