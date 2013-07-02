@@ -4,9 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import com.musclehack.musclehack.workouts.WorkoutManagerSingleton;
-
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
@@ -16,6 +15,8 @@ import android.view.ViewGroup;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.musclehack.musclehack.workouts.WorkoutManagerSingleton;
 
 public class Fragment2customize1choose extends ListFragment {
 	public static String TAG_TEXT_WORKLOG = "textCustomize";
@@ -54,6 +55,19 @@ public class Fragment2customize1choose extends ListFragment {
 	public void onListItemClick(ListView l, View v, int position, long id){
 		Log.d("Fragment2customize1choose", "public void onListItemClick(...) called");
 		super.onListItemClick(l, v, position, id);
+		TextView textView = (TextView) v.findViewById(R.id.textWorklog); 
+		String clickedText = textView.getText().toString();
+		Fragment newFragment = null;
+		if(clickedText.equals(WorkoutManagerSingleton.NEW_PROGRAM)){
+			newFragment = new Fragment2customize2name();
+		}
+		FragmentTransaction transaction
+			= getFragmentManager().beginTransaction();
+
+		transaction.replace(this.getId(), newFragment);
+		transaction.addToBackStack("workoutCreation");
+
+		transaction.commit();
 		/*//TODO
 		ListFragment newFragment = new Fragment2worklog_3day();
 		TextView textView = (TextView) v.findViewById(R.id.textWorklog); 

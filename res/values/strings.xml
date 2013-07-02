@@ -35,4 +35,7 @@
 	<string name="areYouSure">Are you sure?</string>
 	<string name="yes">Yes</string>
 	<string name="no">No</string>
+	<string name="numberOfWeeks">Number of weeks:</string>
+	<string name="nameWorkout">Name:</string>
+	<string name="saveAndContinue">Save and continue</string>
 </resources>

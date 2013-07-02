@@ -285,9 +285,7 @@ public class MainActivity extends FragmentActivity {
 						nextFragment = new Fragment2worklog_4exercices();
 						pushFragmentsRegisterInStack(nextFragment);
 					}
-				}else if(levelChoice < 20){ // means we are in the workout edition of a new workout branch
-					
-				}else if(levelChoice < 30){ // means we are in the workout edition of an existing workout branch
+				}else if(levelChoice < 20){ // means we are in the workout edition of a new or existing program branch
 					
 				}
 			}else if(tabId.equals(TAB_C)){

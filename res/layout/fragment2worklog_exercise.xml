@@ -116,7 +116,7 @@
 					<EditText
 						android:id="@+id/nreps"
 						android:layout_gravity="center_vertical"
-						android:inputType="numberSigned"
+						android:inputType="number"
 						android:selectAllOnFocus="true"
 						android:paddingRight="5dp"
 						android:layout_marginRight="8dp"
@@ -158,7 +158,7 @@
 					<EditText
 						android:id="@+id/rest"
 						android:layout_gravity="center_vertical"
-						android:inputType="numberSigned"
+						android:inputType="number"
 						android:selectAllOnFocus="true"
 						android:paddingRight="5dp"
 						android:layout_marginRight="8dp"
