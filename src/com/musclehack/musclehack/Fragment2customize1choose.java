@@ -60,12 +60,16 @@ public class Fragment2customize1choose extends ListFragment {
 		Fragment newFragment = null;
 		if(clickedText.equals(WorkoutManagerSingleton.NEW_PROGRAM)){
 			newFragment = new Fragment2customize2name();
+		}else if(clickedText.equals(WorkoutManagerSingleton.NEW_PROGRAM_FROM_EXISTING)){
+			//TODO
+		}else if(clickedText.equals(WorkoutManagerSingleton.DELETE_AN_EXISTING_ONE)){
+			//TODO
 		}
 		FragmentTransaction transaction
 			= getFragmentManager().beginTransaction();
 
 		transaction.replace(this.getId(), newFragment);
-		transaction.addToBackStack("workoutCreation");
+		//transaction.addToBackStack("workoutCreation");
 
 		transaction.commit();
 		/*//TODO

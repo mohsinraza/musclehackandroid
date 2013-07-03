@@ -40,15 +40,6 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="14sp" />
 
-    <Button
-        android:id="@+id/buttonSave"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/editTextNWeeks"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="27dp"
-        android:text="@string/saveAndContinue" />
-
     <TextView
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
@@ -59,5 +50,22 @@
         android:text="@string/nameWorkout"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="14sp" />
+
+    <Button
+        android:id="@+id/buttonSave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:text="@string/saveAndContinue" />
+
+    <Spinner
+        android:id="@+id/spinnerProgramNames"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/buttonSave"
+        android:layout_below="@+id/editTextNWeeks"
+        android:visibility="gone"
+        />
 
 </RelativeLayout>

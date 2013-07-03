@@ -18,6 +18,7 @@ public class WorkoutManagerSingleton{
 	public static final String CREATE_PROGRAM = "Create/Edit a workout";
 	public static final String NEW_PROGRAM = "New";
 	public static final String NEW_PROGRAM_FROM_EXISTING = "New from an existing one";
+	public static final String DELETE_AN_EXISTING_ONE = "Delete an existing one";
 	public static final String PREF_NAME = "MuscleHackPreferences";
 
 	protected static WorkoutManagerSingleton instance = new WorkoutManagerSingleton();
@@ -118,6 +119,7 @@ public class WorkoutManagerSingleton{
 	public List<String> getAvailableProgramNamesToCustomize(){
 		List<String> programs = this.dbHelper.getAvailableProgramNames();
 		programs.add(WorkoutManagerSingleton.CREATE_PROGRAM);
+		programs.add(0, DELETE_AN_EXISTING_ONE);
 		programs.add(0, NEW_PROGRAM_FROM_EXISTING);
 		programs.add(0, NEW_PROGRAM);
 		return programs;
@@ -233,5 +235,14 @@ public class WorkoutManagerSingleton{
 	
 	public void setExerciseCompleted(int exerciseId, boolean completed){
 		//TODO)
+	}
+	
+	public boolean isWorkoutNameAvailable(String name){
+		boolean available = this.dbHelper.isWorkoutNameAvailable(name);
+		return available;
+	}
+	
+	public void createProgram(String name, int nWeeks){
+		this.dbHelper.createProgram(name, nWeeks);
 	}
 }

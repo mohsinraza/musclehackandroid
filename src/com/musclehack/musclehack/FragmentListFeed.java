@@ -15,6 +15,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -76,9 +77,10 @@ public class FragmentListFeed extends ListFragment {
 			rssFeedList = new ArrayList<HashMap<String, String>>();
 			if(this.entries == null || this.entries.size() <= 0){
 				if(activity != null){
+					Resources res = activity.getResources();
 					new AlertDialog.Builder(activity)
-					.setTitle("No data")
-					.setMessage("No data could be retrieve. Please check your internet connection.")
+					.setTitle(res.getString(R.string.warningNoData))
+					.setMessage(res.getString(R.string.warningNoDataMessage))
 					.setNeutralButton("Ok",
 					new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int which) {

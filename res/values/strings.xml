@@ -38,4 +38,14 @@
 	<string name="numberOfWeeks">Number of weeks:</string>
 	<string name="nameWorkout">Name:</string>
 	<string name="saveAndContinue">Save and continue</string>
+	<string name="warningNeedName">Name required</string>
+	<string name="warningNeedNameMessage">You have to enter a program name!</string>
+	<string name="warningNeedNWeeks">Number of weeks</string>
+	<string name="warningNeedNWeeksMessage">You have to enter the number of weeks of the program!!</string>
+	<string name="warningNoData">No data</string>
+	<string name="warningNoDataMessage">No data could be retrieve. Please check your internet connection.!</string>
+	<string name="warningName">Name</string>
+	<string name="warningNameMessage">The entered name is already used!</string>
+	<string name="warningNWeeks">Number of weeks</string>
+	<string name="warningNWeeksMessage">The number of weeks has to be between 2 and 50!</string>
 </resources>

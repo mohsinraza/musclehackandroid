@@ -1087,5 +1087,25 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 		Log.d("ProgramDbHelper", "protected void updateProgramCompletedEventually(...) end");
 	}
 
+	public boolean isWorkoutNameAvailable(String name){
+		List<String> programNames = this.getAvailableProgramNames();
+		boolean available = !programNames.contains(name);
+		return available;
+	}
+	
+	public void createProgram(String name, int nWeeks){
+		SQLiteDatabase db = this.getWritableDatabase();
+		ContentValues values = new ContentValues();
+		values.put(ContractProgram.COLUMN_NAME_NAME, name);
+		values.put(ContractProgram.COLUMN_NAME_COMPLETED, false);
+		long newRowProgramId = db.insert(ContractProgram.TABLE_NAME, "null", values);
+		for(int i=0; i<nWeeks; i++){
+			values = new ContentValues();
+			values.put(ContractWorkoutWeek.COLUMN_NAME_NAME, "Week " + (i+1));
+			values.put(ContractWorkoutWeek.COLUMN_NAME_EXTERN_ID, newRowProgramId);
+			values.put(ContractWorkoutWeek.COLUMN_NAME_COMPLETED, false);
+			db.insert(ContractWorkoutWeek.TABLE_NAME, "null", values);
+		}
+	}
 }
 
