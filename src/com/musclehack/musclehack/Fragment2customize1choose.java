@@ -61,7 +61,9 @@ public class Fragment2customize1choose extends ListFragment {
 		if(clickedText.equals(WorkoutManagerSingleton.NEW_PROGRAM)){
 			newFragment = new Fragment2customize2name();
 		}else if(clickedText.equals(WorkoutManagerSingleton.NEW_PROGRAM_FROM_EXISTING)){
-			//TODO
+			Fragment2customize2name fragment = new Fragment2customize2name();
+			fragment.enableExistingProgramMode();
+			newFragment = fragment;
 		}else if(clickedText.equals(WorkoutManagerSingleton.DELETE_AN_EXISTING_ONE)){
 			//TODO
 		}

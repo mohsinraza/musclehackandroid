@@ -1107,5 +1107,13 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 			db.insert(ContractWorkoutWeek.TABLE_NAME, "null", values);
 		}
 	}
+	
+	public void createProgramFromExistingOne(
+			String name,
+			int nWeeks,
+			String existingProgramName){
+		this.createProgram(name, nWeeks);
+		//TODO copy values
+	}
 }
 

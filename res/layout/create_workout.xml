@@ -49,23 +49,40 @@
         android:layout_toLeftOf="@+id/editTextNWeeks"
         android:text="@string/nameWorkout"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="14sp" />
-
-    <Button
-        android:id="@+id/buttonSave"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="@string/saveAndContinue" />
-
-    <Spinner
-        android:id="@+id/spinnerProgramNames"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/buttonSave"
-        android:layout_below="@+id/editTextNWeeks"
-        android:visibility="gone"
+        android:textSize="14sp"
         />
+
+    <TextView
+        android:id="@+id/textViewProgram"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView2"
+        android:layout_below="@+id/editTextNWeeks"
+        android:layout_marginTop="26dp"
+        android:text="Program:"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="14sp"
+        android:visibility="gone" />
+
+
+        <Spinner
+	        android:id="@+id/spinnerProgramNames2"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_centerHorizontal="true"
+	        android:layout_below="@+id/editTextNWeeks"
+	        android:visibility="invisible"
+	        android:layout_marginTop="20dp"
+        />
+
+        <Button
+            android:id="@+id/buttonSave"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/spinnerProgramNames2"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="25dp"
+            android:text="@string/saveAndContinue"
+		/>
 
 </RelativeLayout>

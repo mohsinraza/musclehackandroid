@@ -1,36 +1,72 @@
 package com.musclehack.musclehack;
 
+import java.util.List;
+
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import com.musclehack.musclehack.workouts.WorkoutManagerSingleton;
 
 public class Fragment2customize2name extends Fragment {
-	/*//TODO je dois ajouter le fait qu'on peut
-	 * jiste vouloir créé un nouveau workout
-	 * dupuis un autre et affiché et remplir
-	 * le spinner puis créé les requettes qui
-	 * vont bien. Ensuite je devrais déboguer
-	 * et gérer cette histoire de retour en
-	 * arrière.
+	/*//TODO je dois maintenant régler cette histoire de
+	 * retour en arrière puis de rotation et aussi écrire 
+	 * le code pour dupliquer un program
 	 */
+
+	protected boolean fromExistingProgramMode;
 	protected View mainView;
+	
+	public Fragment2customize2name(){
+		super();
+		this.fromExistingProgramMode = false;
+		this.mainView = null;
+	}
+
+	
+	public void enableExistingProgramMode(){
+		this.fromExistingProgramMode = true;
+	}
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 								Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.create_workout,
+		this.mainView = inflater.inflate(R.layout.create_workout,
 				container, false);
-		return view;
+		this.fillSpinnerEventually(this.mainView);
+		this.connectButton(this.mainView);
+		return this.mainView;
 	}
 	
+	public void fillSpinnerEventually(View view){
+		if(this.fromExistingProgramMode){
+			List<String> programNames =
+					WorkoutManagerSingleton
+					.getInstance().getAvailableProgramNames();
+			Spinner spinner = (Spinner)
+					view.findViewById(R.id.spinnerProgramNames2);
+			spinner.setVisibility(View.VISIBLE);
+			//View program = 
+					//view.findViewById(R.id.textViewProgram);
+			//program.setVisibility(View.VISIBLE);
+			Context context = this.getActivity();
+			ArrayAdapter adapter = new ArrayAdapter<String>(context,
+					android.R.layout.simple_list_item_1,
+					programNames);
+			adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+			spinner.setAdapter(adapter);
+		}
+	}
 	public void connectButton(View view){
 		Button button = (Button)view.findViewById(R.id.buttonSave);
 		button.setOnClickListener(new View.OnClickListener() {
@@ -89,6 +125,18 @@ public class Fragment2customize2name extends Fragment {
 			.show();
 			return;
 		}
-		workoutManager.createProgram(programName, nWeeks);
+		if(this.fromExistingProgramMode){
+			Spinner spinner = (Spinner)
+					this.mainView.findViewById(
+							R.id.spinnerProgramNames2);
+			String existingProgramName
+			= spinner.getSelectedItem().toString();
+			workoutManager.createProgramFromExistingOne(
+					programName,
+					nWeeks,
+					existingProgramName);
+		}else{
+			workoutManager.createProgram(programName, nWeeks);
+		}
 	}
 }

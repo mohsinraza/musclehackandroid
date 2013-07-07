@@ -94,7 +94,7 @@ public class Fragment2worklog extends ListFragment {
 		@Override
 		protected List<String> doInBackground(Void... urls) {
 			Log.d("Fragment2worklog", "protected List<String> doInBackground(Void... urls) called");
-			List<String> programNames = WorkoutManagerSingleton.getInstance().getAvailableProgramNames();
+			List<String> programNames = WorkoutManagerSingleton.getInstance().getAvailableProgramNamesWithShortcut();
 			Log.d("Fragment2worklog", "protected List<String> doInBackground(Void... urls) end");
 			return programNames;
 		}

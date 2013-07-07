@@ -103,8 +103,14 @@ public class WorkoutManagerSingleton{
 	public int getLevelChoice(){
 		return this.levelChoice;
 	}
+	
 
 	public List<String> getAvailableProgramNames(){
+		List<String> programs = this.dbHelper.getAvailableProgramNames();
+		return programs;
+	}
+
+	public List<String> getAvailableProgramNamesWithShortcut(){
 		List<String> programs = this.dbHelper.getAvailableProgramNames();
 		if(WorkoutManagerSingleton.context != null){
 			String lastProgram = this.getLastProgramShortcutName();
@@ -244,5 +250,15 @@ public class WorkoutManagerSingleton{
 	
 	public void createProgram(String name, int nWeeks){
 		this.dbHelper.createProgram(name, nWeeks);
+	}
+	
+	public void createProgramFromExistingOne(
+			String name,
+			int nWeeks,
+			String existingProgramName){
+		this.dbHelper.createProgramFromExistingOne(
+				name,
+				nWeeks,
+				existingProgramName);
 	}
 }
