@@ -19,9 +19,9 @@ import android.widget.Spinner;
 import com.musclehack.musclehack.workouts.WorkoutManagerSingleton;
 
 public class Fragment2customize2name extends Fragment {
-	/*//TODO je dois maintenant régler cette histoire de
-	 * retour en arrière puis de rotation et aussi écrire 
-	 * le code pour dupliquer un program
+	/*//TODO Now I have to handle screen
+	 * rotation and write the database
+	 * code to duplicate the database
 	 */
 
 	protected boolean fromExistingProgramMode;

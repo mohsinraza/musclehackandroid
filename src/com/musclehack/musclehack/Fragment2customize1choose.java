@@ -71,7 +71,7 @@ public class Fragment2customize1choose extends ListFragment {
 			= getFragmentManager().beginTransaction();
 
 		transaction.replace(this.getId(), newFragment);
-		//transaction.addToBackStack("workoutCreation");
+		transaction.addToBackStack("customization");
 
 		transaction.commit();
 		/*//TODO
