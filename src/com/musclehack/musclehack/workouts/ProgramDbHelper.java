@@ -1,6 +1,7 @@
 ﻿package com.musclehack.musclehack.workouts;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
 
@@ -443,32 +444,6 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 		return programs;
 	}
 
-	/*
-	public List<String> getAvailableSubProgramNames(String programName){
-		Log.d("ProgramDbHelper","public List<String> getAvailableSubProgramNames(String programName) called");
-		SQLiteDatabase db = this.getReadableDatabase();
-		int idProgram = this.getIdProgram(programName);
-		String[] projectionSubProgram = {
-				ContractSubProgram.COLUMN_NAME_NAME,
-				ContractSubProgram.COLUMN_NAME_EXTERN_ID
-				};
-		Cursor cursorSubProgram = db.query(ContractSubProgram.TABLE_NAME, projectionSubProgram,                               // The columns to return
-								null, null, null, null, null);
-
-		List<String> subPrograms = new ArrayList<String>();
-		while(cursorSubProgram.moveToNext()){
-			int idExtProgram = cursorSubProgram.getInt(1);
-			if(idExtProgram == idProgram){
-				String subProgramName = cursorSubProgram.getString(0);
-				subPrograms.add(subProgramName);
-			}
-		}
-		cursorSubProgram.close();
-		Log.d("ProgramDbHelper","public List<String> getAvailableSubProgramNames(String programName) ends");
-		return subPrograms;
-	}
-	//*/
-
 	protected int getIdProgram(String programName){
 		Log.d("ProgramDbHelper", "protected int getIdProgram(String programName) called");
 		SQLiteDatabase db = this.getReadableDatabase();
@@ -515,33 +490,6 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 		return completed;
 	}
 	
-	/*
-	public boolean isSubProgramCompleted(String programName,
-											String subProgramName){
-		Log.d("ProgramDbHelper", "public boolean isSubProgramCompleted(...) called");
-		SQLiteDatabase db = this.getReadableDatabase();
-		int idSubProgram = this.getIdSubProgram(programName,
-												subProgramName);
-		String[] projectionSubProgram = {
-				ContractSubProgram.COLUMN_NAME_ID,
-				ContractSubProgram.COLUMN_NAME_COMPLETED
-				};
-		String[] selectionsArgs = {""+idSubProgram};
-		Cursor cursorSubProgram = db.query(ContractSubProgram.TABLE_NAME,
-											projectionSubProgram,                               // The columns to return
-											ContractSubProgram.COLUMN_NAME_ID + "=?",
-											selectionsArgs,
-											null,
-											null,null);
-		boolean completed = false;
-		if(cursorSubProgram.moveToNext()){
-			completed = cursorSubProgram.getInt(1) > 0;
-		}
-		cursorSubProgram.close();
-		Log.d("ProgramDbHelper", "public boolean isSubProgramCompleted(...) end");
-		return completed;
-	}
-//*/
 
 	public List<String> getAvailableWeeks(String programName){
 		Log.d("ProgramDbHelper", "public List<String> getAvailableWeeks(...) called");
@@ -710,10 +658,6 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 			exercises.add(exercice);
 		}
 		cursorExercise.close();
-		//int idDay = this.getIdDay(programName, week, day);
-		//List<Exercice> exercises = this.getAvailableExercices(programName,
-		//													week,
-		//													idDay);
 		Log.d("ProgramDbHelper", "public List<Exercice> getAvailableExercices(...) end");
 		return exercises;
 	}
@@ -741,41 +685,6 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 				exercises.add(exercice);
 			}
 			cursorExercise.close();
-			/*
-			SQLiteDatabase db = this.getReadableDatabase();
-			String[] projectionExercice = {
-					ContractExercise.COLUMN_NAME_ID,
-					ContractExercise.COLUMN_NAME_NAME,
-					ContractExercise.COLUMN_NAME_NREP,
-					ContractExercise.COLUMN_NAME_WEIGHT,
-					ContractExercise.COLUMN_NAME_REPRANGE,
-					ContractExercise.COLUMN_NAME_REST,
-					ContractExercise.COLUMN_NAME_EXTERN_ID
-					};
-			Cursor cursorExercise = db.query(ContractExercise.TABLE_NAME,
-											projectionExercice,
-											null,
-											null,
-											null,
-											null,
-											null);
-
-			exercises = new ArrayList<Exercice>();
-			while(cursorExercise.moveToNext()){
-				int idExtDay = cursorExercise.getInt(6);
-				if(idExtDay == idDay){
-					int exerciceId = cursorExercise.getInt(0);
-					String exerciseName = cursorExercise.getString(1);
-					int nRep = cursorExercise.getInt(2);
-					float weight = cursorExercise.getFloat(3);
-					String repRange = cursorExercise.getString(4);
-					int rest = cursorExercise.getInt(5);
-					Exercice exercice = new Exercice(exerciceId, exerciseName, nRep, weight, repRange, rest);
-					exercises.add(exercice);
-				}
-			}
-			cursorExercise.close();
-			//*/
 		}
 		Log.d("ProgramDbHelper", "public List<Exercice> getAvailableExercices id(...) end");
 		return exercises;
@@ -1112,8 +1021,44 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 			String name,
 			int nWeeks,
 			String existingProgramName){
+		Log.d("ProgramDbHelper", "public void createProgramFromExistingOne(...) called");
 		this.createProgram(name, nWeeks);
-		//TODO copy values
+		String rawQuery = "SELECT * FROM "
+				+ "(SELECT idDay, name FROM "
+				+ "(SELECT TOP 1 id_week FROM program P"
+				+ " INNER JOIN week W"
+				+ " ON P.name = '" + existingProgramName + "'"
+				+ " AND P.id_program = W.id_program"
+				+ ") AS w1 INNER JOIN day"
+				+ " ON w1.id_week = day.id_week"
+				+ ") AS d1 INNER JOIN exercice E "
+				+ " ON E.id_day = d1.id_day";
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor cursorExercises = db.rawQuery(rawQuery, null);
+
+		HashMap<String, List<Exercice>> exercises
+		= new HashMap<String, List<Exercice>>();
+		List<Exercice> exercisesOfDay = null;
+		while(cursorExercises.moveToNext()){
+			String dayName = cursorExercises.getString(2);
+			if(!exercises.containsKey(dayName)){
+				exercisesOfDay = new ArrayList<Exercice>();
+				exercises.put(dayName, exercisesOfDay);
+			}else{
+				exercisesOfDay = exercises.get(dayName);
+			}
+			String exerciseName = cursorExercises.getString(3);
+			int nRep = cursorExercises.getInt(5);
+			float weight = cursorExercises.getFloat(6);
+			String repRange = cursorExercises.getString(7);
+			int rest = cursorExercises.getInt(9);
+			Exercice exercice = new Exercice(-1, exerciseName, nRep, weight, repRange, rest);
+			exercisesOfDay.add(exercice);
+		
+		//TODO fill the database
+		cursorExercises.close();
+		Log.d("ProgramDbHelper", "public List<Exercice> getAvailableExercices(...) end");
+		}
 	}
 }
 
