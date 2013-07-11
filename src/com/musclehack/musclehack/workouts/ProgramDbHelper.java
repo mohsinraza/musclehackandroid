@@ -3,6 +3,7 @@
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Stack;
 
 import android.content.ContentValues;
@@ -62,6 +63,7 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 		Log.d("ProgramDbHelper","public void loadDefaultWorkout(SQLiteDatabase db) called");
 		String[] repRanges = {"8-12", "7-10", "6-8"};
 		ContentValues values = new ContentValues();
+		int nWeeks = 10;
 		//values.put(ContractProgram.COLUMN_NAME_NAME, "THT5 VOLUME CYCLES");
 		//long newRowProgramId = db.insert(ContractProgram.TABLE_NAME, "null", values);
 		for(String repRange:repRanges){
@@ -71,7 +73,7 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 			values.put(ContractProgram.COLUMN_NAME_NAME, "THT5 VOLUME " + repRange);
 			values.put(ContractProgram.COLUMN_NAME_COMPLETED, false);
 			long newRowProgramId = db.insert(ContractProgram.TABLE_NAME, "null", values);
-			for(int i=0; i<10; i++){
+			for(int i=0; i<nWeeks; i++){
 				values = new ContentValues();
 				values.put(ContractWorkoutWeek.COLUMN_NAME_NAME, "Week " + (i+1));
 				values.put(ContractWorkoutWeek.COLUMN_NAME_EXTERN_ID, newRowProgramId);
@@ -301,7 +303,7 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 			values.put(ContractProgram.COLUMN_NAME_NAME, "THT5 HIT " + repRange);
 			values.put(ContractProgram.COLUMN_NAME_COMPLETED, false);
 			long newRowProgramId = db.insert(ContractProgram.TABLE_NAME, "null", values);
-			for(int i=0; i<10; i++){
+			for(int i=0; i<nWeeks; i++){
 				values = new ContentValues();
 				values.put(ContractWorkoutWeek.COLUMN_NAME_NAME, "Week " + (i+1));
 				values.put(ContractWorkoutWeek.COLUMN_NAME_COMPLETED, false);
@@ -1002,7 +1004,7 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 		return available;
 	}
 	
-	public void createProgram(String name, int nWeeks){
+	long createProgram(String name, int nWeeks){
 		SQLiteDatabase db = this.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put(ContractProgram.COLUMN_NAME_NAME, name);
@@ -1015,6 +1017,7 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 			values.put(ContractWorkoutWeek.COLUMN_NAME_COMPLETED, false);
 			db.insert(ContractWorkoutWeek.TABLE_NAME, "null", values);
 		}
+		return newRowProgramId;
 	}
 	
 	public void createProgramFromExistingOne(
@@ -1022,7 +1025,7 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 			int nWeeks,
 			String existingProgramName){
 		Log.d("ProgramDbHelper", "public void createProgramFromExistingOne(...) called");
-		this.createProgram(name, nWeeks);
+		long newRowProgramId = this.createProgram(name, nWeeks);
 		String rawQuery = "SELECT * FROM "
 				+ "(SELECT idDay, name FROM "
 				+ "(SELECT TOP 1 id_week FROM program P"
@@ -1054,11 +1057,39 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 			int rest = cursorExercises.getInt(9);
 			Exercice exercice = new Exercice(-1, exerciseName, nRep, weight, repRange, rest);
 			exercisesOfDay.add(exercice);
-		
+		}
 		//TODO fill the database
+		for(int i=0; i<nWeeks; i++){
+			ContentValues values = new ContentValues();
+			values.put(ContractWorkoutWeek.COLUMN_NAME_NAME, "Week " + (i+1));
+			values.put(ContractWorkoutWeek.COLUMN_NAME_EXTERN_ID, newRowProgramId);
+			values.put(ContractWorkoutWeek.COLUMN_NAME_COMPLETED, false);
+			long newRowWeekId = db.insert(ContractWorkoutWeek.TABLE_NAME, "null", values);
+			for(Entry<String, List<Exercice>> entry : exercises.entrySet()) {
+				String dayName = entry.getKey();
+				List<Exercice> valueExercises = entry.getValue();
+				values = new ContentValues();
+				values.put(ContractWorkoutDay.COLUMN_NAME_NAME, dayName);
+				values.put(ContractWorkoutDay.COLUMN_NAME_COMPLETED, false);
+				values.put(ContractWorkoutDay.COLUMN_NAME_DAY_OF_WEEK, 0);
+				values.put(ContractWorkoutDay.COLUMN_NAME_EXTERN_ID, newRowWeekId);
+				long newRowDayId = db.insert(ContractWorkoutDay.TABLE_NAME, "null", values);
+				for(Exercice exercise : valueExercises){
+					values = new ContentValues();
+					values.put(ContractExercise.COLUMN_NAME_EXTERN_ID, newRowDayId);
+					values.put(ContractExercise.COLUMN_NAME_COMPLETED, false);
+					values.put(ContractExercise.COLUMN_NAME_NREP, 0);
+					values.put(ContractExercise.COLUMN_NAME_WEIGHT, 0.f);
+					values.put(ContractExercise.COLUMN_NAME_REPRANGE, exercise.repRange);
+					values.put(ContractExercise.COLUMN_NAME_REST, exercise.rest);
+					values.put(ContractExercise.COLUMN_NAME_NAME, exercise.name);
+					db.insert(ContractExercise.TABLE_NAME, "null", values);
+				}
+			}
+		}
 		cursorExercises.close();
 		Log.d("ProgramDbHelper", "public List<Exercice> getAvailableExercices(...) end");
-		}
+		
 	}
 }
 
