@@ -64,8 +64,7 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 		String[] repRanges = {"8-12", "7-10", "6-8"};
 		ContentValues values = new ContentValues();
 		int nWeeks = 10;
-		//values.put(ContractProgram.COLUMN_NAME_NAME, "THT5 VOLUME CYCLES");
-		//long newRowProgramId = db.insert(ContractProgram.TABLE_NAME, "null", values);
+		//TODO add order
 		for(String repRange:repRanges){
 			String[] repRangeSep = repRange.split("-");
 			String repRangeText = repRangeSep[0] + " to " + repRangeSep[1];
@@ -845,25 +844,10 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 										null,
 										null,
 										null);
-		//TODO optimize
 		while(cursorExercise.moveToNext()){
 			int currentExerciseId = cursorExercise.getInt(0);
 			if(currentExerciseId == exerciseId){
 				boolean completed = cursorExercise.getInt(1) > 0;
-				/*
-				String exerciseName = cursorExercise.getString(1);
-				int nRep = cursorExercise.getInt(2);
-				float weight = cursorExercise.getFloat(3);
-				String repRange = cursorExercise.getString(4);
-				int rest = cursorExercise.getInt(5);
-				Exercice exercise = new Exercice(currentExerciseId,
-												exerciseName,
-												nRep,
-												weight,
-												repRange,
-												rest);
-				boolean completed = exercise.isDone();
-				//*/
 				Log.d("ProgramDbHelper", "public boolean isExerciseCompleted(int exerciseId) end completed");
 				return completed;
 			}
@@ -1058,7 +1042,6 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 			Exercice exercice = new Exercice(-1, exerciseName, nRep, weight, repRange, rest);
 			exercisesOfDay.add(exercice);
 		}
-		//TODO fill the database
 		for(int i=0; i<nWeeks; i++){
 			ContentValues values = new ContentValues();
 			values.put(ContractWorkoutWeek.COLUMN_NAME_NAME, "Week " + (i+1));
@@ -1090,6 +1073,15 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 		cursorExercises.close();
 		Log.d("ProgramDbHelper", "public List<Exercice> getAvailableExercices(...) end");
 		
+	}
+	
+	public void deleteProgram(String programName){
+		SQLiteDatabase db = this.getWritableDatabase();
+		String deleteQuery
+		= "DELETE FROM " + ContractProgram.TABLE_NAME
+		+ " WHERE " + ContractProgram.COLUMN_NAME_NAME
+		+ "='" + programName + "'";
+		db.execSQL(deleteQuery);
 	}
 }
 

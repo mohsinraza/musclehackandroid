@@ -48,4 +48,8 @@
 	<string name="warningNameMessage">The entered name is already used!</string>
 	<string name="warningNWeeks">Number of weeks</string>
 	<string name="warningNWeeksMessage">The number of weeks has to be between 2 and 50!</string>
+	<string name="deleteSelectedWorkout">Delete selected workout</string>
+	<string name="infoWorkoutDeleted">Workout deleted</string>
+	<string name="infoWorkoutDeletedMessage">The workout has been deleted.</string>
+	
 </resources>

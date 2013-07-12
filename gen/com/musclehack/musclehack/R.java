@@ -72,13 +72,14 @@ public final class R {
     public static final class layout {
         public static final int activity_main=0x7f030000;
         public static final int create_workout=0x7f030001;
-        public static final int fragment1rss=0x7f030002;
-        public static final int fragment1rss_row=0x7f030003;
-        public static final int fragment2worklog=0x7f030004;
-        public static final int fragment2worklog_exercise=0x7f030005;
-        public static final int fragment3recipe=0x7f030006;
-        public static final int fragment4archives=0x7f030007;
-        public static final int tab_icon=0x7f030008;
+        public static final int delete_workout=0x7f030002;
+        public static final int fragment1rss=0x7f030003;
+        public static final int fragment1rss_row=0x7f030004;
+        public static final int fragment2worklog=0x7f030005;
+        public static final int fragment2worklog_exercise=0x7f030006;
+        public static final int fragment3recipe=0x7f030007;
+        public static final int fragment4archives=0x7f030008;
+        public static final int tab_icon=0x7f030009;
     }
     public static final class menu {
         public static final int main=0x7f090000;
@@ -95,7 +96,10 @@ public final class R {
         public static final int cart=0x7f070007;
         public static final int creatingWorkout=0x7f070010;
         public static final int currentSubWorkout=0x7f070011;
+        public static final int deleteSelectedWorkout=0x7f07002f;
         public static final int enableNotifications=0x7f070012;
+        public static final int infoWorkoutDeleted=0x7f070030;
+        public static final int infoWorkoutDeletedMessage=0x7f070031;
         public static final int loading=0x7f07000b;
         public static final int nameWorkout=0x7f070023;
         public static final int no=0x7f070021;

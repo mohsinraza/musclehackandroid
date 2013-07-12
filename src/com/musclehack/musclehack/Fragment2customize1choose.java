@@ -65,7 +65,8 @@ public class Fragment2customize1choose extends ListFragment {
 			fragment.enableExistingProgramMode();
 			newFragment = fragment;
 		}else if(clickedText.equals(WorkoutManagerSingleton.DELETE_AN_EXISTING_ONE)){
-			//TODO
+			Fragment2customize2delete fragment = new Fragment2customize2delete();
+			newFragment = fragment;
 		}
 		FragmentTransaction transaction
 			= getFragmentManager().beginTransaction();
@@ -74,19 +75,6 @@ public class Fragment2customize1choose extends ListFragment {
 		transaction.addToBackStack("customization");
 
 		transaction.commit();
-		/*//TODO
-		ListFragment newFragment = new Fragment2worklog_3day();
-		TextView textView = (TextView) v.findViewById(R.id.textWorklog); 
-		String clickedText = textView.getText().toString();
-		WorkoutManagerSingleton.getInstance().selectWeek(clickedText);
-		FragmentTransaction transaction = getFragmentManager().beginTransaction();
-
-		transaction.replace(this.getId(), newFragment);
-		//transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-		transaction.addToBackStack("workoutCreation");
-
-		transaction.commit();
-		//*/
 		Log.d("Fragment2customize1choose", "public void onListItemClick(...) end");
 	}
 }

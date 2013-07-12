@@ -261,4 +261,8 @@ public class WorkoutManagerSingleton{
 				nWeeks,
 				existingProgramName);
 	}
+	
+	public void deleteProgram(String programName){
+		this.dbHelper.deleteProgram(programName);
+	}
 }
