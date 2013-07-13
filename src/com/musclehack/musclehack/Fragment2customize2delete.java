@@ -88,5 +88,6 @@ public class Fragment2customize2delete extends Fragment {
 			public void onClick(DialogInterface dialog, int which) {
 			}
 		}).show(); //TODO update spinner data with adapter or equivalent'
+		this.fillSpinner(this.mainView);
 	}
 }
