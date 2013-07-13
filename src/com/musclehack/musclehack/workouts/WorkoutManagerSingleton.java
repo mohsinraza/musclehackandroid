@@ -124,7 +124,6 @@ public class WorkoutManagerSingleton{
 
 	public List<String> getAvailableProgramNamesToCustomize(){
 		List<String> programs = this.dbHelper.getAvailableProgramNames();
-		programs.add(WorkoutManagerSingleton.CREATE_PROGRAM);
 		programs.add(0, DELETE_AN_EXISTING_ONE);
 		programs.add(0, NEW_PROGRAM_FROM_EXISTING);
 		programs.add(0, NEW_PROGRAM);
