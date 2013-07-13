@@ -588,36 +588,28 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 		Log.d("ProgramDbHelper", "public List<String> getAvailableWeeks(...) end");
 		return weeks;
 	}
-
-	/*
-	protected int getIdSubProgram(String programName,
-									String subProgramName){
-		Log.d("ProgramDbHelper", "protected int getIdSubProgram(...) called");
+	
+	public String getFirstWeek(String programName){
+		Log.d("ProgramDbHelper", "public String getFirstWeek(...) called");
 		SQLiteDatabase db = this.getReadableDatabase();
 		int idProgram = this.getIdProgram(programName);
-		String[] projectionSubProgram = {
-				ContractSubProgram.COLUMN_NAME_ID,
-				ContractSubProgram.COLUMN_NAME_NAME,
-				ContractSubProgram.COLUMN_NAME_EXTERN_ID
+		String[] projectionWeek = {
+				ContractWorkoutWeek.COLUMN_NAME_NAME,
+				ContractWorkoutWeek.COLUMN_NAME_EXTERN_ID
 				};
-		Cursor cursorSubProgram = db.query(ContractSubProgram.TABLE_NAME,
-											projectionSubProgram,                               // The columns to return
-											null, null, null, null, null);
-		int idSubProgram = 0;
-		while(cursorSubProgram.moveToNext()){
-			int idExtProgram = cursorSubProgram.getInt(2);
-			if(idExtProgram == idProgram){
-				String currentSubProgramName = cursorSubProgram.getString(1);
-				if(currentSubProgramName.equals(subProgramName)){
-					idSubProgram = cursorSubProgram.getInt(0);
-				}
-			}
+		Cursor cursorWeek = db.query(ContractWorkoutWeek.TABLE_NAME,
+										projectionWeek,                               // The columns to return
+										null, null, null, null, null);
+
+		List<String> weeks = new ArrayList<String>();
+		String firstWeek = "";
+		if(cursorWeek.moveToNext()){
+			firstWeek = cursorWeek.getString(0);
 		}
-		cursorSubProgram.close();
-		Log.d("ProgramDbHelper", "protected int getIdSubProgram(...) end");
-		return idSubProgram;
+		cursorWeek.close();
+		Log.d("ProgramDbHelper", "public String getFirstWeek(...) end");
+		return firstWeek;
 	}
-	//*/
 	
 	public List<String> getAvailableDays(String programName,
 										String week){

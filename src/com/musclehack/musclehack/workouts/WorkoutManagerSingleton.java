@@ -170,6 +170,13 @@ public class WorkoutManagerSingleton{
 		this.selectedWeek = weekName;
 	}
 	
+	public void selectFistWeek(){
+		String firstWeek
+		= this.dbHelper.getFirstWeek(
+				this.selectedProgramName);
+		this.selectedWeek = firstWeek;
+	}
+	
 	public void selectDay(String dayName){
 		this.selectedDay = dayName;
 	}

@@ -99,31 +99,7 @@ public class Fragment2worklog_4exercices extends ListFragment {
 		Log.d("Fragment2worklog_4exercices", "exercises added in list");
 		this.adapter = new ExercisesAdapter(this.getActivity(),
 				this.texts);
-		/*
-		this.adapter = new SimpleExerciseAdapter(this.getActivity(),
-												this.texts,
-												R.layout.fragment2worklog_exercise,
-												new String[] {TAG_EXERCICE_NAME,
-																TAG_EXERCICE_NUMBER,
-																TAG_EXERCICE_ID,
-																TAG_EXERCICE_RANGE,
-																TAG_EXERCICE_REST,
-																TAG_EXERCICE_WEIGHT,
-																TAG_EXERCICE_NREPS,
-																TAG_EXERCICE_PREV_REST,
-																TAG_EXERCICE_PREV_WEIGHT,
-																TAG_EXERCICE_PREV_NREPS},
-												new int[] {R.id.exerciseName,
-															R.id.exerciseNumber,
-															R.id.exerciseId,
-															R.id.range,
-															R.id.rest,
-															R.id.weight,
-															R.id.nreps,
-															R.id.previousRest,
-															R.id.previousWeight,
-															R.id.previousNreps});
-															//*/
+		
 		setListAdapter(this.adapter);
 		Log.d("Fragment2worklog_4exercices", "adapter set");
 		WorkoutManagerSingleton.getInstance().setLevelChoice(3);

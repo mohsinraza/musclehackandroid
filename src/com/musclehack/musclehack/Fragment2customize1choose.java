@@ -67,6 +67,12 @@ public class Fragment2customize1choose extends ListFragment {
 		}else if(clickedText.equals(WorkoutManagerSingleton.DELETE_AN_EXISTING_ONE)){
 			Fragment2customize2delete fragment = new Fragment2customize2delete();
 			newFragment = fragment;
+		}else{
+			WorkoutManagerSingleton workoutManager = WorkoutManagerSingleton.getInstance();
+			workoutManager.selectProgram(clickedText);
+			workoutManager.selectFistWeek();
+			newFragment = new Fragment2customize3day();
+		
 		}
 		FragmentTransaction transaction
 			= getFragmentManager().beginTransaction();

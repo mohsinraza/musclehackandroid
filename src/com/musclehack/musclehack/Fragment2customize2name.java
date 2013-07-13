@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,10 +20,6 @@ import android.widget.Spinner;
 import com.musclehack.musclehack.workouts.WorkoutManagerSingleton;
 
 public class Fragment2customize2name extends Fragment {
-	/*//TODO Now I have to handle screen
-	 * rotation and write the database
-	 * code to duplicate the database
-	 */
 
 	protected boolean fromExistingProgramMode;
 	protected View mainView;
@@ -73,6 +70,7 @@ public class Fragment2customize2name extends Fragment {
 		    @Override
 		    public void onClick(View v) {
 		    	Fragment2customize2name.this.saveAndContinue();
+		    	
 		    }
 		});
 		
@@ -137,6 +135,16 @@ public class Fragment2customize2name extends Fragment {
 					existingProgramName);
 		}else{
 			workoutManager.createProgram(programName, nWeeks);
+			workoutManager.selectProgram(programName);
+			workoutManager.selectFistWeek();
+			Fragment newFragment = new Fragment2customize3day();
+			FragmentTransaction transaction
+				= getFragmentManager().beginTransaction();
+
+			transaction.replace(this.getId(), newFragment);
+			transaction.addToBackStack("customizationFromName");
+
+			transaction.commit();
 		}
 	}
 }
