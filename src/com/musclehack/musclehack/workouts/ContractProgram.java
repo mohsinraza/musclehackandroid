@@ -67,7 +67,7 @@ public abstract class ContractProgram implements BaseColumns {
 	public static abstract class ContractExercise implements BaseColumns {
 		public static final String TABLE_NAME = "exercice";
 		public static final String COLUMN_NAME_ID = "id_exercice";
-		public static final String COLUMN_NAME_ORDER = "order";
+		public static final String COLUMN_NAME_ORDER = "order_exercise";
 		public static final String COLUMN_NAME_NAME = "name";
 		public static final String COLUMN_NAME_COMPLETED = "completed";
 		public static final String COLUMN_NAME_NREP = "nrep";
@@ -77,6 +77,7 @@ public abstract class ContractProgram implements BaseColumns {
 		public static final String COLUMN_NAME_EXTERN_ID = "id_day";
 		public static final String CREATE_TABLE = "CREATE TABLE " + TABLE_NAME + "(" 
 													+ COLUMN_NAME_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+													+ COLUMN_NAME_ORDER + " INTEGER,"
 													+ COLUMN_NAME_NAME + " TEXT,"
 													+ COLUMN_NAME_COMPLETED + " BOOLEAN,"
 													+ COLUMN_NAME_NREP + " INTEGER,"
