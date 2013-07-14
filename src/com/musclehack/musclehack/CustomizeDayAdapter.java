@@ -63,7 +63,7 @@ public class CustomizeDayAdapter extends BaseAdapter {
 		//Check box
 		CheckBox checkBox = (CheckBox)
 				view.findViewById(R.id.checkBoxEnabled);
-		String value = row.get(R.id.textViewDayName);
+		String value = row.get(R.id.checkBoxEnabled);
 		Boolean checked = value.equals("true");
 		checkBox.setChecked(checked);
 		//Text view day name
@@ -77,7 +77,9 @@ public class CustomizeDayAdapter extends BaseAdapter {
 				view.findViewById(R.id.editTextName);
 		value = row.get(R.id.editTextName);
 		editText.setText(value);
-
+		if(position == this.data.size()-1){
+			view.setPadding(0, 0, 0, 150);
+		}
 		Log.d("CustomizeDayAdapter", "public View getView(…) end");
 		return view;
 	}

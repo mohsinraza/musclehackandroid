@@ -4,38 +4,51 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import android.graphics.Color;
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView.RecyclerListener;
-import android.widget.EditText;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 
-import com.musclehack.musclehack.workouts.Exercice;
+import com.musclehack.musclehack.workouts.Day;
 import com.musclehack.musclehack.workouts.WorkoutManagerSingleton;
 
 public class Fragment2customize3day extends ListFragment {
 	protected ArrayList<HashMap<Integer, String>> data;
+	@SuppressLint("UseSparseArrays")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		Log.d("Fragment2customize3day", "public View onCreateView(...) called");
 		this.data = new ArrayList<HashMap<Integer, String>>();
-		List<String> days = WorkoutManagerSingleton.getInstance()
+		List<Day> days = WorkoutManagerSingleton.getInstance()
 				.getAvailableDays();
 		//TODO get right Day
 		//TODO add in previous fragment to select a workout
-		for(String day : days){
+		HashMap<Integer, Day> daysHash = new HashMap<Integer, Day>();
+		for(Day day : days){
+			int dayOfTheWeek = day.getDayOfTheWeek();
+			daysHash.put(dayOfTheWeek, day);
+		}
+		
+		for(int i=0; i<7; i++){
 			HashMap<Integer, String> map = new HashMap<Integer, String>();
-			map.put(R.id.checkBoxEnabled, "false");
-			map.put(R.id.editTextName, day);
-			map.put(R.id.textViewDayName, day);
+			String dayName = Day.dayNames[i];
+			map.put(R.id.textViewDayName, dayName);
+			if(daysHash.containsKey(i)){
+				Day day = daysHash.get(i);
+				map.put(R.id.checkBoxEnabled, "true");
+				String workoutName = day.getWorkoutName();
+				map.put(R.id.editTextName, workoutName);
+			}else{
+				map.put(R.id.checkBoxEnabled, "false");
+				map.put(R.id.editTextName, "");
+			}
 			this.data.add(map);
+			
 		}
 		Log.d("Fragment2customize3day", "exercises added in list");
 		CustomizeDayAdapter adapter

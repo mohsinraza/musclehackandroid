@@ -611,25 +611,28 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 		return firstWeek;
 	}
 	
-	public List<String> getAvailableDays(String programName,
+	public List<Day> getAvailableDays(String programName,
 										String week){
 		Log.d("ProgramDbHelper", "public List<String> getAvailableDays(...) called");
 		SQLiteDatabase db = this.getReadableDatabase();
 		int idWeek = this.getIdWeek(programName, week);
 		String[] projectionDay = {
 				ContractWorkoutDay.COLUMN_NAME_NAME,
+				ContractWorkoutDay.COLUMN_NAME_DAY_OF_WEEK,
 				ContractWorkoutDay.COLUMN_NAME_EXTERN_ID
 				};
 		Cursor cursorDay = db.query(ContractWorkoutDay.TABLE_NAME,
 									projectionDay,                               // The columns to return
 									null, null, null, null, null);
 
-		List<String> days = new ArrayList<String>();
+		List<Day> days = new ArrayList<Day>();
 		while(cursorDay.moveToNext()){
-			int idExtWeek = cursorDay.getInt(1);
+			int idExtWeek = cursorDay.getInt(2);
 			if(idExtWeek == idWeek){
-				String dayName = cursorDay.getString(0);
-				days.add(dayName);
+				String workoutName = cursorDay.getString(0);
+				int dayOfTheWeek = cursorDay.getInt(1);
+				Day day = new Day(workoutName, dayOfTheWeek);
+				days.add(day);
 			}
 		}
 		cursorDay.close();
@@ -996,10 +999,11 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 		boolean oldCompleted = this.isWeekCompleted(programName,
 													week);
 		boolean completed = true;
-		List<String> days = getAvailableDays(programName,
+		List<Day> days = getAvailableDays(programName,
 												week);
-		for(String day:days){
-			boolean dayCompleted = this.isDayCompleted(programName, week, day);
+		for(Day day:days){
+			String workoutName = day.getWorkoutName();
+			boolean dayCompleted = this.isDayCompleted(programName, week, workoutName);
 			if(!dayCompleted){
 				completed = false;
 				break;

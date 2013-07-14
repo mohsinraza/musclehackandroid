@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.view.ViewParent;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
@@ -82,6 +83,11 @@ public class ExercisesAdapter extends BaseAdapter {
 	public View getView(int position, View view, ViewGroup listView) {
 		Log.d("ExercisesAdapter", "public View getView(…) called");
 		this.listView = (ListView)listView;
+		//FrameLayout frameLayout = (FrameLayout)this.listView.getParent();
+		//FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) frameLayout.getLayoutParams();
+		//params.setMargins(0, 0, 0, -50);
+		//this.listView.setPadding(0, 0, 0, 50);
+		//frameLayout.setLayoutParams(params);
 		if(view == null){
 			view = this.inflater.inflate(R.layout.fragment2worklog_exercise,
 											listView,
@@ -101,6 +107,12 @@ public class ExercisesAdapter extends BaseAdapter {
 		int idExercise = Integer.parseInt(row.get(R.id.exerciseId));
 		this.connectTimerButton(view, idExercise);
 		this.colorRowIfExerciseDone(view);
+		if(position == this.data.size()-1){
+			//LayoutParams layoutParams = view.getLayoutParams();
+			view.setPadding(0, 0, 0, 150);
+			//layoutParams.ssetMargins(0, 0, 0, 100);
+			//view.setLayoutParams(layoutParams);
+		}
 		Log.d("ExercisesAdapter", "public View getView(…) end");
 		return view;
 	}

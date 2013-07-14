@@ -213,8 +213,8 @@ public class WorkoutManagerSingleton{
 		return completed;
 	}
 	
-	public List<String> getAvailableDays(){
-		List<String> days = this.dbHelper.getAvailableDays(this.selectedProgramName,
+	public List<Day> getAvailableDays(){
+		List<Day> days = this.dbHelper.getAvailableDays(this.selectedProgramName,
 															this.selectedWeek);
 		return days;
 	}

@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import com.musclehack.musclehack.workouts.WorkoutManagerSingleton;
-
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
@@ -16,6 +14,9 @@ import android.view.ViewGroup;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.musclehack.musclehack.workouts.Day;
+import com.musclehack.musclehack.workouts.WorkoutManagerSingleton;
 
 public class Fragment2worklog_3day extends ListFragment {
 	 
@@ -29,10 +30,11 @@ public class Fragment2worklog_3day extends ListFragment {
 			Bundle savedInstanceState) {
 		Log.d("Fragment2worklog_3day", "public View onCreateView(...) called");
 		this.texts = new ArrayList<HashMap<String, String>>();
-		List<String> subProgramNames = WorkoutManagerSingleton.getInstance().getAvailableDays();
-		for(String subProgramName:subProgramNames){
+		List<Day> days = WorkoutManagerSingleton.getInstance().getAvailableDays();
+		for(Day day:days){
 			HashMap<String, String> map = new HashMap<String, String>();
-			map.put(TAG_TEXT_WORKLOG, subProgramName);
+			String workoutName = day.getWorkoutName();
+			map.put(TAG_TEXT_WORKLOG, workoutName);
 			this.texts.add(map);
 		}
 

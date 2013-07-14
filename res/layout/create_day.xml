@@ -31,4 +31,12 @@
         android:ems="10"
         android:inputType="text" />
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/pager_arrow_right"
+        android:layout_toRightOf="@id/editTextName"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        />
 </RelativeLayout>
