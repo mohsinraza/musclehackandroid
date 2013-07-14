@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 
 public class CustomizeDayAdapter extends BaseAdapter {
@@ -80,6 +82,14 @@ public class CustomizeDayAdapter extends BaseAdapter {
 		if(position == this.data.size()-1){
 			view.setPadding(0, 0, 0, 150);
 		}
+		checkBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+	        @Override
+	        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+	            // TODO create a fragment dialog that ask to import a day
+	        	// and then create or destroy the day
+
+	        }
+	    });
 		Log.d("CustomizeDayAdapter", "public View getView(…) end");
 		return view;
 	}

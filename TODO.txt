@@ -1,10 +1,10 @@
 ﻿- Handle screen rotation in the customization workout
 - In the cuttomization day area, add the checkbox listener
 - Under editable list view I should set a big bottom margin
+- Take account of the day and exercise order
 
 - Add a way to custom the workout
 - Add a css design to the archive list area
-- With a touch keyboard, the last row cannot be edited
 - Ask advice before releasing android beta app + on market + improve design + workout edition
 - Read an epub ebook version instead of a pdf one
 - In the workout log area, if the shortcut link a done program, it is not colored while it should
