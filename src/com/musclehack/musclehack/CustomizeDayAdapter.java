@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import android.content.Context;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +29,10 @@ public class CustomizeDayAdapter extends BaseAdapter {
 		this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		Log.d("CustomizeDayAdapter", "public CustomizeDayAdapter(…){ end");
 		
+	}
+	
+	public Context getContext(){
+		return this.context;
 	}
 	
 	@Override
@@ -83,13 +89,22 @@ public class CustomizeDayAdapter extends BaseAdapter {
 			view.setPadding(0, 0, 0, 150);
 		}
 		checkBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-	        @Override
-	        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-	            // TODO create a fragment dialog that ask to import a day
-	        	// and then create or destroy the day
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				// TODO create a fragment dialog that ask to import a day
+				// and then create or destroy the day
+				if(isChecked){
+					FragmentActivity activity = (FragmentActivity)
+							CustomizeDayAdapter.this.getContext();
+					FragmentManager fm = activity.getSupportFragmentManager();
+					ImportDayDialog editNameDialog = new ImportDayDialog();
+					editNameDialog.show(fm, "fragment_edit_name");
+				}else{
+					//TODO Ask for removing
+				}
 
-	        }
-	    });
+			}
+		});
 		Log.d("CustomizeDayAdapter", "public View getView(…) end");
 		return view;
 	}

@@ -1,6 +1,7 @@
 package com.musclehack.musclehack.workouts;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
@@ -217,6 +218,16 @@ public class WorkoutManagerSingleton{
 		List<Day> days = this.dbHelper.getAvailableDays(this.selectedProgramName,
 															this.selectedWeek);
 		return days;
+	}
+	
+	public List<String> getAvailableDayNames(){
+		List<Day> days = this.dbHelper.getAvailableDays(this.selectedProgramName,
+															this.selectedWeek);
+		List<String> dayNames = new ArrayList<String>();
+		for(Day day: days){
+			dayNames.add(day.getDayName());
+		}
+		return dayNames;
 	}
 	
 	public boolean isDayCompleted(String day){
