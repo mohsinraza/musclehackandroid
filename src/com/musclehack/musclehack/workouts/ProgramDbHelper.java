@@ -1158,6 +1158,26 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 		db.execSQL(deleteQuery);
 	}
 	
+	public void deleteDay(
+			String programName,
+			String dayName){
+		//TODO
+	}
 	
+	
+	public void createDay(
+			String programName,
+			String dayName,
+			int dayOfTheWeek){
+		//TODO
+	}
+	
+	public void createDayFromExistingOne(
+			String programName,
+			String dayName,
+			int dayOfTheWeek,
+			String existngOne){
+		//TODO
+	}
 }
 

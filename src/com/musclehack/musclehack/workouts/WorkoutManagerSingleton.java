@@ -282,4 +282,32 @@ public class WorkoutManagerSingleton{
 	public void deleteProgram(String programName){
 		this.dbHelper.deleteProgram(programName);
 	}
+	
+	public void deleteDay(
+			String dayName){
+		this.dbHelper.deleteDay(
+				this.selectedProgramName,
+				dayName);
+	}
+	
+	
+	public void createDay(
+			String dayName,
+			int dayOfTheWeek){
+		this.dbHelper.createDay(
+				this.selectedProgramName,
+				dayName,
+				dayOfTheWeek);
+	}
+	
+	public void createDayFromExistingOne(
+			String dayName,
+			int dayOfTheWeek,
+			String existngOne){
+		this.dbHelper.createDayFromExistingOne(
+				this.selectedProgramName,
+				dayName,
+				dayOfTheWeek,
+				existngOne);
+	}
 }
