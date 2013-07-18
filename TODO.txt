@@ -1,11 +1,9 @@
 ﻿- Imort and don't import button
 - Add a confirmation dialog to confirm deletion
-- Virer bottem margin with recycling
 - Put color on the create/edit workout row, in the exercise customization feature
 - Handle screen rotation in the customization workout
 - In the cuttomization day area, add the checkbox listener
 - Under editable list view I should set a big bottom margin
-- Take account of the day and exercise order
 
 - Add a way to custom the workout
 - Add a css design to the archive list area

@@ -623,7 +623,11 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 				};
 		Cursor cursorDay = db.query(ContractWorkoutDay.TABLE_NAME,
 									projectionDay,                               // The columns to return
-									null, null, null, null, null);
+									null,
+									null,
+									null,
+									null,
+									ContractWorkoutDay.COLUMN_NAME_DAY_OF_WEEK);
 
 		List<Day> days = new ArrayList<Day>();
 		while(cursorDay.moveToNext()){
@@ -711,7 +715,8 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 				+ " ON w1.id_week = day.id_week"
 				+ " AND day.name = '" + day + "'"
 				+ ") AS d1 INNER JOIN exercice E "
-				+ " ON E.id_day = d1.id_day";
+				+ " ON E.id_day = d1.id_day"
+				+ " ORDER BY E.order_exercise";
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursorExercise = db.rawQuery(rawQuery, null);
 		List<Exercice> exercises = new ArrayList<Exercice>();
@@ -738,7 +743,8 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 		if(idDay != -1){
 			String rawQuery = "SELECT * FROM "
 					+ "exercice E "
-					+ "WHERE E.id_day = " + idDay;
+					+ "WHERE E.id_day = " + idDay
+					+ " ORDER BY E.order_exercise";
 			SQLiteDatabase db = this.getReadableDatabase();
 			Cursor cursorExercise = db.rawQuery(rawQuery, null);
 			exercises = new ArrayList<Exercice>();
@@ -1151,5 +1157,7 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 		+ "='" + programName + "'";
 		db.execSQL(deleteQuery);
 	}
+	
+	
 }
 

@@ -129,6 +129,7 @@ public class Fragment2worklog_4exercices extends ListFragment {
 			    	this.resetTextView(view,  R.id.rest);
 			    	View mainLayout = (View)view.findViewById(R.id.mainLayout);
 			    	mainLayout.setBackgroundColor(Color.WHITE);
+			    	view.setPadding(0, 0, 0, 0);
 					
 		    	}
 		        Log.d("RecyclerListener", "public void onViewCreated(View viewTop, Bundle savedInstanceState){ end");

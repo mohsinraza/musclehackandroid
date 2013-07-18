@@ -133,7 +133,8 @@ public class ExercisesAdapter extends BaseAdapter {
 		EditText editText = (EditText)
 				view.findViewById(id);
 		String value = row.get(id);
-		if(Float.parseFloat(value) > 0.f){
+		Log.d("ExercisesAdapter", "value: " + value); 
+		if(value.equals("") || Float.parseFloat(value) > 0.f){
 			editText.setText(value);
 		}
 		editText.setOnFocusChangeListener(new OnWorkoutTextEditFocusChanged(position, view));

@@ -5,13 +5,16 @@ import java.util.HashMap;
 import java.util.List;
 
 import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.AbsListView.RecyclerListener;
 
 import com.musclehack.musclehack.workouts.Day;
 import com.musclehack.musclehack.workouts.WorkoutManagerSingleton;
@@ -68,10 +71,21 @@ public class Fragment2customize3day extends ListFragment {
 	public void onViewCreated(View viewTop, Bundle savedInstanceState){
 		Log.d("Fragment2customize3day", "public void onViewCreated(...) called");
 		super.onViewCreated(viewTop, savedInstanceState);
-		//*
-		//this.getListView().setRecyclerListener(new RecyclerListener() {
-		Log.d("Fragment2customize3day", "public void onViewCreated(...) end");
+		this.getListView().setRecyclerListener(new RecyclerListener() {
+		    @Override
+		    public void onMovedToScrapHeap(View view) {
+		    	Log.d("RecyclerListener", "public void onViewCreated(View viewTop, Bundle savedInstanceState){ called");
+		    	ListView listView = Fragment2customize3day.this.getListView();
+		    	int selectedItemPosition = listView.getSelectedItemPosition();
+		    	if(selectedItemPosition == ListView.INVALID_POSITION){
+		    		view.setPadding(0, 0, 0, 0);
+		    	}
+		        Log.d("RecyclerListener", "public void onViewCreated(View viewTop, Bundle savedInstanceState){ end");
+		    }
+		});
 	}
+	
+	
 	
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id){
