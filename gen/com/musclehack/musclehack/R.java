@@ -35,7 +35,8 @@ public final class R {
         public static final int timer=0x7f02000b;
     }
     public static final class id {
-        public static final int action_settings=0x7f0a0025;
+        public static final int action_settings=0x7f0a0026;
+        public static final int buttonCancel=0x7f0a0022;
         public static final int buttonNoImport=0x7f0a0020;
         public static final int buttonOkImport=0x7f0a0021;
         public static final int buttonRest=0x7f0a001b;
@@ -59,10 +60,10 @@ public final class R {
         public static final int rest=0x7f0a0019;
         public static final int spinnerDay=0x7f0a001f;
         public static final int spinnerProgramNames2=0x7f0a0007;
-        public static final int tab_icon=0x7f0a0023;
-        public static final int tab_text=0x7f0a0024;
+        public static final int tab_icon=0x7f0a0024;
+        public static final int tab_text=0x7f0a0025;
         public static final int tableLayout=0x7f0a0014;
-        public static final int tabsLayout=0x7f0a0022;
+        public static final int tabsLayout=0x7f0a0023;
         public static final int text=0x7f0a000c;
         public static final int textView1=0x7f0a0004;
         public static final int textView2=0x7f0a0005;
