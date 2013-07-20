@@ -1162,10 +1162,25 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 	//-------------------------------------------------------------
 	public void deleteDay(
 			String programName,
-			String dayName){
+			int dayOfTheWeek){
 		Log.d("ProgramDbHelper", "public void deleteDay(...) called");
+		SQLiteDatabase db = this.getWritableDatabase();
+		String deleteQuery
+		= "DELETE FROM " + ContractWorkoutDay.TABLE_NAME
+		+ " WHERE " + ContractWorkoutDay.COLUMN_NAME_DAY_OF_WEEK
+		+ "='" + dayOfTheWeek + "'"
+		+ " AND "+ ContractWorkoutDay.COLUMN_NAME_ID
+		+ " IN (SELECT idDay FROM "
+		+ "(SELECT id_week FROM program P"
+		+ " INNER JOIN week W"
+		+ " ON P.name = '" + programName + "'"
+		+ " AND P.id_program = W.id_program"
+		+ ") AS w1 INNER JOIN day"
+		+ " ON w1.id_week = day.id_week"
+		+ ") AS idDays";
+		
+		db.execSQL(deleteQuery);
 		Log.d("ProgramDbHelper", "public void deleteDay(...) end");
-		//TODO
 	}
 	//-------------------------------------------------------------
 	public void createDay(
@@ -1173,8 +1188,8 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 			String dayName,
 			int dayOfTheWeek){
 		Log.d("ProgramDbHelper", "public void createDay(...) called");
-		Log.d("ProgramDbHelper", "public void createDay(...) end");
 		//TODO
+		Log.d("ProgramDbHelper", "public void createDay(...) end");
 	}
 	//-------------------------------------------------------------
 	public void createDayFromExistingOne(
@@ -1183,8 +1198,8 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 			int dayOfTheWeek,
 			String existngOne){
 		Log.d("ProgramDbHelper", "public void createDayFromExistingOne(...) called");
-		Log.d("ProgramDbHelper", "public void createDayFromExistingOne(...) end");
 		//TODO
+		Log.d("ProgramDbHelper", "public void createDayFromExistingOne(...) end");
 	}
 	//-------------------------------------------------------------
 }

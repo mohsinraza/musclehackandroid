@@ -167,7 +167,7 @@ public class CustomizeDayAdapter extends BaseAdapter {
 		    	.setMessage("Are you sure you want to remove the day?")
 		    	.setIcon(android.R.drawable.ic_dialog_alert)
 		    	.setPositiveButton("Yes",
-		    			new DeleteDayClickListener(workoutName))
+		    			new DeleteDayClickListener(position))
 		    	.setNegativeButton("No", new DontDeleteDayClickListener())						//Do nothing on no
 		    	.show();
 			}
@@ -190,14 +190,14 @@ public class CustomizeDayAdapter extends BaseAdapter {
 
 
 	protected class DeleteDayClickListener implements DialogInterface.OnClickListener{
-		protected String dayName;
+		protected int dayOfTheWeek;
 
-		public DeleteDayClickListener(String dayName){
-			this.dayName = dayName;
+		public DeleteDayClickListener(int dayOfTheWeek){
+			this.dayOfTheWeek = dayOfTheWeek;
 		}
 	    public void onClick(DialogInterface dialog, int which) {			      	
 	    	WorkoutManagerSingleton.getInstance()
-	    	.deleteDay(this.dayName);
+	    	.deleteDay(this.dayOfTheWeek);
 	    }
 	}
 	

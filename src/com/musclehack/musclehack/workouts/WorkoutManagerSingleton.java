@@ -284,10 +284,10 @@ public class WorkoutManagerSingleton{
 	}
 	
 	public void deleteDay(
-			String dayName){
+			int dayOfTheWeek){
 		this.dbHelper.deleteDay(
 				this.selectedProgramName,
-				dayName);
+				dayOfTheWeek);
 	}
 	
 	
