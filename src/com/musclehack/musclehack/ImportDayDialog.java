@@ -5,6 +5,7 @@ import java.util.List;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
@@ -25,12 +26,17 @@ import com.musclehack.musclehack.workouts.WorkoutManagerSingleton;
 public class ImportDayDialog extends DialogFragment {
 	protected View view;
 	protected Context context;
+	CustomizeDayAdapter customizeDayAdapter;
 	protected Day dayToCreate;
 	protected static String dontImport = "Don't import";
 
-	public void init(Day dayToCreate, Context context){
+	public void init(
+			CustomizeDayAdapter adapter,
+			Day dayToCreate,
+			Context context){
 		this.dayToCreate = dayToCreate;
 		this.context = context;
+		this.customizeDayAdapter = adapter;
 	}
 
 	@Override
@@ -126,10 +132,28 @@ public class ImportDayDialog extends DialogFragment {
 			new AlertDialog.Builder(activity)
 			.setTitle("Workout name")
 			.setMessage("You have to type a workout name!")
+			.setNeutralButton("Ok",
+					new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int which) {
+				}
+			})
 			.show();
 		}else{
 			int dayOfTheWeek = this.dayToCreate.getDayOfTheWeek();
-			workoutManager.createDay(workoutName, dayOfTheWeek); //TODO check we have a selected program name
+			Spinner spinner = (Spinner)this.view
+					.findViewById(R.id.spinnerDay);
+			String fromDay
+			= spinner.getSelectedItem().toString();
+			if(fromDay.equals(ImportDayDialog.dontImport)){
+				workoutManager.createDay(
+						workoutName,
+						dayOfTheWeek); //TODO check we have a selected program name
+			}else{
+				workoutManager.createDayFromExistingOne(
+						workoutName,
+						dayOfTheWeek,
+						fromDay);
+			}
 			this.dismiss();
 			Log.d("ImportDayDialog", "public void importDay(...) end");
 		}
@@ -157,6 +181,7 @@ public class ImportDayDialog extends DialogFragment {
 	
 	public void cancel(){
 		Log.d("ImportDayDialog", "public void cancel() called");
+		this.customizeDayAdapter.setCheckLastPosition(false);
 		this.dismiss();
 		Log.d("ImportDayDialog", "public void cancel() end");
 	}

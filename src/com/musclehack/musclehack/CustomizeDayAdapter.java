@@ -18,8 +18,8 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.musclehack.musclehack.workouts.Day;
 import com.musclehack.musclehack.workouts.WorkoutManagerSingleton;
@@ -28,12 +28,17 @@ public class CustomizeDayAdapter extends BaseAdapter {
 	protected ArrayList<HashMap<Integer, String>> data;
 	protected Context context;
 	protected LayoutInflater inflater;
+	protected ListView listView;
+	protected int lastPosition;
+	protected boolean isChangingCheck;
 	
 	public CustomizeDayAdapter(Context context,
 			ArrayList<HashMap<Integer, String>> data){
 		Log.d("CustomizeDayAdapter", "public CustomizeDayAdapter(…){ called");
 		this.context = context;
 		this.data = data;
+		this.lastPosition = -1;
+		this.isChangingCheck = false;
 		this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		Log.d("CustomizeDayAdapter", "public CustomizeDayAdapter(…){ end");
 		
@@ -41,6 +46,10 @@ public class CustomizeDayAdapter extends BaseAdapter {
 	
 	public Context getContext(){
 		return this.context;
+	}
+	
+	public ListView getListView(){
+		return this.listView;
 	}
 	
 	@Override
@@ -109,6 +118,7 @@ public class CustomizeDayAdapter extends BaseAdapter {
 						isChecked);
 			}
 		});
+		this.listView = (ListView)listView;
 		Log.d("CustomizeDayAdapter", "public View getView(…) end");
 		return view;
 	}
@@ -117,52 +127,68 @@ public class CustomizeDayAdapter extends BaseAdapter {
 		// TODO create a fragment dialog that ask to import a day
 		// and then create or destroy the day
 		Log.d("CustomizeDayAdapter", "public void onCheckedBoxChanged(…) called");
-		View parentView = (View)buttonView.getParent();
-		TextView textViewPosition
-		= (TextView)parentView.findViewById(
-				R.id.textViewDayOfTheWeek);
-		String positionString = textViewPosition.getText().toString();
-		int position = Integer.parseInt(positionString);
-		EditText workoutNameEditText
-		= (EditText)parentView.findViewById(
-				R.id.editTextWorkoutName);
-		String workoutName
-		= workoutNameEditText.getText().toString();
-		if(isChecked){
-			/*
-			if(workoutName.equals("")){ //TODO check name available and add day eventually
-				Activity activity = (Activity)this.getContext();
-				//Resources res = activity.getResources();
-				new AlertDialog.Builder(activity)
-				.setTitle("Workout name")
-				.setMessage("You have to type a workout name!")
-				.show();
+		if(!this.isChangingCheck){
+			View parentView = (View)buttonView.getParent();
+			TextView textViewPosition
+			= (TextView)parentView.findViewById(
+					R.id.textViewDayOfTheWeek);
+			String positionString = textViewPosition.getText().toString();
+			int position = Integer.parseInt(positionString);
+			this.lastPosition = position;
+			EditText workoutNameEditText
+			= (EditText)parentView.findViewById(
+					R.id.editTextWorkoutName);
+			String workoutName
+			= workoutNameEditText.getText().toString();
+			if(isChecked){
+				/*
+				if(workoutName.equals("")){ //TODO check name available and add day eventually
+					Activity activity = (Activity)this.getContext();
+					//Resources res = activity.getResources();
+					new AlertDialog.Builder(activity)
+					.setTitle("Workout name")
+					.setMessage("You have to type a workout name!")
+					.show();
+				}else{
+				//*/
+				FragmentActivity activity = (FragmentActivity)
+						CustomizeDayAdapter.this.getContext();
+				FragmentManager fm = activity.getSupportFragmentManager();
+				ImportDayDialog editNameDialog = new ImportDayDialog();
+				Day dayToAdd = new Day(workoutName, position);
+				editNameDialog.init(this, dayToAdd, this.context);
+				editNameDialog.show(fm, "fragment_edit_name");
+				//}
 			}else{
-			//*/
-			FragmentActivity activity = (FragmentActivity)
-					CustomizeDayAdapter.this.getContext();
-			FragmentManager fm = activity.getSupportFragmentManager();
-			ImportDayDialog editNameDialog = new ImportDayDialog();
-			Day dayToAdd = new Day(workoutName, position);
-			editNameDialog.init(dayToAdd, this.context);
-			editNameDialog.show(fm, "fragment_edit_name");
-			//}
-		}else{
-			Activity activity = (Activity)this.getContext();
-			AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-	    	builder
-	    	.setTitle("Remove day")
-	    	.setMessage("Are you sure you want to remove the day?")
-	    	.setIcon(android.R.drawable.ic_dialog_alert)
-	    	.setPositiveButton("Yes",
-	    			new DeleteDayClickListener(workoutName))
-	    	.setNegativeButton("No", null)						//Do nothing on no
-	    	.show();
+				Activity activity = (Activity)this.getContext();
+				AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+		    	builder
+		    	.setTitle("Remove day")
+		    	.setMessage("Are you sure you want to remove the day?")
+		    	.setIcon(android.R.drawable.ic_dialog_alert)
+		    	.setPositiveButton("Yes",
+		    			new DeleteDayClickListener(workoutName))
+		    	.setNegativeButton("No", new DontDeleteDayClickListener())						//Do nothing on no
+		    	.show();
+			}
 		}
 		Log.d("CustomizeDayAdapter", "public void onCheckedBoxChanged(…) end");
 		
 	}
 	
+	public void setCheckLastPosition(boolean check){
+		Log.d("CustomizeDayAdapter", "public void setCheckLasPosition(…) called");
+		this.isChangingCheck = true;
+		ListView listView = CustomizeDayAdapter.this.getListView();
+    	View view = (View)listView.getChildAt(this.lastPosition);
+    	CheckBox checkBox = (CheckBox)
+				view.findViewById(R.id.checkBoxEnabled);
+		checkBox.setChecked(check);
+		this.isChangingCheck = false;
+		Log.d("CustomizeDayAdapter", "public void setCheckLasPosition(…) end");
+	}
+
+
 	protected class DeleteDayClickListener implements DialogInterface.OnClickListener{
 		protected String dayName;
 
@@ -172,6 +198,14 @@ public class CustomizeDayAdapter extends BaseAdapter {
 	    public void onClick(DialogInterface dialog, int which) {			      	
 	    	WorkoutManagerSingleton.getInstance()
 	    	.deleteDay(this.dayName);
+	    }
+	}
+	
+	protected class DontDeleteDayClickListener implements DialogInterface.OnClickListener{
+		public DontDeleteDayClickListener(){
+		}
+	    public void onClick(DialogInterface dialog, int which) {
+	    	CustomizeDayAdapter.this.setCheckLastPosition(true);
 	    }
 	}
 
