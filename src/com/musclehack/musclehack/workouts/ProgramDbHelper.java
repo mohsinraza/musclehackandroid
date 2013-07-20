@@ -1055,13 +1055,13 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 		}
 		Log.d("ProgramDbHelper", "protected void updateProgramCompletedEventually(...) end");
 	}
-
+	//-------------------------------------------------------------
 	public boolean isWorkoutNameAvailable(String name){
 		List<String> programNames = this.getAvailableProgramNames();
 		boolean available = !programNames.contains(name);
 		return available;
 	}
-	
+	//-------------------------------------------------------------
 	long createProgram(String name, int nWeeks){
 		SQLiteDatabase db = this.getWritableDatabase();
 		ContentValues values = new ContentValues();
@@ -1077,7 +1077,7 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 		}
 		return newRowProgramId;
 	}
-	
+	//-------------------------------------------------------------
 	public void createProgramFromExistingOne(
 			String name,
 			int nWeeks,
@@ -1148,36 +1148,44 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 		Log.d("ProgramDbHelper", "public List<Exercice> getAvailableExercices(...) end");
 		
 	}
-	
+	//-------------------------------------------------------------
 	public void deleteProgram(String programName){
+		Log.d("ProgramDbHelper", "public void deleteProgram(...) called");
 		SQLiteDatabase db = this.getWritableDatabase();
 		String deleteQuery
 		= "DELETE FROM " + ContractProgram.TABLE_NAME
 		+ " WHERE " + ContractProgram.COLUMN_NAME_NAME
 		+ "='" + programName + "'";
 		db.execSQL(deleteQuery);
+		Log.d("ProgramDbHelper", "public void deleteProgram(...) end");
 	}
-	
+	//-------------------------------------------------------------
 	public void deleteDay(
 			String programName,
 			String dayName){
+		Log.d("ProgramDbHelper", "public void deleteDay(...) called");
+		Log.d("ProgramDbHelper", "public void deleteDay(...) end");
 		//TODO
 	}
-	
-	
+	//-------------------------------------------------------------
 	public void createDay(
 			String programName,
 			String dayName,
 			int dayOfTheWeek){
+		Log.d("ProgramDbHelper", "public void createDay(...) called");
+		Log.d("ProgramDbHelper", "public void createDay(...) end");
 		//TODO
 	}
-	
+	//-------------------------------------------------------------
 	public void createDayFromExistingOne(
 			String programName,
 			String dayName,
 			int dayOfTheWeek,
 			String existngOne){
+		Log.d("ProgramDbHelper", "public void createDayFromExistingOne(...) called");
+		Log.d("ProgramDbHelper", "public void createDayFromExistingOne(...) end");
 		//TODO
 	}
+	//-------------------------------------------------------------
 }
 

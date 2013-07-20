@@ -2,6 +2,8 @@ package com.musclehack.musclehack;
 
 import java.util.List;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -12,6 +14,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.musclehack.musclehack.workouts.Day;
@@ -21,12 +24,15 @@ import com.musclehack.musclehack.workouts.WorkoutManagerSingleton;
 
 public class ImportDayDialog extends DialogFragment {
 	protected View view;
+	protected Context context;
 	protected Day dayToCreate;
-	
-	public void setDay(Day day){
-		this.dayToCreate = day;
+	protected static String dontImport = "Don't import";
+
+	public void init(Day dayToCreate, Context context){
+		this.dayToCreate = dayToCreate;
+		this.context = context;
 	}
-	
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -34,7 +40,7 @@ public class ImportDayDialog extends DialogFragment {
 		this.view = inflater.inflate(
 				R.layout.import_exercises_in_day,
 				container);
-		getDialog().setTitle("Import exercises"); //TODO translate
+		getDialog().setTitle("Create day"); //TODO translate
 		this._fillSpinner(view);
 		this._connectButtons(view);
 		Log.d("ImportDayDialog", "public View onCreateView(...) end");
@@ -46,6 +52,7 @@ public class ImportDayDialog extends DialogFragment {
 		List<String> dayNames =
 				WorkoutManagerSingleton
 				.getInstance().getAvailableDayNames();
+		dayNames.add(0, ImportDayDialog.dontImport);
 		Spinner spinner = (Spinner)
 				view.findViewById(R.id.spinnerDay);
 		spinner.setVisibility(View.VISIBLE);
@@ -73,6 +80,7 @@ public class ImportDayDialog extends DialogFragment {
 		};
 		importButton.setOnClickListener(importButtonListener);
 		
+		/*
 		Button dontImportButton
 		= (Button)view.findViewById(
 				R.id.buttonNoImport);
@@ -86,6 +94,7 @@ public class ImportDayDialog extends DialogFragment {
 		};
 		dontImportButton.setOnClickListener(dontImportButtonListener);
 		Log.d("ImportDayDialog", "public void _connectButtons(...) end");
+		//*/
 		
 		Button cancelButton
 		= (Button)view.findViewById(
@@ -104,13 +113,29 @@ public class ImportDayDialog extends DialogFragment {
 	public void importDay(){
 		Log.d("ImportDayDialog", "public void importDay(...) called");
 		WorkoutManagerSingleton workoutManager = WorkoutManagerSingleton.getInstance();
-		String workoutName = this.dayToCreate.getWorkoutName();
-		int dayOfTheWeek = this.dayToCreate.getDayOfTheWeek();
-		workoutManager.createDay(workoutName, dayOfTheWeek); //TODO check we have a selected program name
-		//TODO launch next Fragment
-		Log.d("ImportDayDialog", "public void importDay(...) end");
+		EditText editText
+		= (EditText) this.view.findViewById(
+				R.id.editTextWorkoutName);
+		Log.d("ImportDayDialog", "edit text got");
+		String workoutName = editText.getText().toString();
+		if(workoutName.equals("")){ //TODO check name available and add day eventually
+			Activity activity
+			= (Activity)this.context;
+			Log.d("ImportDayDialog", "activity got");
+			//Resources res = activity.getResources();
+			new AlertDialog.Builder(activity)
+			.setTitle("Workout name")
+			.setMessage("You have to type a workout name!")
+			.show();
+		}else{
+			int dayOfTheWeek = this.dayToCreate.getDayOfTheWeek();
+			workoutManager.createDay(workoutName, dayOfTheWeek); //TODO check we have a selected program name
+			this.dismiss();
+			Log.d("ImportDayDialog", "public void importDay(...) end");
+		}
 	}
 	
+	/*
 	public void dontImportDay(){
 		Log.d("ImportDayDialog", "public void dontImportDay(...) called");
 		WorkoutManagerSingleton workoutManager = WorkoutManagerSingleton.getInstance();
@@ -128,6 +153,8 @@ public class ImportDayDialog extends DialogFragment {
 		Log.d("ImportDayDialog", "public void dontImportDay(...) end");
 	
 	}
+	//*/
+	
 	public void cancel(){
 		Log.d("ImportDayDialog", "public void cancel() called");
 		this.dismiss();

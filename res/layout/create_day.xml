@@ -19,23 +19,34 @@
         android:layout_below="@+id/checkBoxEnabled"
         android:layout_marginLeft="10dp"
         android:text="name:"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:visibility="gone"
+        android:textAppearance="?android:attr/textAppearanceMedium"  
+        />
 
     <EditText
-        android:id="@+id/editTextName"
+        android:id="@+id/editTextWorkoutName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/textViewDayName"
         android:layout_marginLeft="24dp"
         android:layout_toRightOf="@+id/textViewDayName"
         android:ems="10"
-        android:inputType="text" />
+        android:inputType="text" 
+        android:visibility="gone"
+        />
+    
+    <TextView
+        android:id="@+id/textViewDayOfTheWeek"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+		/>
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/pager_arrow_right"
-        android:layout_toRightOf="@id/editTextName"
+        android:layout_toRightOf="@id/editTextWorkoutName"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         />

@@ -29,6 +29,7 @@ public class Fragment2customize3day extends ListFragment {
 		this.data = new ArrayList<HashMap<Integer, String>>();
 		List<Day> days = WorkoutManagerSingleton.getInstance()
 				.getAvailableDays();
+		
 		//TODO get right Day
 		//TODO add in previous fragment to select a workout
 		HashMap<Integer, Day> daysHash = new HashMap<Integer, Day>();
@@ -50,8 +51,8 @@ public class Fragment2customize3day extends ListFragment {
 				map.put(R.id.checkBoxEnabled, "false");
 				map.put(R.id.editTextName, "");
 			}
+			map.put(R.id.textViewDayOfTheWeek, "" + i);
 			this.data.add(map);
-			
 		}
 		Log.d("Fragment2customize3day", "exercises added in list");
 		CustomizeDayAdapter adapter
