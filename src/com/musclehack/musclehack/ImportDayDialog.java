@@ -57,7 +57,7 @@ public class ImportDayDialog extends DialogFragment {
 		Log.d("ImportDayDialog", "public void _fillSpinner(...) called");
 		List<String> dayNames =
 				WorkoutManagerSingleton
-				.getInstance().getAvailableDayNames();
+				.getInstance().getAvailableWorkoutNames();
 		dayNames.add(0, ImportDayDialog.dontImport);
 		Spinner spinner = (Spinner)
 				view.findViewById(R.id.spinnerDay);

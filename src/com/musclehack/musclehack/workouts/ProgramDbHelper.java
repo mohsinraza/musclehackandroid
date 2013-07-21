@@ -671,7 +671,30 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 		Log.d("ProgramDbHelper", "protected int getIdWeek(...) end");
 		return idWeek;
 	}
-
+	protected List<Integer> getIdWeeks(String programName){
+		Log.d("ProgramDbHelper", "protected int getIdWeek(...) called");
+		SQLiteDatabase db = this.getReadableDatabase();
+		int idProgram = this.getIdProgram(programName);
+		String[] projectionWeek = {
+		ContractWorkoutWeek.COLUMN_NAME_ID,
+		ContractWorkoutWeek.COLUMN_NAME_EXTERN_ID
+		};
+		Cursor cursorWeek = db.query(ContractWorkoutWeek.TABLE_NAME,
+							projectionWeek,                               // The columns to return
+							null, null, null, null, null);
+		List<Integer> idWeeks = new ArrayList<Integer>();
+		while(cursorWeek.moveToNext()){
+			int idExtProgram = cursorWeek.getInt(1);
+			if(idExtProgram == idProgram){
+				int idWeek = cursorWeek.getInt(0);
+				idWeeks.add(idWeek);
+			}
+		}
+		cursorWeek.close();
+		Log.d("ProgramDbHelper", "protected int getIdWeek(...) end");
+		return idWeeks;
+	}
+	
 	public boolean isWeekCompleted(String programName,
 									String week){
 		Log.d("ProgramDbHelper", "public boolean isWeekCompleted(...) called");
@@ -816,7 +839,8 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 				ContractWorkoutDay.COLUMN_NAME_EXTERN_ID
 				};
 		Cursor cursorDay = db.query(ContractWorkoutDay.TABLE_NAME, projectionDay,                               // The columns to return
-								null, null, null, null, null);
+								null, null, null, null,
+								ContractWorkoutDay.COLUMN_NAME_DAY_OF_WEEK);
 		Stack<Integer> previousDays = new Stack<Integer>();
 		List<Exercice> currentExercises = null;
 		while(cursorDay.moveToNext()){
@@ -1170,14 +1194,14 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 		+ " WHERE " + ContractWorkoutDay.COLUMN_NAME_DAY_OF_WEEK
 		+ "='" + dayOfTheWeek + "'"
 		+ " AND "+ ContractWorkoutDay.COLUMN_NAME_ID
-		+ " IN (SELECT idDay FROM "
+		+ " IN (SELECT id_day FROM "
 		+ "(SELECT id_week FROM program P"
 		+ " INNER JOIN week W"
 		+ " ON P.name = '" + programName + "'"
 		+ " AND P.id_program = W.id_program"
 		+ ") AS w1 INNER JOIN day"
 		+ " ON w1.id_week = day.id_week"
-		+ ") AS idDays";
+		+ ") ";
 		
 		db.execSQL(deleteQuery);
 		Log.d("ProgramDbHelper", "public void deleteDay(...) end");
@@ -1188,7 +1212,16 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 			String dayName,
 			int dayOfTheWeek){
 		Log.d("ProgramDbHelper", "public void createDay(...) called");
-		//TODO
+		SQLiteDatabase db = this.getWritableDatabase();
+		List<Integer> idWeeks = this.getIdWeeks(programName);
+		for(Integer idWeek:idWeeks){
+			ContentValues values = new ContentValues();
+			values.put(ContractWorkoutDay.COLUMN_NAME_NAME, dayName);
+			values.put(ContractWorkoutDay.COLUMN_NAME_COMPLETED, false);
+			values.put(ContractWorkoutDay.COLUMN_NAME_DAY_OF_WEEK, dayOfTheWeek);
+			values.put(ContractWorkoutDay.COLUMN_NAME_EXTERN_ID, idWeek);
+			long newRowDayId = db.insert(ContractWorkoutDay.TABLE_NAME, "null", values);
+		}
 		Log.d("ProgramDbHelper", "public void createDay(...) end");
 	}
 	//-------------------------------------------------------------
@@ -1196,9 +1229,39 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 			String programName,
 			String dayName,
 			int dayOfTheWeek,
-			String existngOne){
+			String existingOne){
 		Log.d("ProgramDbHelper", "public void createDayFromExistingOne(...) called");
-		//TODO
+		SQLiteDatabase db = this.getWritableDatabase();
+		String firstWeekName = this.getFirstWeek(programName);
+		List<Exercice> exercises = this.getAvailableExercices(
+				programName,
+				firstWeekName,
+				existingOne);
+		List<Integer> idWeeks = this.getIdWeeks(programName);
+		for(Integer idWeek:idWeeks){
+			ContentValues values = new ContentValues();
+			values.put(ContractWorkoutDay.COLUMN_NAME_NAME, dayName);
+			values.put(ContractWorkoutDay.COLUMN_NAME_COMPLETED, false);
+			values.put(ContractWorkoutDay.COLUMN_NAME_DAY_OF_WEEK, dayOfTheWeek);
+			values.put(ContractWorkoutDay.COLUMN_NAME_EXTERN_ID, idWeek);
+			long newRowDayId = db.insert(ContractWorkoutDay.TABLE_NAME, "null", values);
+			int orderExercise = 0;
+			for(Exercice exercise: exercises){
+				values = new ContentValues();
+				values.put(ContractExercise.COLUMN_NAME_EXTERN_ID, newRowDayId);
+				values.put(ContractExercise.COLUMN_NAME_ORDER, orderExercise++);
+				values.put(ContractExercise.COLUMN_NAME_COMPLETED, false);
+				values.put(ContractExercise.COLUMN_NAME_NREP, 0);
+				values.put(ContractExercise.COLUMN_NAME_WEIGHT, 0.f);
+				String repRange = exercise.getRepRange();
+				values.put(ContractExercise.COLUMN_NAME_REPRANGE, repRange);
+				int rest = exercise.getRest();
+				values.put(ContractExercise.COLUMN_NAME_REST, rest);
+				String exerciseName = exercise.getName();
+				values.put(ContractExercise.COLUMN_NAME_NAME, exerciseName);
+				db.insert(ContractExercise.TABLE_NAME, "null", values);
+			}
+		}
 		Log.d("ProgramDbHelper", "public void createDayFromExistingOne(...) end");
 	}
 	//-------------------------------------------------------------

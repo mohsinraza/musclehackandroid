@@ -1,9 +1,9 @@
-﻿- Imort and don't import button
-- Add a confirmation dialog to confirm deletion
+﻿- Deletion and import day mess up the database.
+- Improve import day dialog design
+- Imort day in asyncrone task with loading dialog
+- Create exercise customisation layout
 - Put color on the create/edit workout row, in the exercise customization feature
 - Handle screen rotation in the customization workout
-- In the cuttomization day area, add the checkbox listener
-- Under editable list view I should set a big bottom margin
 
 - Add a way to custom the workout
 - Add a css design to the archive list area

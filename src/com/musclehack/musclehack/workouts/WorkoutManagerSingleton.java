@@ -220,12 +220,12 @@ public class WorkoutManagerSingleton{
 		return days;
 	}
 	
-	public List<String> getAvailableDayNames(){
+	public List<String> getAvailableWorkoutNames(){
 		List<Day> days = this.dbHelper.getAvailableDays(this.selectedProgramName,
 															this.selectedWeek);
 		List<String> dayNames = new ArrayList<String>();
 		for(Day day: days){
-			dayNames.add(day.getDayName());
+			dayNames.add(day.getWorkoutName());
 		}
 		return dayNames;
 	}

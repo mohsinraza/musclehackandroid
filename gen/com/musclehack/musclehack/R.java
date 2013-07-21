@@ -35,9 +35,9 @@ public final class R {
         public static final int timer=0x7f02000b;
     }
     public static final class id {
-        public static final int action_settings=0x7f0a0027;
-        public static final int buttonCancel=0x7f0a0023;
-        public static final int buttonOkImport=0x7f0a0022;
+        public static final int action_settings=0x7f0a0028;
+        public static final int buttonCancel=0x7f0a0024;
+        public static final int buttonOkImport=0x7f0a0023;
         public static final int buttonRest=0x7f0a001d;
         public static final int buttonSave=0x7f0a000a;
         public static final int checkBoxEnabled=0x7f0a0000;
@@ -60,16 +60,17 @@ public final class R {
         public static final int rest=0x7f0a001b;
         public static final int spinnerDay=0x7f0a0021;
         public static final int spinnerProgramNames2=0x7f0a0009;
-        public static final int tab_icon=0x7f0a0025;
-        public static final int tab_text=0x7f0a0026;
+        public static final int tab_icon=0x7f0a0026;
+        public static final int tab_text=0x7f0a0027;
         public static final int tableLayout=0x7f0a0016;
-        public static final int tabsLayout=0x7f0a0024;
+        public static final int tabsLayout=0x7f0a0025;
         public static final int text=0x7f0a000e;
         public static final int textView1=0x7f0a0006;
         public static final int textView2=0x7f0a0007;
         public static final int textViewDayName=0x7f0a0001;
         public static final int textViewDayOfTheWeek=0x7f0a0003;
         public static final int textViewProgram=0x7f0a0008;
+        public static final int textViewWorkoutName=0x7f0a0022;
         public static final int textWorklog=0x7f0a0010;
         public static final int title=0x7f0a000c;
         public static final int topLayout=0x7f0a0011;
