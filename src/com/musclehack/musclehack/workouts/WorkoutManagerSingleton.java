@@ -237,7 +237,7 @@ public class WorkoutManagerSingleton{
 		return completed;
 	}
 	
-	public List<Exercice> getAvailableExercices(){
+	public List<Exercice> getAvailableExercises(){
 		List<Exercice> exercices = this.dbHelper.getAvailableExercices(this.selectedProgramName,
 																	this.selectedWeek,
 																	this.selectedDay);

@@ -866,8 +866,8 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 		for(Integer previousDay:previousDays){
 			List<Exercice> exercises = this.getAvailableExercices(programName,
 					week,
-					previousDay);
-			if(exercisesListEquals(exercises, currentExercises)){
+		previousDay);
+if(exercisesListEquals(exercises, currentExercises)){
 				idPreviousDay = previousDay;
 				break;
 			}

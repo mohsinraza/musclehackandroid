@@ -41,7 +41,7 @@ public class Fragment2worklog_4exercices extends ListFragment {
 		Log.d("Fragment2worklog_4exercices", "public View onCreateView(...) called");
 		//this.texts = new ArrayList<HashMap<String, String>>();
 		this.texts = new ArrayList<HashMap<Integer, String>>();
-		List<Exercice> exercises = WorkoutManagerSingleton.getInstance().getAvailableExercices();
+		List<Exercice> exercises = WorkoutManagerSingleton.getInstance().getAvailableExercises();
 		Log.d("Fragment2worklog_4exercices", "exercises got");
 		List<Exercice> previousExercises = WorkoutManagerSingleton.getInstance().getPreviousExercices();
 		Log.d("Fragment2worklog_4exercices", "previousExercises got");

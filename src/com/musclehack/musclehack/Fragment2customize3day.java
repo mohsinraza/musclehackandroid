@@ -5,16 +5,16 @@ import java.util.HashMap;
 import java.util.List;
 
 import android.annotation.SuppressLint;
-import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.AbsListView.RecyclerListener;
+import android.widget.ListView;
 
 import com.musclehack.musclehack.workouts.Day;
 import com.musclehack.musclehack.workouts.WorkoutManagerSingleton;
@@ -92,6 +92,24 @@ public class Fragment2customize3day extends ListFragment {
 	public void onListItemClick(ListView l, View v, int position, long id){
 		Log.d("Fragment2customize3day", "public void onListItemClick(...) called");
 		super.onListItemClick(l, v, position, id);
+		//TODO here if checked
+		HashMap<Integer, String> row = this.data.get(position);
+		String checkString = row.get(R.id.checkBoxEnabled);
+		String workoutName = row.get(R.id.editTextWorkoutName); //TODO check it is but update
+		boolean check = checkString.equals("true");
+		if(check){
+			WorkoutManagerSingleton workoutManager
+			= WorkoutManagerSingleton.getInstance();
+			workoutManager.selectDay(workoutName);
+			Fragment newFragment = new Fragment2customize4exercise();
+			FragmentTransaction transaction
+				= getFragmentManager().beginTransaction();
+
+			transaction.replace(this.getId(), newFragment);
+			transaction.addToBackStack("customizationExercises");
+
+			transaction.commit();
+		}
 		Log.d("Fragment2customize3day", "public void onListItemClick(...) end");
 	}
 	

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:text="Name:" />
+
+    <EditText
+        android:id="@+id/editTextExerciseName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/textView1"
+        android:layout_marginLeft="70dp"
+        android:layout_toRightOf="@+id/textView1"
+        android:ems="10"
+        android:layout_marginRight="20dp"
+        >
+
+        <requestFocus />
+    </EditText>
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView1"
+        android:layout_below="@+id/editTextExerciseName"
+        android:layout_marginTop="28dp"
+        android:text="Rest time:"
+        />
+
+    <EditText
+        android:id="@+id/editTextRestTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/editTextExerciseName"
+        android:layout_alignTop="@+id/textView2"
+        android:ems="10"
+        android:layout_marginRight="20dp"
+        />
+
+    <Button
+        android:id="@+id/buttonAddUnder"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/editTextRestTime"
+        android:layout_marginTop="24dp"
+        android:layout_marginLeft="14dp"
+        android:text="Add under" />
+
+    <Button
+        android:id="@+id/buttonDuplicateUnder"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/buttonAddUnder"
+        android:layout_toRightOf="@+id/buttonAddUnder"
+        android:text="Duplicate under"
+        android:layout_marginLeft="14dp"
+        />
+    
+    
+    <Button
+        android:id="@+id/buttonDrop"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/buttonAddUnder"
+        android:layout_toRightOf="@+id/buttonDuplicateUnder"
+        android:text="Drop"
+        android:layout_marginLeft="14dp"
+        />
+
+</RelativeLayout>

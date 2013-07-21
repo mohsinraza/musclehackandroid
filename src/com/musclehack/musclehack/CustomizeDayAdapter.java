@@ -184,6 +184,9 @@ public class CustomizeDayAdapter extends BaseAdapter {
     	CheckBox checkBox = (CheckBox)
 				view.findViewById(R.id.checkBoxEnabled);
 		checkBox.setChecked(check);
+		HashMap<Integer, String> row = this.data.get(this.lastPosition);
+		String checkString = check ? "true": "false";
+		row.put(R.id.checkBoxEnabled, checkString);
 		this.isChangingCheck = false;
 		Log.d("CustomizeDayAdapter", "public void setCheckLasPosition(…) end");
 	}
