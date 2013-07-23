@@ -1,4 +1,4 @@
-﻿- Update day data adapter
+﻿- Populate the exercise customization area
 - Deletion and import day mess up the database.
 - Improve import day dialog design
 - Imort day in asyncrone task with loading dialog

@@ -48,10 +48,10 @@ public class Fragment2customize3day extends ListFragment {
 				Day day = daysHash.get(i);
 				map.put(R.id.checkBoxEnabled, "true");
 				String workoutName = day.getWorkoutName();
-				map.put(R.id.editTextName, workoutName);
+				map.put(R.id.editTextWorkoutName, workoutName);
 			}else{
 				map.put(R.id.checkBoxEnabled, "false");
-				map.put(R.id.editTextName, "");
+				map.put(R.id.editTextWorkoutName, "");
 			}
 			map.put(R.id.textViewDayOfTheWeek, "" + i);
 			this.data.add(map);

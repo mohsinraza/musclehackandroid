@@ -143,6 +143,7 @@ public class CustomizeDayAdapter extends BaseAdapter {
 					Log.d("Fragment2customize3day", "Is checked");
 					WorkoutManagerSingleton workoutManager
 					= WorkoutManagerSingleton.getInstance();
+					Log.d("Fragment2customize3day", "Selecting workout: " + workoutName);
 					workoutManager.selectDay(workoutName);
 					Fragment newFragment = new Fragment2customize4exercise();
 					FragmentActivity fragmentActivity
