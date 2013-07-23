@@ -26,7 +26,7 @@ import com.musclehack.musclehack.workouts.WorkoutManagerSingleton;
 public class ImportDayDialog extends DialogFragment {
 	protected View view;
 	protected Context context;
-	CustomizeDayAdapter customizeDayAdapter;
+	protected CustomizeDayAdapter customizeDayAdapter;
 	protected Day dayToCreate;
 	protected static String dontImport = "Don't import";
 
@@ -154,6 +154,7 @@ public class ImportDayDialog extends DialogFragment {
 						dayOfTheWeek,
 						fromDay);
 			}
+			this.customizeDayAdapter.setEditingDayWorkoutName(workoutName);
 			this.dismiss();
 			Log.d("ImportDayDialog", "public void importDay(...) end");
 		}

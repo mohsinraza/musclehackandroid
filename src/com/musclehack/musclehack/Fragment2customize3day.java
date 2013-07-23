@@ -98,6 +98,7 @@ public class Fragment2customize3day extends ListFragment {
 		String workoutName = row.get(R.id.editTextWorkoutName); //TODO check it is but update
 		boolean check = checkString.equals("true");
 		if(check){
+			Log.d("Fragment2customize3day", "Is checked");
 			WorkoutManagerSingleton workoutManager
 			= WorkoutManagerSingleton.getInstance();
 			workoutManager.selectDay(workoutName);

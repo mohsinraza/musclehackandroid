@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
@@ -42,6 +43,12 @@ public class CustomizeDayAdapter extends BaseAdapter {
 		this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		Log.d("CustomizeDayAdapter", "public CustomizeDayAdapter(…){ end");
 		
+	}
+	
+	public void setEditingDayWorkoutName(String name){
+		HashMap<Integer, String> row = this.data.get(
+				this.lastPosition);
+		row.put(R.id.editTextWorkoutName, name);
 	}
 	
 	public Context getContext(){
@@ -110,6 +117,11 @@ public class CustomizeDayAdapter extends BaseAdapter {
 		//if(position == this.data.size()-1){
 			//view.setPadding(0, 0, 0, 150);
 		//}
+		Button button = (Button) view.findViewById(R.id.buttonEdit);
+		if(!checked){
+			button.setVisibility(View.GONE);
+		}
+		
 		checkBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -134,23 +146,19 @@ public class CustomizeDayAdapter extends BaseAdapter {
 					R.id.textViewDayOfTheWeek);
 			String positionString = textViewPosition.getText().toString();
 			int position = Integer.parseInt(positionString);
+			HashMap<Integer, String> row = this.data.get(position);
+			String checkString = isChecked ? "true" : "false";
+			row.put(R.id.checkBoxEnabled, checkString);
 			this.lastPosition = position;
 			EditText workoutNameEditText
 			= (EditText)parentView.findViewById(
 					R.id.editTextWorkoutName);
 			String workoutName
 			= workoutNameEditText.getText().toString();
+
+			Button button = (Button) parentView.findViewById(R.id.buttonEdit);
 			if(isChecked){
-				/*
-				if(workoutName.equals("")){ //TODO check name available and add day eventually
-					Activity activity = (Activity)this.getContext();
-					//Resources res = activity.getResources();
-					new AlertDialog.Builder(activity)
-					.setTitle("Workout name")
-					.setMessage("You have to type a workout name!")
-					.show();
-				}else{
-				//*/
+				button.setVisibility(View.VISIBLE);
 				FragmentActivity activity = (FragmentActivity)
 						CustomizeDayAdapter.this.getContext();
 				FragmentManager fm = activity.getSupportFragmentManager();
@@ -160,6 +168,7 @@ public class CustomizeDayAdapter extends BaseAdapter {
 				editNameDialog.show(fm, "fragment_edit_name");
 				//}
 			}else{
+				button.setVisibility(View.GONE);
 				Activity activity = (Activity)this.getContext();
 				AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 		    	builder
@@ -187,6 +196,12 @@ public class CustomizeDayAdapter extends BaseAdapter {
 		HashMap<Integer, String> row = this.data.get(this.lastPosition);
 		String checkString = check ? "true": "false";
 		row.put(R.id.checkBoxEnabled, checkString);
+		Button button = (Button) view.findViewById(R.id.buttonEdit);
+		if(check){
+			button.setVisibility(View.VISIBLE);
+		}else{
+			button.setVisibility(View.GONE);
+		}
 		this.isChangingCheck = false;
 		Log.d("CustomizeDayAdapter", "public void setCheckLasPosition(…) end");
 	}
