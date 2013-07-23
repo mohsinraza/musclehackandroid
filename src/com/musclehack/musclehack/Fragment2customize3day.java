@@ -12,8 +12,10 @@ import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AbsListView.RecyclerListener;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.musclehack.musclehack.workouts.Day;
@@ -56,13 +58,17 @@ public class Fragment2customize3day extends ListFragment {
 		}
 		Log.d("Fragment2customize3day", "exercises added in list");
 		CustomizeDayAdapter adapter
-		= new CustomizeDayAdapter(this.getActivity(), this.data);
+		= new CustomizeDayAdapter(
+				this.getActivity(),
+				this.data,
+				this);
 		
 		setListAdapter(adapter);
 		Log.d("Fragment2customize3day", "adapter set");
 		//WorkoutManagerSingleton.getInstance().setLevelChoice(3);
 		View view = super.onCreateView(inflater, container, savedInstanceState);
-
+		Button buttonEdit = (Button) view.findViewById(R.id.buttonEdit);
+		
 		Log.d("Fragment2customize3day", "public View onCreateView(...) end");
 		return view;
 	}
@@ -92,25 +98,6 @@ public class Fragment2customize3day extends ListFragment {
 	public void onListItemClick(ListView l, View v, int position, long id){
 		Log.d("Fragment2customize3day", "public void onListItemClick(...) called");
 		super.onListItemClick(l, v, position, id);
-		//TODO here if checked
-		HashMap<Integer, String> row = this.data.get(position);
-		String checkString = row.get(R.id.checkBoxEnabled);
-		String workoutName = row.get(R.id.editTextWorkoutName); //TODO check it is but update
-		boolean check = checkString.equals("true");
-		if(check){
-			Log.d("Fragment2customize3day", "Is checked");
-			WorkoutManagerSingleton workoutManager
-			= WorkoutManagerSingleton.getInstance();
-			workoutManager.selectDay(workoutName);
-			Fragment newFragment = new Fragment2customize4exercise();
-			FragmentTransaction transaction
-				= getFragmentManager().beginTransaction();
-
-			transaction.replace(this.getId(), newFragment);
-			transaction.addToBackStack("customizationExercises");
-
-			transaction.commit();
-		}
 		Log.d("Fragment2customize3day", "public void onListItemClick(...) end");
 	}
 	

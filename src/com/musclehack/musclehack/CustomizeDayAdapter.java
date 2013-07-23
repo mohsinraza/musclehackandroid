@@ -7,12 +7,15 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -32,15 +35,18 @@ public class CustomizeDayAdapter extends BaseAdapter {
 	protected ListView listView;
 	protected int lastPosition;
 	protected boolean isChangingCheck;
+	protected Fragment fragment;
 	
 	public CustomizeDayAdapter(Context context,
-			ArrayList<HashMap<Integer, String>> data){
+			ArrayList<HashMap<Integer, String>> data,
+			Fragment fragment){
 		Log.d("CustomizeDayAdapter", "public CustomizeDayAdapter(…){ called");
 		this.context = context;
 		this.data = data;
 		this.lastPosition = -1;
 		this.isChangingCheck = false;
 		this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		this.fragment = fragment;
 		Log.d("CustomizeDayAdapter", "public CustomizeDayAdapter(…){ end");
 		
 	}
@@ -117,10 +123,44 @@ public class CustomizeDayAdapter extends BaseAdapter {
 		//if(position == this.data.size()-1){
 			//view.setPadding(0, 0, 0, 150);
 		//}
-		Button button = (Button) view.findViewById(R.id.buttonEdit);
+		Button editButton = (Button) view.findViewById(R.id.buttonEdit);
 		if(!checked){
-			button.setVisibility(View.GONE);
+			editButton.setVisibility(View.GONE);
 		}
+		OnClickListener onClickListener = new OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+
+				View parentView = (View)v.getParent();
+				int position = CustomizeDayAdapter.this.getPosition(parentView);
+				HashMap<Integer, String> row
+				= CustomizeDayAdapter.this.data.get(position);
+				String checkString = row.get(R.id.checkBoxEnabled);
+				String workoutName = row.get(R.id.editTextWorkoutName); //TODO check it is but update
+				boolean check = checkString.equals("true");
+				if(check){
+					Log.d("Fragment2customize3day", "Is checked");
+					WorkoutManagerSingleton workoutManager
+					= WorkoutManagerSingleton.getInstance();
+					workoutManager.selectDay(workoutName);
+					Fragment newFragment = new Fragment2customize4exercise();
+					FragmentActivity fragmentActivity
+					= (FragmentActivity)CustomizeDayAdapter.this.context;
+					FragmentTransaction transaction
+						= CustomizeDayAdapter.this.fragment.getFragmentManager()
+						.beginTransaction();
+
+					transaction.replace(
+							CustomizeDayAdapter.this.fragment.getId(),
+							newFragment);
+					transaction.addToBackStack("customizationExercises");
+
+					transaction.commit();
+				}
+			}
+		};
+		editButton.setOnClickListener(onClickListener);
 		
 		checkBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			@Override
@@ -135,17 +175,24 @@ public class CustomizeDayAdapter extends BaseAdapter {
 		return view;
 	}
 	
+	public int getPosition(View view){
+		Log.d("CustomizeDayAdapter", "public int getPosition(…) called");
+		TextView textViewPosition
+		= (TextView)view.findViewById(
+				R.id.textViewDayOfTheWeek);
+		String positionString = textViewPosition.getText().toString();
+		int position = Integer.parseInt(positionString);
+		Log.d("CustomizeDayAdapter", "public int getPosition(…) end");
+		return position;
+	}
+	
 	public void onCheckedBoxChanged(CompoundButton buttonView, boolean isChecked){
 		// TODO create a fragment dialog that ask to import a day
 		// and then create or destroy the day
 		Log.d("CustomizeDayAdapter", "public void onCheckedBoxChanged(…) called");
 		if(!this.isChangingCheck){
 			View parentView = (View)buttonView.getParent();
-			TextView textViewPosition
-			= (TextView)parentView.findViewById(
-					R.id.textViewDayOfTheWeek);
-			String positionString = textViewPosition.getText().toString();
-			int position = Integer.parseInt(positionString);
+			int position = this.getPosition(parentView);
 			HashMap<Integer, String> row = this.data.get(position);
 			String checkString = isChecked ? "true" : "false";
 			row.put(R.id.checkBoxEnabled, checkString);
