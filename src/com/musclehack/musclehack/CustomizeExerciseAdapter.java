@@ -3,26 +3,15 @@ package com.musclehack.musclehack;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import com.musclehack.musclehack.workouts.Day;
-import com.musclehack.musclehack.workouts.WorkoutManagerSingleton;
 
 public class CustomizeExerciseAdapter extends BaseAdapter {
 	protected ArrayList<HashMap<Integer, String>> data;
@@ -83,6 +72,32 @@ public class CustomizeExerciseAdapter extends BaseAdapter {
 											false);
 		}
 		HashMap<Integer, String> row = this.data.get(position);
+		String postfix = "th";
+		if(position == 0){
+			postfix = "st";
+		}else if(position == 1){
+			postfix = "nd";
+		}
+		String setNumber = (position + 1) + postfix;
+		setNumber += " set";
+		TextView textViewSetNumber
+		= (TextView)view.findViewById(R.id.textViewPosition);
+		textViewSetNumber.setText(setNumber);
+		
+		EditText editTextExerciseName
+		= (EditText)view.findViewById(R.id.editTextExerciseName);
+		String exerciseName = row.get(R.id.editTextExerciseName);
+		editTextExerciseName.setText(exerciseName);
+		
+		EditText editTextRest
+		= (EditText)view.findViewById(R.id.editTextRestTime);
+		String rest = row.get(R.id.editTextRestTime);
+		editTextRest.setText(rest);
+		
+		view.setPadding(0, 0, 0, 10);
+		//if(position == this.data.size() - 1){
+			//view.setPadding(0, 0, 0, 50);
+		//}
 		Log.d("CustomizeExerciseAdapter", "public View getView(…) end");
 		return view;
 	}

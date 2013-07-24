@@ -27,11 +27,27 @@ public class Fragment2customize4exercise extends ListFragment {
 		this.data = new ArrayList<HashMap<Integer, String>>();
 		List<Exercice> exercises = WorkoutManagerSingleton.getInstance()
 				.getAvailableExercises();
+		int position = 0;
+		for(Exercice exercise:exercises){
+			HashMap<Integer, String> row = new HashMap<Integer, String>();
+			row.put(R.id.textViewPosition,
+					"" + position);
+			String exerciseName = exercise.getName();
+			row.put(R.id.editTextExerciseName,
+					exerciseName);
+			String restTime = "" + exercise.getRest();
+			row.put(R.id.editTextRestTime,
+					restTime);
+			this.data.add(row);
+			position++;
+		}
 		View view = super.onCreateView(inflater, container, savedInstanceState);
 
 		Log.d("Fragment2customize4exercise", "exercises added in list");
 		CustomizeExerciseAdapter adapter
-		= new CustomizeExerciseAdapter(this.getActivity(), this.data);
+		= new CustomizeExerciseAdapter(
+				this.getActivity(),
+				this.data);
 		
 		setListAdapter(adapter);
 		Log.d("Fragment2customize4exercise", "adapter set");
