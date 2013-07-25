@@ -1,4 +1,5 @@
-﻿- Populate the exercise customization area
+﻿- Add on leave focus + timer to save edit data
+- Ninish the on clck listener
 - Deletion and import day mess up the database.
 - Improve import day dialog design
 - Imort day in asyncrone task with loading dialog

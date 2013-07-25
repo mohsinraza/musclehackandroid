@@ -8,7 +8,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -63,6 +65,36 @@ public class CustomizeExerciseAdapter extends BaseAdapter {
 		return position;
 	}
 
+	protected class RowInfo{
+		protected int position;
+		protected String exerciseName;
+		protected String rest;
+	}
+	
+	RowInfo getRowInfo(View view){
+		RowInfo rowInfo = new RowInfo();
+		
+		TextView textViewPosition
+		= (TextView)view.findViewById(
+				R.id.textViewPosition);
+		String positionString
+		= textViewPosition.getText().toString();
+		rowInfo.position = Integer.parseInt(positionString);
+		
+		EditText editTextExerciseName
+		= (EditText)view.findViewById(
+				R.id.editTextExerciseName);
+		rowInfo.exerciseName
+		= editTextExerciseName.getText().toString();
+		
+		EditText editTextRest
+		= (EditText)view.findViewById(R.id.editTextRestTime);
+		rowInfo.rest
+		= editTextRest.getText().toString();
+		
+		return rowInfo;
+	}
+	
 	@Override
 	public View getView(int position, View view, ViewGroup listView){
 		Log.d("CustomizeExerciseAdapter", "public View getView(…) called");
@@ -93,6 +125,42 @@ public class CustomizeExerciseAdapter extends BaseAdapter {
 		= (EditText)view.findViewById(R.id.editTextRestTime);
 		String rest = row.get(R.id.editTextRestTime);
 		editTextRest.setText(rest);
+		
+		
+		Button addUnderButton
+		= (Button)view.findViewById(R.id.buttonAddUnder);
+		OnClickListener addUnderClickListener = new OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				View parentView = (View)v.getParent();
+				RowInfo rowInfo
+				= CustomizeExerciseAdapter.this.getRowInfo(parentView);
+			}
+		};
+		
+		Button duplicateUnderButton
+		= (Button)view.findViewById(R.id.buttonDuplicateUnder);
+		OnClickListener duplicateUnderClickListener = new OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				View parentView = (View)v.getParent();
+				RowInfo rowInfo
+				= CustomizeExerciseAdapter.this.getRowInfo(parentView);
+				
+			}
+		};
+		
+		Button dropButton
+		= (Button)view.findViewById(R.id.buttonDrop);
+		OnClickListener dropClickListener = new OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				View parentView = (View)v.getParent();
+				RowInfo rowInfo
+				= CustomizeExerciseAdapter.this.getRowInfo(parentView);
+				
+			}
+		};
 		
 		view.setPadding(0, 0, 0, 10);
 		//if(position == this.data.size() - 1){
