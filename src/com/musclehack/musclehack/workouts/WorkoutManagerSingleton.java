@@ -310,4 +310,12 @@ public class WorkoutManagerSingleton{
 				dayOfTheWeek,
 				existngOne);
 	}
+	
+	public void setExercices(
+			List<Exercice> exercises){
+		this.dbHelper.setExercices(
+				this.selectedProgramName,
+				this.selectedDay,
+				exercises);
+	}
 }

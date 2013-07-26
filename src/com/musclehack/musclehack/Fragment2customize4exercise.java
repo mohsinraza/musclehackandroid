@@ -38,6 +38,9 @@ public class Fragment2customize4exercise extends ListFragment {
 			String restTime = "" + exercise.getRest();
 			row.put(R.id.editTextRestTime,
 					restTime);
+			String repRange = "" + exercise.getRepRange();
+			row.put(R.id.editTextRepRange,
+					repRange);
 			this.data.add(row);
 			position++;
 		}

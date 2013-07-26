@@ -1265,5 +1265,39 @@ if(exercisesListEquals(exercises, currentExercises)){
 		Log.d("ProgramDbHelper", "public void createDayFromExistingOne(...) end");
 	}
 	//-------------------------------------------------------------
+	public void setExercices(
+			String programName,
+			String day,
+			List<Exercice> exercises){
+		Log.d("ProgramDbHelper", "protected void setExercices(...) called");
+		List<Integer> idWeeks = this.getIdWeeks(programName);
+		/*
+;		int exerciseIdInt = Integer.parseInt(exerciseId);
+		boolean oldCompleted = this.isExerciseCompleted(exerciseIdInt);
+		boolean completed = false;
+		if(!weight.equals("") && !nReps.equals("")){
+		float weightFloat = Float.parseFloat(weight);
+		int nRepsInt = Integer.parseInt(nReps);
+		completed = weightFloat > 0.f && nRepsInt > 0;
+		}
+		if(oldCompleted != completed || completed){
+		ContentValues values = new ContentValues();
+		values.put(ContractExercise.COLUMN_NAME_REST, rest);
+		values.put(ContractExercise.COLUMN_NAME_WEIGHT, weight);
+		values.put(ContractExercise.COLUMN_NAME_NREP, nReps);
+		
+		values.put(ContractExercise.COLUMN_NAME_COMPLETED, completed);
+		SQLiteDatabase db = this.getWritableDatabase();
+		int nRows = db.update(ContractExercise.TABLE_NAME,
+		values, ContractExercise.COLUMN_NAME_ID + "=" + exerciseId,
+		null);
+		db.close();
+		this.updateDayCompletedEventually(programName,
+					week,
+					day);
+		}
+		//*/
+		Log.d("ProgramDbHelper", "protected void setExercices(...) end");
+	}
 }
 
