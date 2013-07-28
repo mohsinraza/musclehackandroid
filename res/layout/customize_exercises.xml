@@ -124,4 +124,16 @@
         android:layout_marginLeft="14dp"
         />
 
+    	<LinearLayout
+		    android:focusable="true"
+               android:focusableInTouchMode="true"
+               android:layout_width="0px"
+               android:layout_height="0px"
+               >
+			<EditText
+				android:id="@+id/hidenForFocus"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+			/>
+		</LinearLayout>
 </RelativeLayout>

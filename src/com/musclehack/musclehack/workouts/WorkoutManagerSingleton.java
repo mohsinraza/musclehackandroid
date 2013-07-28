@@ -2,6 +2,7 @@ package com.musclehack.musclehack.workouts;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import android.app.Activity;
@@ -29,7 +30,8 @@ public class WorkoutManagerSingleton{
 	protected ProgramDbHelper dbHelper;
 	protected String selectedProgramName;
 	protected String selectedWeek;
-	protected String selectedDay;
+	protected Day selectedDay;
+	protected ArrayList<HashMap<Integer, String>> currentData;
 	protected int levelChoice;
 	protected boolean databaseDeleted;
 	
@@ -119,7 +121,7 @@ public class WorkoutManagerSingleton{
 				programs.add(0, lastProgram);
 			}
 		}
-		programs.add(WorkoutManagerSingleton.CREATE_PROGRAM);
+		programs.add(0, WorkoutManagerSingleton.CREATE_PROGRAM);
 		return programs;
 	}
 
@@ -179,7 +181,19 @@ public class WorkoutManagerSingleton{
 	}
 	
 	public void selectDay(String dayName){
-		this.selectedDay = dayName;
+		this.selectedDay = new Day(dayName, -1);;
+	}
+	
+	public void selectDay(Day day){
+		this.selectedDay = day;
+	}
+	
+	protected void setCurrentData(ArrayList<HashMap<Integer, String>> data){
+		this.currentData = data;
+	}
+	
+	protected ArrayList<HashMap<Integer, String>> getCurrentData(){
+		return this.currentData;
 	}
 	
 	public void setExerciceInfo(
@@ -189,7 +203,7 @@ public class WorkoutManagerSingleton{
 								String nReps){
 		this.dbHelper.setExerciceInfo(this.selectedProgramName,
 										this.selectedWeek,
-										this.selectedDay,
+										this.selectedDay.workoutName,
 										exerciseId,
 										rest,
 										weight,
@@ -238,9 +252,10 @@ public class WorkoutManagerSingleton{
 	}
 	
 	public List<Exercice> getAvailableExercises(){
-		List<Exercice> exercices = this.dbHelper.getAvailableExercices(this.selectedProgramName,
-																	this.selectedWeek,
-																	this.selectedDay);
+		List<Exercice> exercices = this.dbHelper.getAvailableExercices(
+				this.selectedProgramName,
+				this.selectedWeek,
+				this.selectedDay.workoutName);
 		return exercices;
 	}
 
@@ -250,9 +265,10 @@ public class WorkoutManagerSingleton{
 	}
 	
 	public List<Exercice> getPreviousExercices(){
-		List<Exercice> exercices = this.dbHelper.getPreviousExercices(this.selectedProgramName,
-																	this.selectedWeek,
-																	this.selectedDay);
+		List<Exercice> exercices = this.dbHelper.getPreviousExercices(
+				this.selectedProgramName,
+				this.selectedWeek,
+				this.selectedDay.workoutName);
 		return exercices;
 	}
 	

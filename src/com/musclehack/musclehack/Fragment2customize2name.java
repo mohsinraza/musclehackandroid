@@ -42,6 +42,12 @@ public class Fragment2customize2name extends Fragment {
 				container, false);
 		this.fillSpinnerEventually(this.mainView);
 		this.connectButton(this.mainView);
+		if(this.fromExistingProgramMode){
+			WorkoutManagerSingleton.getInstance().setLevelChoice(13);
+		}else{
+
+			WorkoutManagerSingleton.getInstance().setLevelChoice(12);
+		}
 		return this.mainView;
 	}
 	

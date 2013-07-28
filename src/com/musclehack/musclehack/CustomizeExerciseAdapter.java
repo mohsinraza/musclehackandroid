@@ -178,6 +178,8 @@ public class CustomizeExerciseAdapter extends BaseAdapter {
 		OnClickListener duplicateUnderClickListener = new OnClickListener(){
 			@Override
 			public void onClick(View v) {
+				View viewRow = (View)v.getParent();
+				viewRow.findViewById(R.id.hidenForFocus).requestFocus();
 				CustomizeExerciseAdapter.this.save();
 			}
 		};

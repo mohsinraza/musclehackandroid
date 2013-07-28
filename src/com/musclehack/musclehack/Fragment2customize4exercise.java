@@ -55,6 +55,8 @@ public class Fragment2customize4exercise extends ListFragment {
 		setListAdapter(adapter);
 		Log.d("Fragment2customize4exercise", "adapter set");
 
+		WorkoutManagerSingleton.getInstance().setLevelChoice(16);
+		//TODO retrieve data eventually
 		Log.d("Fragment2customize4exercise", "public View onCreateView(...) end");
 		return view;
 	}

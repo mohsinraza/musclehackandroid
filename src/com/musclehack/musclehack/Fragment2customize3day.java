@@ -68,7 +68,8 @@ public class Fragment2customize3day extends ListFragment {
 		//WorkoutManagerSingleton.getInstance().setLevelChoice(3);
 		View view = super.onCreateView(inflater, container, savedInstanceState);
 		Button buttonEdit = (Button) view.findViewById(R.id.buttonEdit);
-		
+
+		WorkoutManagerSingleton.getInstance().setLevelChoice(15);
 		Log.d("Fragment2customize3day", "public View onCreateView(...) end");
 		return view;
 	}

@@ -137,14 +137,17 @@ public class CustomizeDayAdapter extends BaseAdapter {
 				HashMap<Integer, String> row
 				= CustomizeDayAdapter.this.data.get(position);
 				String checkString = row.get(R.id.checkBoxEnabled);
-				String workoutName = row.get(R.id.editTextWorkoutName); //TODO check it is but update
+				String workoutName = row.get(R.id.editTextWorkoutName);
+				int dayOfTheWeek = Integer.parseInt(
+						row.get(R.id.textViewDayOfTheWeek));
+				Day day = new Day(workoutName, dayOfTheWeek);
 				boolean check = checkString.equals("true");
 				if(check){
 					Log.d("Fragment2customize3day", "Is checked");
 					WorkoutManagerSingleton workoutManager
 					= WorkoutManagerSingleton.getInstance();
 					Log.d("Fragment2customize3day", "Selecting workout: " + workoutName);
-					workoutManager.selectDay(workoutName);
+					workoutManager.selectDay(day);
 					Fragment newFragment = new Fragment2customize4exercise();
 					FragmentActivity fragmentActivity
 					= (FragmentActivity)CustomizeDayAdapter.this.context;

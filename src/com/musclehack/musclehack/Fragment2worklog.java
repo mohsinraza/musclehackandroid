@@ -73,7 +73,8 @@ public class Fragment2worklog extends ListFragment {
 
 			
 			if(activity != null){
-				this.adapter = new SimpleCustomableAdapter(this.getActivity(),
+				this.adapter = new SimpleCustomableAdapter(
+						this.getActivity(),
 						this.texts,
 						R.layout.fragment2worklog,
 						new String[] { TAG_TEXT_WORKLOG },

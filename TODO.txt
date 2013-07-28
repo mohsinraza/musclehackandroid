@@ -1,11 +1,10 @@
-﻿- Add on leave focus + timer to save edit data
-- Ninish the on clck listener
+﻿- Do not allow to create two day with the same rame
 - Deletion and import day mess up the database.
 - Improve import day dialog design
-- Imort day in asyncrone task with loading dialog
-- Create exercise customisation layout
+- Import day in asyncrone task with loading dialog
 - Put color on the create/edit workout row, in the exercise customization feature
 - Handle screen rotation in the customization workout
+- Bug on rotation with the day creation dialog box…referenced view is not the right one anymore
 
 - Add a way to custom the workout
 - Add a css design to the archive list area

@@ -271,7 +271,7 @@ public class MainActivity extends FragmentActivity {
 			}else if(tabId.equals(TAB_B)){
 				pushFragments(getString(R.string.worklog), fragment2worklog);
 				int levelChoice = WorkoutManagerSingleton.getInstance().getLevelChoice();
-				ListFragment nextFragment = null;
+				Fragment nextFragment = null;
 				if(levelChoice < 10){ // means we are in filling workout branch
 					if(levelChoice > 0){
 						nextFragment = new Fragment2worklog_2week();
@@ -285,8 +285,31 @@ public class MainActivity extends FragmentActivity {
 						nextFragment = new Fragment2worklog_4exercices();
 						pushFragmentsRegisterInStack(nextFragment);
 					}
-				}else if(levelChoice < 20){ // means we are in the workout edition of a new or existing program branch
-					
+				}else{ // means we are in the workout edition of a new or existing program branch
+					if(levelChoice > 10){
+						nextFragment = new Fragment2customize1choose();
+						pushFragmentsRegisterInStack(nextFragment);
+					}
+					if(levelChoice == 12){
+						nextFragment = new Fragment2customize2name();
+						pushFragmentsRegisterInStack(nextFragment);
+					}else if(levelChoice == 13){
+						Fragment2customize2name fragment = new Fragment2customize2name();
+						fragment.enableExistingProgramMode();
+						nextFragment = fragment;
+						pushFragmentsRegisterInStack(nextFragment);
+					}else if(levelChoice == 14){
+						nextFragment = new Fragment2customize2delete();
+						pushFragmentsRegisterInStack(nextFragment);
+					}
+					if(levelChoice > 14){
+						nextFragment = new Fragment2customize3day();
+						pushFragmentsRegisterInStack(nextFragment);
+					}
+					if(levelChoice > 15){
+						nextFragment = new Fragment2customize4exercise();
+						pushFragmentsRegisterInStack(nextFragment);
+					}
 				}
 			}else if(tabId.equals(TAB_C)){
 				pushFragments(getString(R.string.testimonials), fragment3testimonials);

@@ -38,6 +38,7 @@ public class Fragment2customize2delete extends Fragment {
 				container, false);
 		this.fillSpinner(this.mainView);
 		this.connectButton(this.mainView);
+		WorkoutManagerSingleton.getInstance().setLevelChoice(14);
 		return this.mainView;
 	}
 	
