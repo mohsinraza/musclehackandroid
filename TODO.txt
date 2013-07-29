@@ -1,12 +1,8 @@
-﻿- Do not allow to create two day with the same rame
-- Deletion and import day mess up the database.
-- Improve import day dialog design
+﻿- Deletion and import day mess up the database.
 - Import day in asyncrone task with loading dialog
-- Put color on the create/edit workout row, in the exercise customization feature
-- Handle screen rotation in the customization workout
-- Bug on rotation with the day creation dialog box…referenced view is not the right one anymore
+- Clicking and rotating at the same time the day customization area disable the onclicks listener
+- Do some refactoring of the classes name/package
 
-- Add a way to custom the workout
 - Add a css design to the archive list area
 - Ask advice before releasing android beta app + on market + improve design + workout edition
 - Read an epub ebook version instead of a pdf one

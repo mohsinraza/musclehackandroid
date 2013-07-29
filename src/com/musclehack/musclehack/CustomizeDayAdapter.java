@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.Configuration;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -14,8 +15,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -88,6 +89,7 @@ public class CustomizeDayAdapter extends BaseAdapter {
 	public long getItemId(int position) {
 		return position;
 	}
+	
 
 	@Override
 	public View getView(int position, View view, ViewGroup listView){
@@ -97,6 +99,7 @@ public class CustomizeDayAdapter extends BaseAdapter {
 											listView,
 											false);
 		}
+		this.listView = (ListView)listView;
 		HashMap<Integer, String> row = this.data.get(position);
 		//Check box
 		CheckBox checkBox = (CheckBox)
@@ -104,6 +107,13 @@ public class CustomizeDayAdapter extends BaseAdapter {
 		String value = row.get(R.id.checkBoxEnabled);
 		Boolean checked = value.equals("true");
 		checkBox.setChecked(checked);
+		Button buttonEdit = (Button)
+				view.findViewById(R.id.buttonEdit);
+		if(checked){
+			buttonEdit.setVisibility(View.VISIBLE);
+		}else{
+			buttonEdit.setVisibility(View.GONE);
+		}
 		//Text view day name
 		//TextView textView = (TextView)
 				//view.findViewById(R.id.textViewDayName);
@@ -174,7 +184,6 @@ public class CustomizeDayAdapter extends BaseAdapter {
 						isChecked);
 			}
 		});
-		this.listView = (ListView)listView;
 		Log.d("CustomizeDayAdapter", "public View getView(…) end");
 		return view;
 	}
@@ -241,19 +250,23 @@ public class CustomizeDayAdapter extends BaseAdapter {
 		this.isChangingCheck = true;
 		ListView listView = CustomizeDayAdapter.this.getListView();
     	View view = (View)listView.getChildAt(this.lastPosition);
-    	CheckBox checkBox = (CheckBox)
-				view.findViewById(R.id.checkBoxEnabled);
-		checkBox.setChecked(check);
+    	if(view == null){
+    		Log.d("CustomizeDayAdapter", "view null?");
+    	}else{
+	    	CheckBox checkBox = (CheckBox)
+					view.findViewById(R.id.checkBoxEnabled);
+			checkBox.setChecked(check);
+			Button button = (Button) view.findViewById(R.id.buttonEdit);
+			if(check){
+				button.setVisibility(View.VISIBLE);
+			}else{
+				button.setVisibility(View.GONE);
+			}
+			this.isChangingCheck = false;
+    	}
 		HashMap<Integer, String> row = this.data.get(this.lastPosition);
 		String checkString = check ? "true": "false";
 		row.put(R.id.checkBoxEnabled, checkString);
-		Button button = (Button) view.findViewById(R.id.buttonEdit);
-		if(check){
-			button.setVisibility(View.VISIBLE);
-		}else{
-			button.setVisibility(View.GONE);
-		}
-		this.isChangingCheck = false;
 		Log.d("CustomizeDayAdapter", "public void setCheckLasPosition(…) end");
 	}
 

@@ -16,6 +16,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AbsListView.RecyclerListener;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ListView;
 
 import com.musclehack.musclehack.workouts.Day;
@@ -80,9 +81,14 @@ public class Fragment2customize3day extends ListFragment {
 		Log.d("Fragment2customize3day", "public void onViewCreated(...) called");
 		super.onViewCreated(viewTop, savedInstanceState);
 		this.getListView().setRecyclerListener(new RecyclerListener() {
-		    @Override
+			
+			@Override
 		    public void onMovedToScrapHeap(View view) {
-		    	Log.d("RecyclerListener", "public void onViewCreated(View viewTop, Bundle savedInstanceState){ called");
+				CheckBox checkBox = (CheckBox)
+						view.findViewById(R.id.checkBoxEnabled);
+				checkBox.setOnCheckedChangeListener(null);
+				checkBox.setChecked(false);
+				Log.d("RecyclerListener", "public void onViewCreated(View viewTop, Bundle savedInstanceState){ called");
 		    	ListView listView = Fragment2customize3day.this.getListView();
 		    	int selectedItemPosition = listView.getSelectedItemPosition();
 		    	if(selectedItemPosition == ListView.INVALID_POSITION){

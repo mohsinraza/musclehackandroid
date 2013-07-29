@@ -13,7 +13,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="6dp"
         android:layout_marginRight="6dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="8dp"
         />
 
     <TextView
@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/spinnerDay"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="12dp"
         android:text="Workout name:"
         />
     
@@ -39,24 +39,27 @@
         />
     
     <Button
+        android:id="@+id/buttonCancel"
+        android:layout_below="@+id/editTextWorkoutName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="15dp"
+        android:text="Cancel"
+        />
+        
+    <Button
         android:id="@+id/buttonOkImport"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/editTextWorkoutName"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
+        android:layout_alignTop="@+id/buttonCancel"
+        android:layout_toLeftOf="@+id/buttonCancel"
         android:text="Create"
+        android:layout_marginRight="10dp"
         />
 
-    <Button
-        android:id="@+id/buttonCancel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/buttonOkImport"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:text="Cancel"
-        />
+
 
     
 

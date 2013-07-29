@@ -23,6 +23,7 @@
 			android:name="com.musclehack.musclehack.MainActivity"
 			android:label="@string/app_name"
 			android:windowSoftInputMode="adjustPan"
+			android:configChanges="orientation"
 			
 			>
 			<intent-filter>

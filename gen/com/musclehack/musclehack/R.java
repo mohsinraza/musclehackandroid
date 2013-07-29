@@ -37,10 +37,10 @@ public final class R {
     public static final class id {
         public static final int action_settings=0x7f0a0031;
         public static final int buttonAddUnder=0x7f0a0012;
-        public static final int buttonCancel=0x7f0a002d;
+        public static final int buttonCancel=0x7f0a002c;
         public static final int buttonDrop=0x7f0a0013;
         public static final int buttonEdit=0x7f0a0004;
-        public static final int buttonOkImport=0x7f0a002c;
+        public static final int buttonOkImport=0x7f0a002d;
         public static final int buttonRest=0x7f0a0027;
         public static final int buttonSave=0x7f0a000b;
         public static final int checkBoxEnabled=0x7f0a0000;

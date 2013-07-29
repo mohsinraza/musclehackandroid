@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
@@ -37,6 +38,13 @@ public class ImportDayDialog extends DialogFragment {
 		this.dayToCreate = dayToCreate;
 		this.context = context;
 		this.customizeDayAdapter = adapter;
+	}
+	
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		Log.d("ImportDayDialog", "onConfigurationChanged() Called");
+		this.cancel();
+		super.onConfigurationChanged(newConfig);
 	}
 
 	@Override
@@ -85,22 +93,7 @@ public class ImportDayDialog extends DialogFragment {
 			
 		};
 		importButton.setOnClickListener(importButtonListener);
-		
-		/*
-		Button dontImportButton
-		= (Button)view.findViewById(
-				R.id.buttonNoImport);
-		OnClickListener dontImportButtonListener = new View.OnClickListener() {
 
-			@Override
-			public void onClick(View v) {
-				ImportDayDialog.this.dontImportDay();
-			}
-			
-		};
-		dontImportButton.setOnClickListener(dontImportButtonListener);
-		Log.d("ImportDayDialog", "public void _connectButtons(...) end");
-		//*/
 		
 		Button cancelButton
 		= (Button)view.findViewById(
@@ -118,13 +111,31 @@ public class ImportDayDialog extends DialogFragment {
 	
 	public void importDay(){
 		Log.d("ImportDayDialog", "public void importDay(...) called");
-		WorkoutManagerSingleton workoutManager = WorkoutManagerSingleton.getInstance();
+		WorkoutManagerSingleton workoutManager
+		= WorkoutManagerSingleton.getInstance();
 		EditText editText
 		= (EditText) this.view.findViewById(
 				R.id.editTextWorkoutName);
 		Log.d("ImportDayDialog", "edit text got");
 		String workoutName = editText.getText().toString();
-		if(workoutName.equals("")){ //TODO check name available and add day eventually
+		List<String> dayNames =
+				WorkoutManagerSingleton
+				.getInstance().getAvailableWorkoutNames();
+		if(dayNames.contains(workoutName)){
+			Activity activity
+			= (Activity)this.context;
+			Log.d("ImportDayDialog", "dayNames.contains(workoutName)");
+			//Resources res = activity.getResources();
+			new AlertDialog.Builder(activity)
+			.setTitle("Workout name")
+			.setMessage("This name is already used.")
+			.setNeutralButton("Ok",
+					new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int which) {
+				}
+			})
+			.show();
+		}else if(workoutName.equals("")){ //TODO check name available and add day eventually
 			Activity activity
 			= (Activity)this.context;
 			Log.d("ImportDayDialog", "activity got");
@@ -160,25 +171,6 @@ public class ImportDayDialog extends DialogFragment {
 		}
 	}
 	
-	/*
-	public void dontImportDay(){
-		Log.d("ImportDayDialog", "public void dontImportDay(...) called");
-		WorkoutManagerSingleton workoutManager = WorkoutManagerSingleton.getInstance();
-		String workoutName = this.dayToCreate.getWorkoutName();
-		int dayOfTheWeek = this.dayToCreate.getDayOfTheWeek();
-		Spinner spinner = (Spinner)this.view
-				.findViewById(R.id.spinnerDay);
-		String fromDay
-		= spinner.getSelectedItem().toString();
-		workoutManager.createDayFromExistingOne(
-				workoutName,
-				dayOfTheWeek,
-				fromDay); //TODO check we have a selected program name
-		//TODO launch next Fragment
-		Log.d("ImportDayDialog", "public void dontImportDay(...) end");
-	
-	}
-	//*/
 	
 	public void cancel(){
 		Log.d("ImportDayDialog", "public void cancel() called");
