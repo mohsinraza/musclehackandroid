@@ -42,6 +42,7 @@
         android:layout_toRightOf="@+id/textView1"
         android:ems="10"
         android:layout_marginRight="20dp"
+        android:inputType="text"
         >
 
         <requestFocus />
@@ -66,6 +67,7 @@
         android:layout_alignTop="@+id/textView2"
         android:ems="10"
         android:layout_marginRight="20dp"
+        android:inputType="numberSigned"
         />
     
         <TextView
@@ -87,6 +89,7 @@
         android:layout_alignTop="@+id/textView3"
         android:ems="10"
         android:layout_marginRight="20dp"
+        android:inputType="text"
         />
 
     <Button

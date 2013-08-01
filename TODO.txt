@@ -1,5 +1,6 @@
-﻿- Deletion and import day mess up the database.
+﻿- Update data when text edited
 - Import day in asyncrone task with loading dialog
+- The exercise timer should be destroyed if we come back
 - Clicking and rotating at the same time the day customization area disable the onclicks listener
 - Do some refactoring of the classes name/package
 
