@@ -126,8 +126,7 @@ public class MainActivity extends FragmentActivity {
 	@Override
 	public void onBackPressed() {
 		Log.d("MainActivity","public void onBackPressed called");
-
-
+		ExercisesAdapter.cancelTimerEventually();
 		super.onBackPressed();
 		Log.d("MainActivity","public void onBackPressed end");
 	}

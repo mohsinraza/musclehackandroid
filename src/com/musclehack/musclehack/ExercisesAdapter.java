@@ -55,6 +55,10 @@ public class ExercisesAdapter extends BaseAdapter {
 		return ExercisesAdapter.currentAdapter;
 	}
 	
+	public static void cancelTimerEventually(){
+		TimerRestButtonTask.cancelTimerEventually();
+	}
+	
 	@Override
 	public int getCount() {
 		Log.d("ExercisesAdapter", "public int getCount()  called");
@@ -188,7 +192,9 @@ public class ExercisesAdapter extends BaseAdapter {
 		String valueString = "" + value;
 		for(HashMap<Integer, String> row: this.data){
 			String exerciseIdString = row.get(R.id.exerciseId);
-			if(exerciseIdString.equals(valueString)){
+			
+			//if(exerciseIdString.equals(valueString)){
+			if(Integer.parseInt(exerciseIdString) == idExercise){
 				row.put(R.id.rest, valueString);
 			}
 		}
@@ -316,14 +322,21 @@ public class ExercisesAdapter extends BaseAdapter {
 		protected int initialRestValue;
 		protected Boolean[] timerStarted;
 		static protected TimerRestButtonTask lastTask = null;
+		public static void cancelTimerEventually(){
+			if(TimerRestButtonTask.lastTask != null){
+				Log.d("TimerRestButtonTask", "Cancelling last task");
+				ExercisesAdapter adapter = ExercisesAdapter.getCurrentAdapter();
+				adapter.setCurrentRestValue(
+						TimerRestButtonTask.lastTask.idExercise,
+						TimerRestButtonTask.lastTask.initialRestValue);
+				TimerRestButtonTask.lastTask.cancel();
+			}
+		}
 		public TimerRestButtonTask(int idExercise,
 									int initialRestValue,
 									Boolean[] timerStarted){
 			super();
-			if(TimerRestButtonTask.lastTask != null){
-				Log.d("TimerRestButtonTask", "Cancelling last task");
-				TimerRestButtonTask.lastTask.cancel();
-			}
+			TimerRestButtonTask.cancelTimerEventually();
 			TimerRestButtonTask.lastTask = this;
 			this.idExercise = idExercise;
 			this.initialRestValue = initialRestValue;
