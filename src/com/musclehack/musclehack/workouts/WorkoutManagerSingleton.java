@@ -72,6 +72,7 @@ public class WorkoutManagerSingleton{
 			SharedPreferences.Editor settingsEditor = settings.edit();
 			settingsEditor.putString(LAST_PROGRAM_SHORTCUT_NAME, "");
 			settingsEditor.commit();
+			WorkoutManagerSingleton.instance.levelChoice = 0;
 			WorkoutManagerSingleton.instance.databaseDeleted = true;
 			WorkoutManagerSingleton.instance.dbHelper = new ProgramDbHelper(WorkoutManagerSingleton.context);
 		}
