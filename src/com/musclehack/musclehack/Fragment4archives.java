@@ -67,6 +67,11 @@ public class Fragment4archives extends Fragment {
 			String[] elements = content.split("<div class=\"car-container\">");
 			if(elements.length > 1){
 				contentWithoutHeader = elements[1];
+				elements = contentWithoutHeader
+						.split("</span></li></ul></li></ul>");
+				contentWithoutHeader = elements[0];
+				contentWithoutHeader += "</span></li></ul>";
+				/*
 				elements = contentWithoutHeader.split("</ul>");
 				elements[elements.length-1] = "";
 				contentWithoutHeader = elements[0];
@@ -74,6 +79,20 @@ public class Fragment4archives extends Fragment {
 					String element = elements[i];
 					contentWithoutHeader += "</ul>" + element;
 				}
+				//*/
+				String css =
+						"<style>" +
+								"body{" +
+								"background-color:#EEEEEE;" +
+								"} "+
+								".car-yearmonth{" +
+								"font-weight:bold;" +
+								"}" +
+								"ul li a:link{" +
+								"color:black;" +
+								"}" +
+						"</style>";
+				contentWithoutHeader = css + contentWithoutHeader;
 			}
 		}
 		return contentWithoutHeader;
