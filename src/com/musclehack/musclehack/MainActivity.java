@@ -58,6 +58,7 @@ public class MainActivity extends FragmentActivity {
 		this.fragment5archives = null;
 		this.fragment6book = null;
 	}
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		Log.d("MainActivity","protected void onCreate(Bundle savedInstanceState) called");

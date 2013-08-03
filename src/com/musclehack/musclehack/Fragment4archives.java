@@ -16,6 +16,7 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,11 +50,15 @@ public class Fragment4archives extends Fragment {
 	}
 	
 	public void setContentRemovingHeader(String content){
+		Log.d("Fragment4archives", "public void setContentRemovingHeader(String content) called");
 		View view = this.getView();
-		WebView webView = (WebView) view.findViewById(R.id.webViewArchives);
-		String contentWithoutHeader = getContentWithoutHeader(content);
-		//webView.loadData(contentWithoutHeader, "text/html; charset=UTF-8", null);
-		webView.loadData(URLEncoder.encode(contentWithoutHeader).replaceAll("\\+"," "), "text/html", "utf-8" );
+		if(view != null){
+			WebView webView = (WebView) view.findViewById(R.id.webViewArchives);
+			String contentWithoutHeader = getContentWithoutHeader(content);
+			//webView.loadData(contentWithoutHeader, "text/html; charset=UTF-8", null);
+			webView.loadData(URLEncoder.encode(contentWithoutHeader).replaceAll("\\+"," "), "text/html", "utf-8" );
+			Log.d("Fragment4archives", "public void setContentRemovingHeader(String content) end");
+		}
 	}
 
 	protected String getContentWithoutHeader(String content){
@@ -80,6 +85,7 @@ public class Fragment4archives extends Fragment {
 		protected String doInBackground(String... urls) {
 			try {
 				String webContent = loadWebContentFromUrl(urls[0]);
+				Fragment4archives.this.setContentRemovingHeader(webContent);
 				return webContent;
 			} catch (IOException e) {
 				return null;
@@ -93,7 +99,10 @@ public class Fragment4archives extends Fragment {
 			//WebView myWebView = (WebView) findViewById(R.id.webview);
 			//myWebView.loadData(result, "text/html", null);
 			//setEntries(this.entries);
-			setContentRemovingHeader(content);
+			Log.d("RetrieveWebContentTask", "protected void onPostExecute(String content) called");
+			Fragment4archives.progressDialog.dismiss();
+			Log.d("RetrieveWebContentTask", "protected void onPostExecute(String content) end");
+			
 		}
 	}
 	
