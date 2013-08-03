@@ -123,7 +123,7 @@ public class Fragment2worklog extends ListFragment {
 	@Override
 	public void onDestroyView(){
 		Log.d("Fragment2worklog", "public void onDestroyView() called");
-		retrieveProgramsTask.cancel(true);
+		retrieveProgramsTask.cancel(false);
 		if(Fragment2worklog.progressDialog != null){
 			Fragment2worklog.progressDialog.dismiss();
 			Fragment2worklog.progressDialog = null;

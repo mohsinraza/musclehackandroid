@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +19,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+
 import com.musclehack.musclehack.workouts.Exercice;
 import com.musclehack.musclehack.workouts.WorkoutManagerSingleton;
 
@@ -25,6 +29,8 @@ public class CustomizeExerciseAdapter extends BaseAdapter {
 	protected LayoutInflater inflater;
 	protected ListView listView;
 	protected int lastPosition;
+	static protected ProgressDialog progressDialog = null;
+	protected SaveAsyncTask saveAsyncTask;
 	
 	public CustomizeExerciseAdapter(Context context,
 			ArrayList<HashMap<Integer, String>> data){
@@ -32,6 +38,7 @@ public class CustomizeExerciseAdapter extends BaseAdapter {
 		this.context = context;
 		this.data = data;
 		this.lastPosition = -1;
+		this.saveAsyncTask = null;
 		this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		Log.d("CustomizeExerciseAdapter", "public CustomizeExerciseAdapter(…){ end");
 		
@@ -110,6 +117,24 @@ public class CustomizeExerciseAdapter extends BaseAdapter {
 		return rowInfo;
 	}
 	
+	public void viewDataToAdapter(View view){
+		RowInfo rowInfo = this.getRowInfo(view);
+		HashMap<Integer, String> row
+		= this.data.get(rowInfo.position);
+		if(!rowInfo.exerciseName.equals("")){
+			row.put(R.id.editTextExerciseName,
+					rowInfo.exerciseName);
+		}
+		if(!rowInfo.rest.equals("")){
+			row.put(R.id.editTextRestTime,
+					rowInfo.rest);
+		}
+		if(!rowInfo.repRange.equals("")){
+		row.put(R.id.editTextRepRange,
+				rowInfo.repRange);
+		}
+	}
+	
 	@Override
 	public View getView(int position, View view, ViewGroup listView){
 		Log.d("CustomizeExerciseAdapter", "public View getView(…) called");
@@ -133,16 +158,23 @@ public class CustomizeExerciseAdapter extends BaseAdapter {
 		= (EditText)view.findViewById(R.id.editTextExerciseName);
 		String exerciseName = row.get(R.id.editTextExerciseName);
 		editTextExerciseName.setText(exerciseName);
+		editTextExerciseName.setOnFocusChangeListener(
+				new OnTextEditFocusChanged());
+		
 		
 		EditText editTextRest
 		= (EditText)view.findViewById(R.id.editTextRestTime);
 		String rest = row.get(R.id.editTextRestTime);
 		editTextRest.setText(rest);
+		editTextRest.setOnFocusChangeListener(
+				new OnTextEditFocusChanged());
 		
 		EditText editTextRepRange
 		= (EditText)view.findViewById(R.id.editTextRepRange);
 		String repRange = row.get(R.id.editTextRepRange);
 		editTextRepRange.setText(repRange);
+		editTextRepRange.setOnFocusChangeListener(
+				new OnTextEditFocusChanged());
 		
 		
 		Button addUnderButton
@@ -240,22 +272,80 @@ public class CustomizeExerciseAdapter extends BaseAdapter {
 		Log.d("CustomizeExerciseAdapter", "public void drop(…) end");
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void save(){
 		Log.d("CustomizeExerciseAdapter", "public void save() called");
-		List<Exercice> exercises = new ArrayList<Exercice>();
-		for(HashMap<Integer, String> row:this.data){
-			int rest
-			= Integer.parseInt(row.get(R.id.editTextRestTime));
-			Exercice exercise
-			= new Exercice(
-					-1,
-					row.get(R.id.editTextExerciseName),
-					row.get(R.id.editTextRepRange),
-					rest);
-			exercises.add(exercise);
-		}
-		WorkoutManagerSingleton.getInstance()
-		.setExercices(exercises);
+		Activity activity = (Activity)this.getContext();
+		CustomizeExerciseAdapter.progressDialog
+		= ProgressDialog.show(activity,
+								"",
+								"Saving workout",
+								true);
+		this.saveAsyncTask = new SaveAsyncTask();
+		this.saveAsyncTask.execute(this.data);
+		
 		Log.d("CustomizeExerciseAdapter", "public void save() end");
+	}
+	
+	
+	protected class SaveAsyncTask
+	extends AsyncTask<ArrayList<HashMap<Integer, String>>, Void, Void> {
+		@Override
+		protected Void doInBackground(
+				ArrayList<HashMap<Integer, String>>... datas) {
+			Log.d("CustomizeExerciseAdapter task", "protected Void doInBackground(...) called");
+			List<Exercice> exercises = new ArrayList<Exercice>();
+			for(HashMap<Integer, String> row:datas[0]){
+				int rest
+				= Integer.parseInt(row.get(R.id.editTextRestTime));
+				Exercice exercise
+				= new Exercice(
+						-1,
+						row.get(R.id.editTextExerciseName),
+						row.get(R.id.editTextRepRange),
+						rest);
+				exercises.add(exercise);
+			}
+			WorkoutManagerSingleton.getInstance()
+			.setExercices(exercises);
+			Log.d("CustomizeExerciseAdapter task", "protected Void doInBackground(...) end");
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(Void nothing) { 
+			Log.d("CustomizeExerciseAdapter task", "protected List<String> doInBackground(Void... urls) called");
+			if(CustomizeExerciseAdapter.progressDialog != null){
+				CustomizeExerciseAdapter.progressDialog.dismiss();
+			}
+			Log.d("CustomizeExerciseAdapter task", "protected void onPostExecute(...) end");
+		}
+	}
+	
+	public void onDestroyView(){
+		Log.d("CustomizeExerciseAdapter", "public void onDestroyView() called");
+		
+		if(CustomizeExerciseAdapter.progressDialog != null){
+			CustomizeExerciseAdapter.progressDialog.dismiss();
+			CustomizeExerciseAdapter.progressDialog = null;
+		}
+		if(this.saveAsyncTask != null){
+			this.saveAsyncTask.cancel(false);
+			Log.d("CustomizeExerciseAdapter", "saveAsyncCask canceled.");
+			this.saveAsyncTask = null;
+		}
+		Log.d("CustomizeExerciseAdapter", "public void onDestroyView() end");
+	}
+	
+	protected class OnTextEditFocusChanged
+	implements View.OnFocusChangeListener{
+
+		@Override
+		public void onFocusChange(View v, boolean hasFocus) {
+			View parentView = (View)v.getParent();
+			CustomizeExerciseAdapter.this
+			.viewDataToAdapter(parentView);
+		}
+		
 	}
 }

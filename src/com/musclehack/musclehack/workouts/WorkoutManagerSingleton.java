@@ -4,6 +4,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import android.app.Activity;
 import android.content.Context;
@@ -34,6 +36,8 @@ public class WorkoutManagerSingleton{
 	protected ArrayList<HashMap<Integer, String>> currentData;
 	protected int levelChoice;
 	protected boolean databaseDeleted;
+	
+	protected final Lock _mutexExercises = new ReentrantLock(true);
 	
 	public static void setContext(Context context){
 		WorkoutManagerSingleton.context = context;
@@ -252,10 +256,14 @@ public class WorkoutManagerSingleton{
 	}
 	
 	public List<Exercice> getAvailableExercises(){
+		Log.d("WorkoutManagerSingletion", "public List<Exercice> getAvailableExercises(...) called");
+		this._mutexExercises.lock();
 		List<Exercice> exercices = this.dbHelper.getAvailableExercices(
 				this.selectedProgramName,
 				this.selectedWeek,
 				this.selectedDay.workoutName);
+		this._mutexExercises.unlock();
+		Log.d("WorkoutManagerSingletion", "public List<Exercice> getAvailableExercises(...) end");
 		return exercices;
 	}
 
@@ -329,9 +337,13 @@ public class WorkoutManagerSingleton{
 	
 	public void setExercices(
 			List<Exercice> exercises){
+		Log.d("WorkoutManagerSingletion", "public void setExercices(...) called");
+		this._mutexExercises.lock();
 		this.dbHelper.setExercices(
 				this.selectedProgramName,
 				this.selectedDay,
 				exercises);
+		this._mutexExercises.unlock();
+		Log.d("WorkoutManagerSingletion", "public void setExercices(...) caendlled");
 	}
 }

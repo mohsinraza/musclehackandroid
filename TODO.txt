@@ -1,5 +1,7 @@
-﻿- Update data when text edited
-- Import day in asyncrone task with loading dialog
+﻿- Clearing workout data doesn't reset the workout manager level
+- if clicking one one tab that displays a progress dialog and then quickly
+  on another one, the progress dialog is never closed.
+- Import day in asyncrone task with a progress dialog
 - Clicking and rotating at the same time the day customization area disable the onclicks listener
 - Do some refactoring of the classes name/package
 

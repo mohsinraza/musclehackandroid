@@ -19,6 +19,7 @@ import com.musclehack.musclehack.workouts.WorkoutManagerSingleton;
 
 public class Fragment2customize4exercise extends ListFragment {
 	protected ArrayList<HashMap<Integer, String>> data;
+	protected CustomizeExerciseAdapter adapter;
 	@SuppressLint("UseSparseArrays")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -27,6 +28,7 @@ public class Fragment2customize4exercise extends ListFragment {
 		this.data = new ArrayList<HashMap<Integer, String>>();
 		List<Exercice> exercises = WorkoutManagerSingleton.getInstance()
 				.getAvailableExercises();
+		Log.d("Fragment2customize4exercise", "n exercises = " + exercises.size());
 		int position = 0;
 		for(Exercice exercise:exercises){
 			HashMap<Integer, String> row = new HashMap<Integer, String>();
@@ -47,7 +49,7 @@ public class Fragment2customize4exercise extends ListFragment {
 		View view = super.onCreateView(inflater, container, savedInstanceState);
 
 		Log.d("Fragment2customize4exercise", "exercises added in list");
-		CustomizeExerciseAdapter adapter
+		this.adapter
 		= new CustomizeExerciseAdapter(
 				this.getActivity(),
 				this.data);
@@ -79,8 +81,7 @@ public class Fragment2customize4exercise extends ListFragment {
 			}
 		});
 	}
-	
-	
+
 	
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id){
@@ -99,6 +100,7 @@ public class Fragment2customize4exercise extends ListFragment {
 	@Override
 	public void onDestroyView(){
 		Log.d("Fragment2worklog_4exercices", "public void onDestroyView() called");
+		this.adapter.onDestroyView();
 		super.onDestroyView();
 		Log.d("Fragment2worklog_4exercices", "public void onDestroyView() end");
 	}
