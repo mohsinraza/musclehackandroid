@@ -1,12 +1,17 @@
 package com.musclehack.musclehack;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
@@ -30,6 +35,8 @@ public class ImportDayDialog extends DialogFragment {
 	protected CustomizeDayAdapter customizeDayAdapter;
 	protected Day dayToCreate;
 	protected static String dontImport = "Don't import";
+	static protected ProgressDialog progressDialog = null;
+	protected CreateDayAsyncTask createDayAsyncTask;
 
 	public void init(
 			CustomizeDayAdapter adapter,
@@ -119,8 +126,7 @@ public class ImportDayDialog extends DialogFragment {
 		Log.d("ImportDayDialog", "edit text got");
 		String workoutName = editText.getText().toString();
 		List<String> dayNames =
-				WorkoutManagerSingleton
-				.getInstance().getAvailableWorkoutNames();
+				workoutManager.getAvailableWorkoutNames();
 		if(dayNames.contains(workoutName)){
 			Activity activity
 			= (Activity)this.context;
@@ -150,31 +156,96 @@ public class ImportDayDialog extends DialogFragment {
 			})
 			.show();
 		}else{
-			int dayOfTheWeek = this.dayToCreate.getDayOfTheWeek();
-			Spinner spinner = (Spinner)this.view
+			Activity activity = (Activity)this.context;
+			ImportDayDialog.progressDialog
+			= ProgressDialog.show(activity,
+									"",
+									"Saving workout",
+									true);
+			this.createDayAsyncTask = new CreateDayAsyncTask();
+			this.createDayAsyncTask.execute(workoutName);
+			Log.d("ImportDayDialog", "public void importDay(...) end");
+		}
+	}
+	
+	protected class CreateDayAsyncTask
+	extends AsyncTask<String, Void, Void> {
+		protected String workoutName;
+		@Override
+		protected Void doInBackground(String... data) {
+			Log.d("ImportDayDialog task", "protected Void doInBackground(...) called");
+			this.workoutName = data[0];
+			WorkoutManagerSingleton workoutManager
+			= WorkoutManagerSingleton.getInstance();
+			int dayOfTheWeek = ImportDayDialog.this.dayToCreate
+					.getDayOfTheWeek();
+			Spinner spinner = (Spinner)ImportDayDialog.this.view
 					.findViewById(R.id.spinnerDay);
 			String fromDay
 			= spinner.getSelectedItem().toString();
 			if(fromDay.equals(ImportDayDialog.dontImport)){
 				workoutManager.createDay(
-						workoutName,
+						this.workoutName,
 						dayOfTheWeek); //TODO check we have a selected program name
 			}else{
 				workoutManager.createDayFromExistingOne(
-						workoutName,
+						this.workoutName,
 						dayOfTheWeek,
 						fromDay);
 			}
-			this.customizeDayAdapter.setEditingDayWorkoutName(workoutName);
-			this.dismiss();
-			Log.d("ImportDayDialog", "public void importDay(...) end");
+			
+			Log.d("ImportDayDialog task", "protected Void doInBackground(...) end");
+			return null;
+		}
+		
+
+
+		@Override
+		protected void onPostExecute(Void nothing) { 
+			Log.d("ImportDayDialog task", "protected List<String> doInBackground(Void... urls) called");
+			if(ImportDayDialog.progressDialog != null){
+				ImportDayDialog.progressDialog.dismiss();
+				ImportDayDialog.this.customizeDayAdapter.setEditingDayWorkoutName(this.workoutName);
+				ImportDayDialog.this.dismiss();
+			}
+			Log.d("ImportDayDialog task", "protected void onPostExecute(...) end");
 		}
 	}
 	
+	@Override
+	public void onDestroyView(){
+		Log.d("ImportDayDialog", "public void onDestroyView() called");
+		
+		
+		super.onDestroyView();
+		Log.d("ImportDayDialog", "public void onDestroyView() end");
+	}
 	
 	public void cancel(){
 		Log.d("ImportDayDialog", "public void cancel() called");
-		this.customizeDayAdapter.setCheckLastPosition(false);
+		if(ImportDayDialog.progressDialog != null){
+			ImportDayDialog.progressDialog.dismiss();
+			ImportDayDialog.progressDialog = null;
+		}
+		if(this.createDayAsyncTask != null){
+			try {
+				this.createDayAsyncTask.get(10, TimeUnit.SECONDS);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (TimeoutException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			this.createDayAsyncTask.cancel(false);
+			Log.d("ImportDayDialog", "createDayAsyncTask canceled.");
+			this.createDayAsyncTask = null;
+		}else{
+			this.customizeDayAdapter.setCheckLastPosition(false);
+		}
 		this.dismiss();
 		Log.d("ImportDayDialog", "public void cancel() end");
 	}

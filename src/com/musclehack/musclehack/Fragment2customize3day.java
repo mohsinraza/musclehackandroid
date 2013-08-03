@@ -84,17 +84,21 @@ public class Fragment2customize3day extends ListFragment {
 			
 			@Override
 		    public void onMovedToScrapHeap(View view) {
+				Log.d("RecyclerListener day", "public void onMovedToScrapHeap(...){ called");
+				Log.d("RecyclerListener day", "view: " + view);
 				CheckBox checkBox = (CheckBox)
 						view.findViewById(R.id.checkBoxEnabled);
 				checkBox.setOnCheckedChangeListener(null);
 				checkBox.setChecked(false);
-				Log.d("RecyclerListener", "public void onViewCreated(View viewTop, Bundle savedInstanceState){ called");
+				Log.d("RecyclerListener", "listView...");
 		    	ListView listView = Fragment2customize3day.this.getListView();
+				Log.d("RecyclerListener", "listView ok");
 		    	int selectedItemPosition = listView.getSelectedItemPosition();
+				Log.d("RecyclerListener", "listView selected ok");
 		    	if(selectedItemPosition == ListView.INVALID_POSITION){
 		    		view.setPadding(0, 0, 0, 0);
 		    	}
-		        Log.d("RecyclerListener", "public void onViewCreated(View viewTop, Bundle savedInstanceState){ end");
+				Log.d("RecyclerListener day", "public void onMovedToScrapHeap(...){ end");
 		    }
 		});
 	}

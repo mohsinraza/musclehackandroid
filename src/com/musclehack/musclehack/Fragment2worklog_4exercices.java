@@ -118,9 +118,13 @@ public class Fragment2worklog_4exercices extends ListFragment {
 		this.getListView().setRecyclerListener(new RecyclerListener() {
 		    @Override
 		    public void onMovedToScrapHeap(View view) {
-		    	Log.d("RecyclerListener", "public void onViewCreated(View viewTop, Bundle savedInstanceState){ called");
+		    	Log.d("RecyclerListener 4", "public void onMovedToScrapHeap(View view){ called");
+		    	Log.d("RecyclerListener 4", "view: " + view);
+		    	Log.d("RecyclerListener 4", "Fragment2worklog_4exercices.this: " + Fragment2worklog_4exercices.this);
 		    	ListView listView = Fragment2worklog_4exercices.this.getListView();
+		    	Log.d("RecyclerListener 4", "listView: " + listView);
 		    	int selectedItemPosition = listView.getSelectedItemPosition();
+		    	Log.d("RecyclerListener 4", "selectedItemPosition: " + selectedItemPosition);
 		    	if(selectedItemPosition == ListView.INVALID_POSITION){
 			    	view.findViewById(R.id.hidenForFocus).requestFocus();
 			        // Cast the view to the type of the view we inflated.

@@ -288,7 +288,7 @@ public class ExercisesAdapter extends BaseAdapter {
 
 		@Override
 		public void onClick(View view) {
-			Log.d("SimpleExerciseAdapter", "public void onClick(View view){ called");
+			Log.d("ExerciseAdapter", "public void onClick(View view){ called");
 			ViewParent parentView = view.getParent();
 			
 			while(!(parentView instanceof LinearLayout)
@@ -312,7 +312,7 @@ public class ExercisesAdapter extends BaseAdapter {
 					}
 				}
 			}
-			Log.d("SimpleExerciseAdapter", "public void onClick(View view){ end");
+			Log.d("ExerciseAdapter", "public void onClick(View view){ end");
 		}
 	}
 
@@ -384,7 +384,7 @@ public class ExercisesAdapter extends BaseAdapter {
 
 		@Override
 		public void run() {
-			Log.d("SimpleExerciseAdapter", "public void run(){ called");
+			Log.d("ExerciseAdapter", "public void run(){ called");
 			RestButtonRunnable.currentRest--;
 			ExercisesAdapter adapter = ExercisesAdapter.getCurrentAdapter();
 			if(RestButtonRunnable.currentRest <= 0){
@@ -400,11 +400,11 @@ public class ExercisesAdapter extends BaseAdapter {
 				adapter.setCurrentRestValue(this.idExercise, this.currentRest);
 				//adapter.notifyDataSetInvalidated();
 			}
-			Log.d("SimpleExerciseAdapter", "public void run(){ end");
+			Log.d("ExerciseAdapter", "public void run(){ end");
 		}
 		
 		protected void playSound(){
-			Log.d("SimpleExerciseAdapter", "protected void playSound(){ called");
+			Log.d("ExerciseAdapter", "protected void playSound(){ called");
 			Context context = (Context)ExercisesAdapter.getCurrentActivity();
 			MediaPlayer mediaPlayer = MediaPlayer.create(context,
 					R.raw.power_up);
@@ -419,7 +419,7 @@ public class ExercisesAdapter extends BaseAdapter {
 			Activity activity = (Activity)context;
 			vibrator = (Vibrator) activity.getSystemService(Context.VIBRATOR_SERVICE);
 			vibrator.vibrate(800);
-			Log.d("SimpleExerciseAdapter", "protected void playSound(){ end");
+			Log.d("ExerciseAdapter", "protected void playSound(){ end");
 		}
 		
 	}

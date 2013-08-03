@@ -69,6 +69,7 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 	
 	public static void backupDatabase() {
 	
+		/*
 		//Open your local db as the input stream
 		String inFileName = "/data/data/com.musclehack.musclehack/databases/programs.db";
 		File dbFile = new File(inFileName);
@@ -102,6 +103,7 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		//*/
 	}
 	
 	public void onCreate(SQLiteDatabase db) {
@@ -1393,8 +1395,7 @@ if(exercisesListEquals(exercises, currentExercises)){
 					db.insert(ContractExercise.TABLE_NAME, "null", values);
 				}
 			}
-
-			ProgramDbHelper.backupDatabase();
+			db.close();
 			Log.d("ProgramDbHelper", "public void createDayFromExistingOne 2(...) end");
 		}
 	//-------------------------------------------------------------
