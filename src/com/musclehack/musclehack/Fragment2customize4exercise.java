@@ -72,11 +72,16 @@ public class Fragment2customize4exercise extends ListFragment {
 			@Override
 			public void onMovedToScrapHeap(View view) {
 				Log.d("RecyclerListener", "public void onMovedToScrapHeap(...){ called");
-				ListView listView = Fragment2customize4exercise.this.getListView();
-				int selectedItemPosition = listView.getSelectedItemPosition();
-				if(selectedItemPosition == ListView.INVALID_POSITION){
-					view.setPadding(0, 0, 0, 0);
-				}
+				boolean visible
+		    	= Fragment2customize4exercise.this.isVisible();
+		    	if(visible){
+				
+					ListView listView = Fragment2customize4exercise.this.getListView();
+					int selectedItemPosition = listView.getSelectedItemPosition();
+					if(selectedItemPosition == ListView.INVALID_POSITION){
+						view.setPadding(0, 0, 0, 0);
+					}
+		    	}
 				Log.d("RecyclerListener", "public void onViewCreated(View viewTop, Bundle savedInstanceState){ end");
 			}
 		});

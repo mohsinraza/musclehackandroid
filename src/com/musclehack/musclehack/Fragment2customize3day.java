@@ -84,21 +84,24 @@ public class Fragment2customize3day extends ListFragment {
 			
 			@Override
 		    public void onMovedToScrapHeap(View view) {
-				Log.d("RecyclerListener day", "public void onMovedToScrapHeap(...){ called");
-				Log.d("RecyclerListener day", "view: " + view);
-				CheckBox checkBox = (CheckBox)
-						view.findViewById(R.id.checkBoxEnabled);
-				checkBox.setOnCheckedChangeListener(null);
-				checkBox.setChecked(false);
-				Log.d("RecyclerListener", "listView...");
-		    	ListView listView = Fragment2customize3day.this.getListView();
-				Log.d("RecyclerListener", "listView ok");
-		    	int selectedItemPosition = listView.getSelectedItemPosition();
-				Log.d("RecyclerListener", "listView selected ok");
-		    	if(selectedItemPosition == ListView.INVALID_POSITION){
-		    		view.setPadding(0, 0, 0, 0);
+				Log.d("RecyclerListener 3", "public void onMovedToScrapHeap(...){ called");
+				boolean visible
+		    	= Fragment2customize3day.this.isVisible();
+		    	if(visible){
+					CheckBox checkBox = (CheckBox)
+							view.findViewById(R.id.checkBoxEnabled);
+					checkBox.setOnCheckedChangeListener(null);
+					checkBox.setChecked(false);
+					Log.d("RecyclerListener 3", "listView...");
+			    	ListView listView = Fragment2customize3day.this.getListView();
+					Log.d("RecyclerListener 3", "listView ok");
+			    	int selectedItemPosition = listView.getSelectedItemPosition();
+					Log.d("RecyclerListener 3", "listView selected ok");
+			    	if(selectedItemPosition == ListView.INVALID_POSITION){
+			    		view.setPadding(0, 0, 0, 0);
+			    	}
+					Log.d("RecyclerListener 3", "public void onMovedToScrapHeap(...){ end");
 		    	}
-				Log.d("RecyclerListener day", "public void onMovedToScrapHeap(...){ end");
 		    }
 		});
 	}
