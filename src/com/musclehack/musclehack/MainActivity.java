@@ -137,6 +137,15 @@ public class MainActivity extends FragmentActivity {
 		}else{
 			ExercisesAdapter.cancelTimerEventually();
 			super.onBackPressed();
+			int levelChoice
+			= WorkoutManagerSingleton.getInstance().getLevelChoice();
+			if(levelChoice == 12
+					|| levelChoice == 13
+					|| levelChoice ==14){
+				Log.d("MainActivity","Adding additionnal back pressed");
+				super.onBackPressed();
+				
+			}
 		}
 		Log.d("MainActivity","public void onBackPressed end");
 	}
