@@ -30,6 +30,18 @@ public class Fragment2customize4exercise extends ListFragment {
 				.getAvailableExercises();
 		Log.d("Fragment2customize4exercise", "n exercises = " + exercises.size());
 		int position = 0;
+		if(exercises.size() == 0){
+			HashMap<Integer, String> row = new HashMap<Integer, String>();
+			row.put(R.id.textViewPosition,
+					"0");
+			row.put(R.id.editTextExerciseName,
+					"Exercise name");
+			row.put(R.id.editTextRestTime,
+					"120");
+			row.put(R.id.editTextRepRange,
+					"8-12");
+			this.data.add(row);
+		}
 		for(Exercice exercise:exercises){
 			HashMap<Integer, String> row = new HashMap<Integer, String>();
 			row.put(R.id.textViewPosition,

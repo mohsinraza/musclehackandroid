@@ -12,7 +12,11 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -26,12 +30,12 @@ import android.webkit.WebViewClient;
 public class Fragment4archives extends Fragment {
 	static protected ProgressDialog progressDialog;
 	static public final String url = "http://www.musclehack.com/archives/";
-	
+	protected View view;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 			super.onCreateView(inflater, container, savedInstanceState);
-			View view = inflater.inflate(R.layout.fragment4archives, container, false);
+			this.view = inflater.inflate(R.layout.fragment4archives, container, false);
 			//*
 			Fragment4archives.progressDialog = ProgressDialog.show(this.getActivity(), "",
 														getString(R.string.loading), true);
@@ -55,10 +59,42 @@ public class Fragment4archives extends Fragment {
 		if(view != null){
 			WebView webView = (WebView) view.findViewById(R.id.webViewArchives);
 			String contentWithoutHeader = getContentWithoutHeader(content);
-			//webView.loadData(contentWithoutHeader, "text/html; charset=UTF-8", null);
-			webView.loadData(URLEncoder.encode(contentWithoutHeader).replaceAll("\\+"," "), "text/html", "utf-8" );
+			if(contentWithoutHeader.equals("")){
+				Log.d("Fragment4archives", "web content null");
+				this.displayNoDataDialog();
+			}else{
+				webView.loadData(URLEncoder.encode(contentWithoutHeader).replaceAll("\\+"," "), "text/html", "utf-8" );
+			}
 			Log.d("Fragment4archives", "public void setContentRemovingHeader(String content) end");
 		}
+	}
+	
+	public void displayNoDataDialog(){
+		Activity activity = this.getActivity();
+		Resources res = activity.getResources();
+		new AlertDialog.Builder(activity)
+		.setTitle(res.getString(R.string.warningNoData))
+		.setMessage(res.getString(R.string.warningNoDataMessage))
+		.setNeutralButton("Ok",
+		new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+			}
+		}).show();
+	}
+	
+	public boolean onBackPressed() {
+		Log.d("Fragment4archives", "FILTER public void onBackPressed() called");
+		WebView webView = (WebView) view.findViewById(R.id.webViewArchives);
+		Log.d("Fragment4archives", "FILTER can go back:" + webView.canGoBack());
+		Log.d("Fragment4archives", "FILTER isFocused:" + webView.isFocused());
+		boolean wentBack = false;
+		if (webView.canGoBack()) {
+			Log.d("Fragment4archives", "FILTER webView go back");
+			webView.goBack();
+			wentBack = true;
+		}
+		Log.d("Fragment4archives", "FILTER public void onBackPressed() end");
+		return wentBack;
 	}
 
 	protected String getContentWithoutHeader(String content){
@@ -80,33 +116,39 @@ public class Fragment4archives extends Fragment {
 					contentWithoutHeader += "</ul>" + element;
 				}
 				//*/
-				String css =
-						"<style>" +
-								"body{" +
-								"background-color:#EEEEEE;" +
-								"} "+
-								".car-yearmonth{" +
-								"font-weight:bold;" +
-								"}" +
-								"ul li a:link{" +
-								"color:black;" +
-								"}" +
-						"</style>";
-				contentWithoutHeader = css + contentWithoutHeader;
+
+				if(!contentWithoutHeader.equals("")){
+					String css =
+							"<style>" +
+									"body{" +
+									"background-color:#EEEEEE;" +
+									"} "+
+									".car-yearmonth{" +
+									"font-weight:bold;" +
+									"}" +
+									"ul li a:link{" +
+									"color:black;" +
+									"}" +
+							"</style>";
+					contentWithoutHeader = css + contentWithoutHeader;
+				}
 			}
 		}
 		return contentWithoutHeader;
 	}
 	
 	private class RetrieveWebContentTask extends AsyncTask<String, Void, String> {
-		//protected List<RssItem> entries = null;
+		protected boolean success;
 		@Override
 		protected String doInBackground(String... urls) {
 			try {
 				String webContent = loadWebContentFromUrl(urls[0]);
 				Fragment4archives.this.setContentRemovingHeader(webContent);
+				this.success = true;
 				return webContent;
 			} catch (IOException e) {
+				Log.d("RetrieveWebContentTask", " failure catch");
+				this.success = false;
 				return null;
 			}
 		}
@@ -120,6 +162,9 @@ public class Fragment4archives extends Fragment {
 			//setEntries(this.entries);
 			Log.d("RetrieveWebContentTask", "protected void onPostExecute(String content) called");
 			Fragment4archives.progressDialog.dismiss();
+			if(!this.success){
+				Fragment4archives.this.displayNoDataDialog();
+			}
 			Log.d("RetrieveWebContentTask", "protected void onPostExecute(String content) end");
 			
 		}

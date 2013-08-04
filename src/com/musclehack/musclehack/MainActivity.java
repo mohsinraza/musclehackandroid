@@ -127,8 +127,17 @@ public class MainActivity extends FragmentActivity {
 	@Override
 	public void onBackPressed() {
 		Log.d("MainActivity","public void onBackPressed called");
-		ExercisesAdapter.cancelTimerEventually();
-		super.onBackPressed();
+		int idTab = this.mTabHost.getCurrentTab();
+		if(idTab == 4){
+			boolean wentBackWithWebView
+			= this.fragment5archives.onBackPressed();
+			if(!wentBackWithWebView){
+				super.onBackPressed();
+			}
+		}else{
+			ExercisesAdapter.cancelTimerEventually();
+			super.onBackPressed();
+		}
 		Log.d("MainActivity","public void onBackPressed end");
 	}
 	

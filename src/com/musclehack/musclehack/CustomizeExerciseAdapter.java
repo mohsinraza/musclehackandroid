@@ -121,17 +121,15 @@ public class CustomizeExerciseAdapter extends BaseAdapter {
 		RowInfo rowInfo = this.getRowInfo(view);
 		HashMap<Integer, String> row
 		= this.data.get(rowInfo.position);
-		if(!rowInfo.exerciseName.equals("")){
+		if(!rowInfo.exerciseName.equals("")
+				&& !rowInfo.rest.equals("")
+				&& !rowInfo.repRange.equals("")){
 			row.put(R.id.editTextExerciseName,
 					rowInfo.exerciseName);
-		}
-		if(!rowInfo.rest.equals("")){
 			row.put(R.id.editTextRestTime,
 					rowInfo.rest);
-		}
-		if(!rowInfo.repRange.equals("")){
-		row.put(R.id.editTextRepRange,
-				rowInfo.repRange);
+			row.put(R.id.editTextRepRange,
+					rowInfo.repRange);
 		}
 	}
 	
@@ -267,7 +265,14 @@ public class CustomizeExerciseAdapter extends BaseAdapter {
 
 	public void drop(RowInfo rowInfo){
 		Log.d("CustomizeExerciseAdapter", "public void drop(…) called");
-		this.data.remove(rowInfo.position);
+		int nData = data.size();
+		Log.d("CustomizeExerciseAdapter", "nData: " + nData);
+		if(data.size() > 1){
+			this.data.remove(rowInfo.position);
+		}else{
+			HashMap<Integer, String> row = this.data.get(0);
+			row.put(R.id.editTextExerciseName, "");
+		}
 		this.notifyDataSetChanged();
 		Log.d("CustomizeExerciseAdapter", "public void drop(…) end");
 	}
