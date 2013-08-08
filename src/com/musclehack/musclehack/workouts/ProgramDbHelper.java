@@ -1181,6 +1181,7 @@ if(exercisesListEquals(exercises, currentExercises)){
 	}
 	//-------------------------------------------------------------
 	long createProgram(String name, int nWeeks){
+		Log.d("ProgramDbHelper", "public long createProgram(...) called");
 		SQLiteDatabase db = this.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put(ContractProgram.COLUMN_NAME_NAME, name);
@@ -1193,6 +1194,7 @@ if(exercisesListEquals(exercises, currentExercises)){
 			values.put(ContractWorkoutWeek.COLUMN_NAME_COMPLETED, false);
 			db.insert(ContractWorkoutWeek.TABLE_NAME, "null", values);
 		}
+		Log.d("ProgramDbHelper", "public long createProgram(...) called");
 		return newRowProgramId;
 	}
 	//-------------------------------------------------------------
@@ -1200,15 +1202,16 @@ if(exercisesListEquals(exercises, currentExercises)){
 			String name,
 			int nWeeks,
 			String existingProgramName){
-		Log.d("ProgramDbHelper", "public void createProgramFromExistingOne(...) called");
+		Log.d("ProgramDbHelper", "public void createProgramFromExistingOne(...) 3 called");
 		long newRowProgramId = this.createProgram(name, nWeeks);
 		String rawQuery = "SELECT * FROM "
-				+ "(SELECT idDay, name FROM "
-				+ "(SELECT TOP 1 id_week FROM program P"
+				+ "(SELECT day.id_day, day.name FROM "
+				+ "(SELECT id_week FROM program P"
 				+ " INNER JOIN week W"
 				+ " ON P.name = '" + existingProgramName + "'"
 				+ " AND P.id_program = W.id_program"
-				+ ") AS w1 INNER JOIN day"
+				+ " LIMIT 1)"
+				+ " AS w1 INNER JOIN day"
 				+ " ON w1.id_week = day.id_week"
 				+ ") AS d1 INNER JOIN exercice E "
 				+ " ON E.id_day = d1.id_day";

@@ -213,7 +213,11 @@ public class RssNotificationsService extends Service {
 			nTask--;
 			if(nTask == 0){
 				stopSelf();
-				RssNotificationsService.this.mWakeLock.release();
+				try{
+					RssNotificationsService.this.mWakeLock.release();
+				}catch(RuntimeException e){
+					Log.d("NOTIFICATION:RssNotificationsService", "WARNING: RssNotificationsService.this.mWakeLock.release failed");
+				}
 			}
 			/*
 			new AlertDialog.Builder(RssNotificationsService.this)

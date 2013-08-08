@@ -88,6 +88,7 @@ public class MainActivity extends FragmentActivity {
 		this.fragment5archives = new Fragment4archives();
 		this.fragment6book = new Fragment6book();
 
+
 		this.mTabHost = (TabHost)findViewById(android.R.id.tabhost);
 		this.mTabHost.setOnTabChangedListener(this.listener);
 		this.mTabHost.setup();
@@ -247,6 +248,7 @@ public class MainActivity extends FragmentActivity {
 		spec.setIndicator(createTabView(getString(R.string.archives), R.drawable.tab4_archives));
 		mTabHost.addTab(spec);
 		
+		/*
 		spec = mTabHost.newTabSpec(TAB_F);
 		spec.setContent(new TabHost.TabContentFactory() {
 			public View createTabContent(String tag) {
@@ -255,6 +257,7 @@ public class MainActivity extends FragmentActivity {
 		});
 		spec.setIndicator(createTabView(getString(R.string.book), R.drawable.tab6_book));
 		mTabHost.addTab(spec);
+		//*/
 
 		Log.d("MainActivity","Checking savedInstanceState...");
 		if (savedInstanceState == null) {
@@ -335,8 +338,8 @@ public class MainActivity extends FragmentActivity {
 				pushFragments(getString(R.string.recipes), fragment4recipe);
 			}else if(tabId.equals(TAB_E)){
 				pushFragments(getString(R.string.archives), fragment5archives);
-			}else if(tabId.equals(TAB_F)){
-				pushFragments(getString(R.string.book), fragment6book);
+			//}else if(tabId.equals(TAB_F)){
+				//pushFragments(getString(R.string.book), fragment6book);
 			}
 			Log.d("MainActivity","public void onTabChanged(String tabId) { end");
 		}

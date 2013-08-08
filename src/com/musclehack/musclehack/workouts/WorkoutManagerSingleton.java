@@ -126,7 +126,7 @@ public class WorkoutManagerSingleton{
 				programs.add(0, lastProgram);
 			}
 		}
-		programs.add(0, WorkoutManagerSingleton.CREATE_PROGRAM);
+		programs.add(WorkoutManagerSingleton.CREATE_PROGRAM);
 		return programs;
 	}
 
@@ -154,10 +154,18 @@ public class WorkoutManagerSingleton{
 		SharedPreferences settings = WorkoutManagerSingleton.context.getSharedPreferences(prefName, 0);
 		SharedPreferences.Editor settingsEditor = settings.edit();
 		settingsEditor.putString(LAST_PROGRAM, this.selectedProgramName);
-		String lastPRogramShortcutName = WorkoutManagerSingleton.context.getString(R.string.currentSubWorkout)
-											+ " " + this.selectedProgramName;
-		settingsEditor.putString(LAST_PROGRAM_SHORTCUT_NAME, lastPRogramShortcutName);
+		String lastProgramShortcutName
+		= this._getProgramShortcutName(this.selectedProgramName);
+		settingsEditor.putString(LAST_PROGRAM_SHORTCUT_NAME, lastProgramShortcutName);
 		settingsEditor.commit();
+	}
+	
+	protected String _getProgramShortcutName(String programName){
+		String shortcutName
+		= WorkoutManagerSingleton.context.getString(R.string.currentSubWorkout)
+				+ " " + this.selectedProgramName;
+		return shortcutName;
+		
 	}
 
 	public String selectLastProgram(){
@@ -306,6 +314,15 @@ public class WorkoutManagerSingleton{
 	
 	public void deleteProgram(String programName){
 		this.dbHelper.deleteProgram(programName);
+		String prefName = getPrefName();
+		SharedPreferences settings = WorkoutManagerSingleton.context.getSharedPreferences(prefName, 0);
+		String currentProgram = settings.getString(LAST_PROGRAM_SHORTCUT_NAME, "");
+		String deletingProgramShortcutName
+		= this._getProgramShortcutName(programName);
+		if(currentProgram.equals(deletingProgramShortcutName)){
+			SharedPreferences.Editor settingsEditor = settings.edit();
+			settingsEditor.putString(LAST_PROGRAM, "");
+		}
 	}
 	
 	public void deleteDay(
