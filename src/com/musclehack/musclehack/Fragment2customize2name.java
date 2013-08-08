@@ -141,16 +141,17 @@ public class Fragment2customize2name extends Fragment {
 					existingProgramName);
 		}else{
 			workoutManager.createProgram(programName, nWeeks);
-			workoutManager.selectProgram(programName);
-			workoutManager.selectFistWeek();
-			Fragment newFragment = new Fragment2customize3day();
-			FragmentTransaction transaction
-				= getFragmentManager().beginTransaction();
-
-			transaction.replace(this.getId(), newFragment);
-			transaction.addToBackStack("customizationFromName");
-
-			transaction.commit();
 		}
+		workoutManager.selectProgram(programName);
+		workoutManager.selectFistWeek();
+		Fragment newFragment = new Fragment2customize3day();
+		FragmentTransaction transaction
+			= getFragmentManager().beginTransaction();
+
+		transaction.replace(this.getId(), newFragment);
+		transaction.addToBackStack("customizationFromName");
+
+		transaction.commit();
+
 	}
 }
