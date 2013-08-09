@@ -1180,6 +1180,17 @@ if(exercisesListEquals(exercises, currentExercises)){
 		return available;
 	}
 	//-------------------------------------------------------------
+	long createProgram(String name){
+		Log.d("ProgramDbHelper", "public long createProgram(...) called");
+		SQLiteDatabase db = this.getWritableDatabase();
+		ContentValues values = new ContentValues();
+		values.put(ContractProgram.COLUMN_NAME_NAME, name);
+		values.put(ContractProgram.COLUMN_NAME_COMPLETED, false);
+		long newRowProgramId = db.insert(ContractProgram.TABLE_NAME, "null", values);
+		Log.d("ProgramDbHelper", "public long createProgram(...) called");
+		return newRowProgramId;
+	}
+	//-------------------------------------------------------------
 	long createProgram(String name, int nWeeks){
 		Log.d("ProgramDbHelper", "public long createProgram(...) called");
 		SQLiteDatabase db = this.getWritableDatabase();
@@ -1202,10 +1213,10 @@ if(exercisesListEquals(exercises, currentExercises)){
 			String name,
 			int nWeeks,
 			String existingProgramName){
-		Log.d("ProgramDbHelper", "public void createProgramFromExistingOne(...) 3 called");
-		long newRowProgramId = this.createProgram(name, nWeeks);
+		Log.d("ProgramDbHelper", "public void createProgramFromExistingOne(...) called");
+		long newRowProgramId = this.createProgram(name);
 		String rawQuery = "SELECT * FROM "
-				+ "(SELECT day.id_day, day.name FROM "
+				+ "(SELECT day.id_day, day.name, day.day_of_week FROM "
 				+ "(SELECT id_week FROM program P"
 				+ " INNER JOIN week W"
 				+ " ON P.name = '" + existingProgramName + "'"
@@ -1218,23 +1229,27 @@ if(exercisesListEquals(exercises, currentExercises)){
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursorExercises = db.rawQuery(rawQuery, null);
 
-		HashMap<String, List<Exercice>> exercises
-		= new HashMap<String, List<Exercice>>();
+		HashMap<Integer, List<Exercice>> exercises
+		= new HashMap<Integer, List<Exercice>>();
+		HashMap<Integer, String> workoutNames
+		= new HashMap<Integer, String>();
 		List<Exercice> exercisesOfDay = null;
 		while(cursorExercises.moveToNext()){
-			String dayName = cursorExercises.getString(2);
-			if(!exercises.containsKey(dayName)){
+			int day_of_week = cursorExercises.getInt(2);
+			if(!exercises.containsKey(day_of_week)){
+				String dayName = cursorExercises.getString(1);
 				exercisesOfDay = new ArrayList<Exercice>();
-				exercises.put(dayName, exercisesOfDay);
+				exercises.put(day_of_week, exercisesOfDay);
+				workoutNames.put(day_of_week, dayName);
 			}else{
-				exercisesOfDay = exercises.get(dayName);
+				exercisesOfDay = exercises.get(day_of_week);
 			}
-			String exerciseName = cursorExercises.getString(4);
-			int nRep = cursorExercises.getInt(6);
-			float weight = cursorExercises.getFloat(7);
-			String repRange = cursorExercises.getString(8);
+			String exerciseName = cursorExercises.getString(5);
+			//int nRep = cursorExercises.getInt(7);
+			//float weight = cursorExercises.getFloat(8);
+			String repRange = cursorExercises.getString(9);
 			int rest = cursorExercises.getInt(10);
-			Exercice exercice = new Exercice(-1, exerciseName, nRep, weight, repRange, rest);
+			Exercice exercice = new Exercice(-1, exerciseName, 0, 0, repRange, rest);
 			exercisesOfDay.add(exercice);
 		}
 		for(int i=0; i<nWeeks; i++){
@@ -1243,18 +1258,21 @@ if(exercisesListEquals(exercises, currentExercises)){
 			values.put(ContractWorkoutWeek.COLUMN_NAME_EXTERN_ID, newRowProgramId);
 			values.put(ContractWorkoutWeek.COLUMN_NAME_COMPLETED, false);
 			long newRowWeekId = db.insert(ContractWorkoutWeek.TABLE_NAME, "null", values);
-			for(Entry<String, List<Exercice>> entry : exercises.entrySet()) {
-				String dayName = entry.getKey();
+			for(Entry<Integer, List<Exercice>> entry : exercises.entrySet()) {
+				int dayOfTheWeek = entry.getKey();
+				String workoutName = workoutNames.get(dayOfTheWeek);
 				List<Exercice> valueExercises = entry.getValue();
 				values = new ContentValues();
-				values.put(ContractWorkoutDay.COLUMN_NAME_NAME, dayName);
+				values.put(ContractWorkoutDay.COLUMN_NAME_NAME, workoutName);
 				values.put(ContractWorkoutDay.COLUMN_NAME_COMPLETED, false);
-				values.put(ContractWorkoutDay.COLUMN_NAME_DAY_OF_WEEK, 0);
+				values.put(ContractWorkoutDay.COLUMN_NAME_DAY_OF_WEEK, dayOfTheWeek); //TODO
 				values.put(ContractWorkoutDay.COLUMN_NAME_EXTERN_ID, newRowWeekId);
 				long newRowDayId = db.insert(ContractWorkoutDay.TABLE_NAME, "null", values);
+				int order=0;
 				for(Exercice exercise : valueExercises){
 					values = new ContentValues();
 					values.put(ContractExercise.COLUMN_NAME_EXTERN_ID, newRowDayId);
+					values.put(ContractExercise.COLUMN_NAME_ORDER, order++);
 					values.put(ContractExercise.COLUMN_NAME_COMPLETED, false);
 					values.put(ContractExercise.COLUMN_NAME_NREP, 0);
 					values.put(ContractExercise.COLUMN_NAME_WEIGHT, 0.f);
@@ -1266,7 +1284,7 @@ if(exercisesListEquals(exercises, currentExercises)){
 			}
 		}
 		cursorExercises.close();
-		Log.d("ProgramDbHelper", "public List<Exercice> getAvailableExercices(...) end");
+		Log.d("ProgramDbHelper", "public void createProgramFromExistingOne(...) end");
 		
 	}
 	//-------------------------------------------------------------

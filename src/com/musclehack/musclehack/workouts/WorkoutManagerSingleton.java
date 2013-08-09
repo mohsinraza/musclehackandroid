@@ -163,7 +163,7 @@ public class WorkoutManagerSingleton{
 	protected String _getProgramShortcutName(String programName){
 		String shortcutName
 		= WorkoutManagerSingleton.context.getString(R.string.currentSubWorkout)
-				+ " " + this.selectedProgramName;
+				+ " " + programName;
 		return shortcutName;
 		
 	}
@@ -321,7 +321,9 @@ public class WorkoutManagerSingleton{
 		= this._getProgramShortcutName(programName);
 		if(currentProgram.equals(deletingProgramShortcutName)){
 			SharedPreferences.Editor settingsEditor = settings.edit();
+			settingsEditor.putString(LAST_PROGRAM_SHORTCUT_NAME, "");
 			settingsEditor.putString(LAST_PROGRAM, "");
+			settingsEditor.commit();
 		}
 	}
 	
