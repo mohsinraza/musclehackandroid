@@ -319,8 +319,9 @@ public class CustomizeExerciseAdapter extends BaseAdapter {
 
 		@Override
 		protected void onPostExecute(Void nothing) { 
-			Log.d("CustomizeExerciseAdapter task", "protected List<String> doInBackground(Void... urls) called");
+			Log.d("CustomizeExerciseAdapter task", "protected void onPostExecute(...) called");
 			if(CustomizeExerciseAdapter.progressDialog != null){
+				Log.d("CustomizeExerciseAdapter task", "progress dialog not null");
 				CustomizeExerciseAdapter.progressDialog.dismiss();
 			}
 			Log.d("CustomizeExerciseAdapter task", "protected void onPostExecute(...) end");

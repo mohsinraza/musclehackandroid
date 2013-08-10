@@ -1,14 +1,19 @@
 package com.musclehack.musclehack;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.res.Resources;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,12 +22,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.musclehack.musclehack.CustomizeExerciseAdapter.SaveAsyncTask;
+import com.musclehack.musclehack.workouts.Exercice;
 import com.musclehack.musclehack.workouts.WorkoutManagerSingleton;
 
 public class Fragment2customize2name extends Fragment {
 
 	protected boolean fromExistingProgramMode;
 	protected View mainView;
+	static protected ProgressDialog progressDialog = null;
+	protected SaveAndContinueAsyncTask saveAsyncTask;
 	
 	public Fragment2customize2name(){
 		super();
@@ -52,6 +61,7 @@ public class Fragment2customize2name extends Fragment {
 	}
 	
 	public void fillSpinnerEventually(View view){
+		Log.d("Fragment2customize2name task", "public void fillSpinnerEventually(...) called");
 		if(this.fromExistingProgramMode){
 			List<String> programNames =
 					WorkoutManagerSingleton
@@ -69,6 +79,7 @@ public class Fragment2customize2name extends Fragment {
 			adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 			spinner.setAdapter(adapter);
 		}
+		Log.d("Fragment2customize2name task", "public void fillSpinnerEventually(...) end");
 	}
 	public void connectButton(View view){
 		Button button = (Button)view.findViewById(R.id.buttonSave);
@@ -83,6 +94,7 @@ public class Fragment2customize2name extends Fragment {
 	}
 	
 	public void saveAndContinue(){
+		Log.d("Fragment2customize2name task", "protected void saveAndContinue() called");
 		EditText programNameTextEdit = (EditText) 
 		this.mainView.findViewById(R.id.editTextName);
 		EditText nWeeksEditText = (EditText) 
@@ -135,13 +147,29 @@ public class Fragment2customize2name extends Fragment {
 							R.id.spinnerProgramNames2);
 			String existingProgramName
 			= spinner.getSelectedItem().toString();
-			workoutManager.createProgramFromExistingOne(
+			Activity activity = this.getActivity();
+			CustomizeExerciseAdapter.progressDialog
+			= ProgressDialog.show(activity,
+									"",
+									"Creating workout",
+									true);
+			this.saveAsyncTask = new SaveAndContinueAsyncTask(
 					programName,
 					nWeeks,
 					existingProgramName);
+			this.saveAsyncTask.execute();
 		}else{
 			workoutManager.createProgram(programName, nWeeks);
+			this.goNext(programName);
 		}
+		
+		Log.d("Fragment2customize2name task", "protected void saveAndContinue() end");
+
+	}
+	
+	protected void goNext(String programName){
+		WorkoutManagerSingleton workoutManager
+		= WorkoutManagerSingleton.getInstance();
 		workoutManager.selectProgram(programName);
 		workoutManager.selectFistWeek();
 		Fragment newFragment = new Fragment2customize3day();
@@ -152,6 +180,61 @@ public class Fragment2customize2name extends Fragment {
 		transaction.addToBackStack("customizationFromName");
 
 		transaction.commit();
+	}
+	
+	protected class SaveAndContinueAsyncTask
+	extends AsyncTask<Void, Void, Void> {
+		protected String programName;
+		protected int nWeeks;
+		protected String existingProgramName;
+		public SaveAndContinueAsyncTask(
+				String programName,
+				int nWeeks,
+				String existingProgramName){
+			this.programName = programName;
+			this.nWeeks = nWeeks;
+			this.existingProgramName = existingProgramName;
+		}
+		
+		@Override
+		protected Void doInBackground(
+				Void... params) {
+			Log.d("Fragment2customize2name task", "protected Void doInBackground(...) called");
+			WorkoutManagerSingleton workoutManager
+			= WorkoutManagerSingleton.getInstance();
+			workoutManager.createProgramFromExistingOne(
+					programName,
+					nWeeks,
+					existingProgramName); //TODO in asynchrone task
+			
+			Log.d("Fragment2customize2name task", "protected Void doInBackground(...) end");
+			return null;
+		}
 
+		@Override
+		protected void onPostExecute(Void nothing) { 
+			Log.d("Fragment2customize2name task", "protected void onPostExecute(...) called");
+			if(CustomizeExerciseAdapter.progressDialog != null){
+				Log.d("Fragment2customize2name task", "progress dialog not null");
+				CustomizeExerciseAdapter.progressDialog.dismiss();
+			}
+			Fragment2customize2name.this.goNext(programName);
+			Log.d("Fragment2customize2name task", "protected void onPostExecute(...) end");
+		}
+	}
+	public void onDestroyView(){
+		Log.d("Fragment2customize2name", "public void onDestroyView() called");
+		
+		if(Fragment2customize2name.progressDialog != null){
+			Fragment2customize2name.progressDialog.dismiss();
+			Fragment2customize2name.progressDialog = null;
+		}
+		if(this.saveAsyncTask != null){
+			this.saveAsyncTask.cancel(false);
+			Log.d("Fragment2customize2name", "saveAsyncCask canceled.");
+			this.saveAsyncTask = null;
+		}
+		super.onDestroyView();
+		Log.d("Fragment2customize2name", "public void onDestroyView() end");
 	}
 }
