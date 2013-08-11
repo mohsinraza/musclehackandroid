@@ -31,6 +31,7 @@ public class CustomizeExerciseAdapter extends BaseAdapter {
 	protected int lastPosition;
 	static protected ProgressDialog progressDialog = null;
 	protected SaveAsyncTask saveAsyncTask;
+	protected boolean isDroppingOrAdding;
 	
 	public CustomizeExerciseAdapter(Context context,
 			ArrayList<HashMap<Integer, String>> data){
@@ -39,6 +40,7 @@ public class CustomizeExerciseAdapter extends BaseAdapter {
 		this.data = data;
 		this.lastPosition = -1;
 		this.saveAsyncTask = null;
+		this.isDroppingOrAdding = false;
 		this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		Log.d("CustomizeExerciseAdapter", "public CustomizeExerciseAdapter(…){ end");
 		
@@ -118,7 +120,9 @@ public class CustomizeExerciseAdapter extends BaseAdapter {
 	}
 	
 	public void viewDataToAdapter(View view){
+		Log.d("CustomizeExerciseAdapter", "public void viewDataToAdapter(View view) called");
 		RowInfo rowInfo = this.getRowInfo(view);
+		Log.d("CustomizeExerciseAdapter", "rowInfo.position:" + rowInfo.position);
 		HashMap<Integer, String> row
 		= this.data.get(rowInfo.position);
 		if(!rowInfo.exerciseName.equals("")
@@ -131,6 +135,7 @@ public class CustomizeExerciseAdapter extends BaseAdapter {
 			row.put(R.id.editTextRepRange,
 					rowInfo.repRange);
 		}
+		Log.d("CustomizeExerciseAdapter", "public void viewDataToAdapter(View view) end");
 	}
 	
 	@Override
@@ -141,6 +146,7 @@ public class CustomizeExerciseAdapter extends BaseAdapter {
 											listView,
 											false);
 		}
+		this.listView = (ListView)listView;
 		HashMap<Integer, String> row = this.data.get(position);
 		String setNumber = this.positionToSetNumber(position);
 		TextView textViewSetNumber
@@ -183,6 +189,7 @@ public class CustomizeExerciseAdapter extends BaseAdapter {
 				View parentView = (View)v.getParent();
 				RowInfo rowInfo
 				= CustomizeExerciseAdapter.this.getRowInfo(parentView);
+				parentView.findViewById(R.id.hidenForFocus).requestFocus();
 				CustomizeExerciseAdapter.this.addUnder(rowInfo);
 			}
 		};
@@ -197,6 +204,7 @@ public class CustomizeExerciseAdapter extends BaseAdapter {
 				View parentView = (View)v.getParent();
 				RowInfo rowInfo
 				= CustomizeExerciseAdapter.this.getRowInfo(parentView);
+				parentView.findViewById(R.id.hidenForFocus).requestFocus();
 				CustomizeExerciseAdapter.this.drop(rowInfo);
 			}
 		};
@@ -237,6 +245,7 @@ public class CustomizeExerciseAdapter extends BaseAdapter {
 	
 	public void addUnder(RowInfo rowInfo){
 		Log.d("CustomizeExerciseAdapter", "public void addUnder(…) called");
+		this.isDroppingOrAdding = true;
 		for(HashMap<Integer, String> row:this.data){
 			int currentPosition
 			= Integer.parseInt(row.get(R.id.textViewPosition));
@@ -259,12 +268,47 @@ public class CustomizeExerciseAdapter extends BaseAdapter {
 		row.put(R.id.editTextRepRange,
 				rowInfo.repRange);
 		this.data.add(rowInfo.position+1, row);
+		
+		this.updateListViewBeforeNotification(rowInfo);
 		this.notifyDataSetChanged();
+		this.updateListViewAfterNotification(rowInfo);
+		this.isDroppingOrAdding = false;
 		Log.d("CustomizeExerciseAdapter", "public void addUnder(…) end");
+	}
+	
+	public void updateListViewBeforeNotification(RowInfo rowInfo){
+		Log.d("CustomizeExerciseAdapter", "public void updateListViewBeforeNotification(…) called");
+		for(int i=rowInfo.position;
+				i<this.data.size();
+				i++){
+			HashMap<Integer, String> row = this.data.get(i);
+			row.put(R.id.textViewPosition, "" + i);
+			
+		}
+		Log.d("CustomizeExerciseAdapter", "public void updateListViewBeforeNotification(…) end");
+	}
+	
+	public void updateListViewAfterNotification(RowInfo rowInfo){
+		Log.d("CustomizeExerciseAdapter", "public void updateListViewAfterNotification(…) called");
+		ListView listView = this.getListView();
+		Log.d("CustomizeExerciseAdapter", "list view got:" + listView);
+		for(int i=rowInfo.position;
+				i<this.data.size();
+				i++){
+			View view = listView.findViewById(i);
+			Log.d("CustomizeExerciseAdapter", "view for i:" + i + "got");
+			if(view != null){
+				TextView textViewPosition
+				= (TextView)view.findViewById(R.id.textViewPosition);
+				textViewPosition.setText("" + i);
+			}
+		}
+		Log.d("CustomizeExerciseAdapter", "public void updateListViewAfterNotification(…) end");
 	}
 
 	public void drop(RowInfo rowInfo){
 		Log.d("CustomizeExerciseAdapter", "public void drop(…) called");
+		this.isDroppingOrAdding = true;
 		int nData = data.size();
 		Log.d("CustomizeExerciseAdapter", "nData: " + nData);
 		if(data.size() > 1){
@@ -273,7 +317,13 @@ public class CustomizeExerciseAdapter extends BaseAdapter {
 			HashMap<Integer, String> row = this.data.get(0);
 			row.put(R.id.editTextExerciseName, "");
 		}
+		Log.d("CustomizeExerciseAdapter", "Dropping: " + rowInfo.position);
+
+		this.updateListViewBeforeNotification(rowInfo);
 		this.notifyDataSetChanged();
+		this.updateListViewAfterNotification(rowInfo);
+		this.isDroppingOrAdding = false;
+		Log.d("CustomizeExerciseAdapter", "this.notifyDataSetChanged()...;");
 		Log.d("CustomizeExerciseAdapter", "public void drop(…) end");
 	}
 	
@@ -301,15 +351,22 @@ public class CustomizeExerciseAdapter extends BaseAdapter {
 			Log.d("CustomizeExerciseAdapter task", "protected Void doInBackground(...) called");
 			List<Exercice> exercises = new ArrayList<Exercice>();
 			for(HashMap<Integer, String> row:datas[0]){
-				int rest
-				= Integer.parseInt(row.get(R.id.editTextRestTime));
-				Exercice exercise
-				= new Exercice(
-						-1,
-						row.get(R.id.editTextExerciseName),
-						row.get(R.id.editTextRepRange),
-						rest);
-				exercises.add(exercise);
+				String exerciseName = row.get(R.id.editTextExerciseName);
+				String restTime = row.get(R.id.editTextRestTime);
+				String repRange = row.get(R.id.editTextRepRange);
+				if(!exerciseName.equals("")
+						&& !restTime.equals("")
+						&& !repRange.equals("")){
+					int rest
+					= Integer.parseInt(row.get(R.id.editTextRestTime));
+					Exercice exercise
+					= new Exercice(
+							-1,
+							exerciseName,
+							repRange,
+							rest);
+					exercises.add(exercise);
+				}
 			}
 			WorkoutManagerSingleton.getInstance()
 			.setExercices(exercises);
@@ -348,9 +405,14 @@ public class CustomizeExerciseAdapter extends BaseAdapter {
 
 		@Override
 		public void onFocusChange(View v, boolean hasFocus) {
-			View parentView = (View)v.getParent();
-			CustomizeExerciseAdapter.this
-			.viewDataToAdapter(parentView);
+			Log.d("CustomizeExerciseAdapter", "public void onFocusChange(...) called");
+			Log.d("CustomizeExerciseAdapter", "view shown:" + v.isShown());
+			if(!CustomizeExerciseAdapter.this.isDroppingOrAdding){
+				View parentView = (View)v.getParent();
+				CustomizeExerciseAdapter.this
+				.viewDataToAdapter(parentView);
+			}
+			Log.d("CustomizeExerciseAdapter", "public void onFocusChange(...) end");
 		}
 		
 	}

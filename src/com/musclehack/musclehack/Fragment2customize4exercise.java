@@ -29,7 +29,6 @@ public class Fragment2customize4exercise extends ListFragment {
 		List<Exercice> exercises = WorkoutManagerSingleton.getInstance()
 				.getAvailableExercises();
 		Log.d("Fragment2customize4exercise", "n exercises = " + exercises.size());
-		int position = 0;
 		if(exercises.size() == 0){
 			HashMap<Integer, String> row = new HashMap<Integer, String>();
 			row.put(R.id.textViewPosition,
@@ -41,22 +40,24 @@ public class Fragment2customize4exercise extends ListFragment {
 			row.put(R.id.editTextRepRange,
 					"8-12");
 			this.data.add(row);
-		}
-		for(Exercice exercise:exercises){
-			HashMap<Integer, String> row = new HashMap<Integer, String>();
-			row.put(R.id.textViewPosition,
-					"" + position);
-			String exerciseName = exercise.getName();
-			row.put(R.id.editTextExerciseName,
-					exerciseName);
-			String restTime = "" + exercise.getRest();
-			row.put(R.id.editTextRestTime,
-					restTime);
-			String repRange = "" + exercise.getRepRange();
-			row.put(R.id.editTextRepRange,
-					repRange);
-			this.data.add(row);
-			position++;
+		}else{
+			int position = 0;
+			for(Exercice exercise:exercises){
+				HashMap<Integer, String> row = new HashMap<Integer, String>();
+				row.put(R.id.textViewPosition,
+						"" + position);
+				String exerciseName = exercise.getName();
+				row.put(R.id.editTextExerciseName,
+						exerciseName);
+				String restTime = "" + exercise.getRest();
+				row.put(R.id.editTextRestTime,
+						restTime);
+				String repRange = "" + exercise.getRepRange();
+				row.put(R.id.editTextRepRange,
+						repRange);
+				this.data.add(row);
+				position++;
+			}
 		}
 		View view = super.onCreateView(inflater, container, savedInstanceState);
 
@@ -83,18 +84,18 @@ public class Fragment2customize4exercise extends ListFragment {
 		this.getListView().setRecyclerListener(new RecyclerListener() {
 			@Override
 			public void onMovedToScrapHeap(View view) {
-				Log.d("RecyclerListener", "public void onMovedToScrapHeap(...){ called");
+				Log.d("RecyclerListener 4exo", "public void onMovedToScrapHeap(...){ called");
 				boolean visible
 		    	= Fragment2customize4exercise.this.isVisible();
 		    	if(visible){
-				
+					Log.d("RecyclerListener 4exo", "visible");
 					ListView listView = Fragment2customize4exercise.this.getListView();
 					int selectedItemPosition = listView.getSelectedItemPosition();
 					if(selectedItemPosition == ListView.INVALID_POSITION){
 						view.setPadding(0, 0, 0, 0);
 					}
 		    	}
-				Log.d("RecyclerListener", "public void onViewCreated(View viewTop, Bundle savedInstanceState){ end");
+				Log.d("RecyclerListener 4exo", "public void onMovedToScrapHeap(...){ end");
 			}
 		});
 	}
