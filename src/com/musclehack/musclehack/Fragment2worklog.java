@@ -12,6 +12,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
@@ -23,6 +24,7 @@ import android.view.ViewGroup;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.AbsListView.RecyclerListener;
 
 import com.musclehack.musclehack.rss.StackOverflowXmlParser.RssItem;
 import com.musclehack.musclehack.workouts.WorkoutManagerSingleton;
@@ -73,7 +75,7 @@ public class Fragment2worklog extends ListFragment {
 
 			
 			if(activity != null){
-				this.adapter = new SimpleCustomableAdapter(
+				this.adapter = new SimpleProgramAdapter(
 						this.getActivity(),
 						this.texts,
 						R.layout.fragment2worklog,
@@ -168,5 +170,29 @@ public class Fragment2worklog extends ListFragment {
 			transaction.commit();
 		}
 		Log.d("Fragment2worklog", "public void doTransaction(String rowText) end");
+	}
+	
+	@Override
+	public void onViewCreated(View viewTop, Bundle savedInstanceState){
+		Log.d("Fragment2worklog", "public void onViewCreated(...) called");
+		super.onViewCreated(viewTop, savedInstanceState);
+		this.getListView().setRecyclerListener(new RecyclerListener() {
+			@Override
+			public void onMovedToScrapHeap(View view) {
+				Log.d("RecyclerListener 4exo", "public void onMovedToScrapHeap(...){ called");
+				boolean visible
+		    	= Fragment2worklog.this.isVisible();
+		    	if(visible){
+					Log.d("RecyclerListener 4exo", "visible");
+					ListView listView = Fragment2worklog.this.getListView();
+					int selectedItemPosition = listView.getSelectedItemPosition();
+					if(selectedItemPosition == ListView.INVALID_POSITION){
+						view.setBackgroundColor(Color.WHITE);
+					}
+		    	}
+				Log.d("Fragment2worklog week", "public void onMovedToScrapHeap(...){ end");
+			}
+		});
+		Log.d("Fragment2worklog", "public void onViewCreated(...) end");
 	}
 }

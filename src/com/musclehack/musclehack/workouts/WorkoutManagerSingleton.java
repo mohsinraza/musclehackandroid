@@ -228,8 +228,28 @@ public class WorkoutManagerSingleton{
 
 	
 	public boolean isProgramCompleted(String programName){
-		boolean completed = this.dbHelper.isProgramCompleted(this.selectedProgramName);
+		String shortcutProgramName = this.getShortcutOfLastProgram();
+		if(programName == shortcutProgramName){
+			programName = this.getProgramNameFromShortcut(programName);
+		}
+		boolean completed = this.dbHelper.isProgramCompleted(programName);
 		return completed;
+	}
+	
+	public String getProgramNameFromShortcut(String shortcutName){
+		String begin
+			= WorkoutManagerSingleton.context.getString(R.string.currentSubWorkout)
+			+ " ";
+		String[] splitted = shortcutName.split(begin);
+		String programName = splitted[splitted.length - 1];
+		return programName;
+	}
+	
+	public String getShortcutOfLastProgram(){
+		String prefName = getPrefName();
+		SharedPreferences settings = WorkoutManagerSingleton.context.getSharedPreferences(prefName, 0);
+		String lastProgram = settings.getString(LAST_PROGRAM_SHORTCUT_NAME, "");
+		return lastProgram;
 	}
 	
 	public List<String> getAvailableWeeks(){
@@ -328,6 +348,8 @@ public class WorkoutManagerSingleton{
 			settingsEditor.commit();
 		}
 	}
+	
+
 	
 	public void deleteDay(
 			int dayOfTheWeek){

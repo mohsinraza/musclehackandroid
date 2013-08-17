@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.musclehack.musclehack.workouts.WorkoutManagerSingleton;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
@@ -16,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.AbsListView.RecyclerListener;
 
 public class Fragment2worklog_2week extends ListFragment {
 	public static String TAG_TEXT_WORKLOG = "textWorklog";
@@ -64,5 +66,29 @@ public class Fragment2worklog_2week extends ListFragment {
 
 		transaction.commit();
 		Log.d("Fragment2worklog_2week", "public void onListItemClick(...) end");
+	}
+	
+	@Override
+	public void onViewCreated(View viewTop, Bundle savedInstanceState){
+		Log.d("Fragment2worklog_2week", "public void onViewCreated(...) called");
+		super.onViewCreated(viewTop, savedInstanceState);
+		this.getListView().setRecyclerListener(new RecyclerListener() {
+			@Override
+			public void onMovedToScrapHeap(View view) {
+				Log.d("RecyclerListener 4exo", "public void onMovedToScrapHeap(...){ called");
+				boolean visible
+		    	= Fragment2worklog_2week.this.isVisible();
+		    	if(visible){
+					Log.d("RecyclerListener 4exo", "visible");
+					ListView listView = Fragment2worklog_2week.this.getListView();
+					int selectedItemPosition = listView.getSelectedItemPosition();
+					if(selectedItemPosition == ListView.INVALID_POSITION){
+						view.setBackgroundColor(Color.WHITE);
+					}
+		    	}
+				Log.d("RecyclerListener week", "public void onMovedToScrapHeap(...){ end");
+			}
+		});
+		Log.d("Fragment2worklog_2week", "public void onViewCreated(...) end");
 	}
 }
