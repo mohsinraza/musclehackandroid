@@ -136,7 +136,7 @@ public class MainActivity extends FragmentActivity {
 				super.onBackPressed();
 			}
 		}else{
-			ExercisesAdapter.cancelTimerEventually();
+			//ExercisesAdapter.cancelTimerEventually();
 			super.onBackPressed();
 			int levelChoice
 			= WorkoutManagerSingleton.getInstance().getLevelChoice();

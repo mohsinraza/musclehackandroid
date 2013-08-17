@@ -1,5 +1,4 @@
-﻿- With small resolution, the pane create worfout is not entierly display
-- Clicking and rotating at the same time the day customization area disable the onclicks listener
+﻿- Clicking and rotating at the same time the day customization area disable the onclicks listener
 - Do some refactoring of the classes name/package
 
 - Ask advice before releasing android beta app + on market + improve design + workout edition

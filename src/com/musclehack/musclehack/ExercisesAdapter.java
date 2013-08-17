@@ -248,11 +248,15 @@ public class ExercisesAdapter extends BaseAdapter {
 				editText = (EditText) topParent.findViewById(R.id.nreps);
 				String nRepsText = editText.getText().toString();
 				boolean exerciseDone = false;
-				if(!weightText.equals("") && !nRepsText.equals("")){
-					float weight = Float.parseFloat(weightText);
-					int nReps = Integer.parseInt(nRepsText);
-					exerciseDone = weight > 0 && nReps > 0;
+				float weight = 0;
+				int nReps = 0;
+				if(!weightText.equals("")){
+					weight = Float.parseFloat(weightText);
 				}
+				if(!nRepsText.equals("")){
+					nReps = Integer.parseInt(nRepsText);
+				}
+				exerciseDone = weight > 0 && nReps > 0;
 				View mainLayout = (View)topParent.findViewById(R.id.mainLayout);
 				if(exerciseDone){
 					mainLayout.setBackgroundColor(Color.CYAN);

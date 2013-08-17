@@ -1057,29 +1057,29 @@ if(exercisesListEquals(exercises, currentExercises)){
 									String nReps){
 		Log.d("ProgramDbHelper", "protected void setExerciceInfo(...) called");
 		int exerciseIdInt = Integer.parseInt(exerciseId);
-		boolean oldCompleted = this.isExerciseCompleted(exerciseIdInt);
+		//boolean oldCompleted = this.isExerciseCompleted(exerciseIdInt);
 		boolean completed = false;
 		if(!weight.equals("") && !nReps.equals("")){
 			float weightFloat = Float.parseFloat(weight);
 			int nRepsInt = Integer.parseInt(nReps);
 			completed = weightFloat > 0.f && nRepsInt > 0;
 		}
-		if(oldCompleted != completed || completed){
-			ContentValues values = new ContentValues();
-			values.put(ContractExercise.COLUMN_NAME_REST, rest);
-			values.put(ContractExercise.COLUMN_NAME_WEIGHT, weight);
-			values.put(ContractExercise.COLUMN_NAME_NREP, nReps);
-	
-			values.put(ContractExercise.COLUMN_NAME_COMPLETED, completed);
-			SQLiteDatabase db = this.getWritableDatabase();
-			int nRows = db.update(ContractExercise.TABLE_NAME,
-						values, ContractExercise.COLUMN_NAME_ID + "=" + exerciseId,
-						null);
-			db.close();
-			this.updateDayCompletedEventually(programName,
-									week,
-									day);
-		}
+		//if(oldCompleted != completed || completed){
+		ContentValues values = new ContentValues();
+		values.put(ContractExercise.COLUMN_NAME_REST, rest);
+		values.put(ContractExercise.COLUMN_NAME_WEIGHT, weight);
+		values.put(ContractExercise.COLUMN_NAME_NREP, nReps);
+
+		values.put(ContractExercise.COLUMN_NAME_COMPLETED, completed);
+		SQLiteDatabase db = this.getWritableDatabase();
+		int nRows = db.update(ContractExercise.TABLE_NAME,
+					values, ContractExercise.COLUMN_NAME_ID + "=" + exerciseId,
+					null);
+		db.close();
+		this.updateDayCompletedEventually(programName,
+								week,
+								day);
+		//}
 		Log.d("ProgramDbHelper", "protected void setExerciceInfo(...) end");
 	}
 	
