@@ -2,14 +2,18 @@ package com.musclehack.musclehack;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
+import android.os.AsyncTask;
 import android.os.Vibrator;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,6 +29,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.musclehack.musclehack.workouts.Exercice;
 import com.musclehack.musclehack.workouts.WorkoutManagerSingleton;
 
 public class ExercisesAdapter extends BaseAdapter {
@@ -35,6 +40,8 @@ public class ExercisesAdapter extends BaseAdapter {
 	protected ListView listView;
 	protected static Activity currentActivity = null;
 	protected static ExercisesAdapter currentAdapter = null;
+	protected final Lock _mutexExercises = new ReentrantLock(true);
+	
 	
 	public ExercisesAdapter(Context context,
 			ArrayList<HashMap<Integer, String>> data){
@@ -271,6 +278,14 @@ public class ExercisesAdapter extends BaseAdapter {
 				HashMap<Integer, String> row
 						= ExercisesAdapter.this.data.get(this.position);
 				row.put(currentTextEditId, value);
+				SaveOnLeaveFocusAsyncTask task
+				= new SaveOnLeaveFocusAsyncTask(
+						exerciseId,
+						restText,
+						weightText,
+						nRepsText);
+				task.execute();
+				/*
 				WorkoutManagerSingleton workoutManager = WorkoutManagerSingleton.getInstance();
 				Log.d("ExerciseAdapter", "exerciseId id:" + topParent.getId() +", main id:" + R.id.mainLayout);
 				workoutManager.setExerciceInfo(exerciseId,
@@ -278,10 +293,53 @@ public class ExercisesAdapter extends BaseAdapter {
 												weightText,
 												nRepsText);
 				workoutManager.saveLastProgram();
+				//*/
 				
 			}
 		}
 	}
+	
+	protected class SaveOnLeaveFocusAsyncTask
+	extends AsyncTask<Void, Void, Void> {
+		protected String exerciseId;
+		protected String restText;
+		protected String weightText;
+		protected String nRepsText;
+		SaveOnLeaveFocusAsyncTask(
+				String exerciseId,
+				String restText,
+				String weightText,
+				String nRepsText){
+			this.exerciseId = exerciseId;
+			this.restText = restText;
+			this.weightText = weightText;
+			this.nRepsText = nRepsText;
+		}
+		
+		@Override
+		protected Void doInBackground(
+				Void... datas) {
+			Log.d("SaveOnLeaveFocusAsyncTask task", "protected Void doInBackground(...) called");
+			_mutexExercises.lock();
+			WorkoutManagerSingleton workoutManager = WorkoutManagerSingleton.getInstance();
+			workoutManager.setExerciceInfo(exerciseId,
+											restText,
+											weightText,
+											nRepsText);
+			workoutManager.saveLastProgram();
+			_mutexExercises.unlock();
+			Log.d("SaveOnLeaveFocusAsyncTask task", "protected Void doInBackground(...) end");
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(Void nothing) { 
+			Log.d("CustomizeExerciseAdapter task", "protected void onPostExecute(...) called");
+			Log.d("CustomizeExerciseAdapter task", "protected void onPostExecute(...) end");
+		}
+	}
+	
+	
 	
 	protected class OnRestButtonClickListener implements OnClickListener{
 		//protected EditText restEditText;

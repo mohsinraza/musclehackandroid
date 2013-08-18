@@ -3,6 +3,8 @@ package com.musclehack.musclehack;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -32,6 +34,7 @@ public class CustomizeExerciseAdapter extends BaseAdapter {
 	static protected ProgressDialog progressDialog = null;
 	protected SaveAsyncTask saveAsyncTask;
 	protected boolean isDroppingOrAdding;
+	
 	
 	public CustomizeExerciseAdapter(Context context,
 			ArrayList<HashMap<Integer, String>> data){
