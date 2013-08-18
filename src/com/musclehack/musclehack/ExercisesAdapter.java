@@ -96,7 +96,11 @@ public class ExercisesAdapter extends BaseAdapter {
 			view = this.inflater.inflate(R.layout.fragment2worklog_exercise,
 											listView,
 											false);
+			if(position == 0){
+				view.findViewById(R.id.hidenForFocus).requestFocus();
+			}
 		}
+		
 		this.setValue(position, view, R.id.exerciseName);
 		this.setValue(position, view, R.id.exerciseNumber);
 		this.setValue(position, view, R.id.exerciseId);

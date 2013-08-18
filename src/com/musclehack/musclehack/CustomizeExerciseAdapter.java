@@ -145,6 +145,9 @@ public class CustomizeExerciseAdapter extends BaseAdapter {
 			view = this.inflater.inflate(R.layout.customize_exercises,
 											listView,
 											false);
+			if(position == 0){
+				view.findViewById(R.id.hidenForFocus).requestFocus();
+			}
 		}
 		this.listView = (ListView)listView;
 		HashMap<Integer, String> row = this.data.get(position);
