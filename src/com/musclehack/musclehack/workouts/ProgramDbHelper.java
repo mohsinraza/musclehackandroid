@@ -229,7 +229,7 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 						db.insert(ContractExercise.TABLE_NAME, "null", values);
 						values.put(ContractExercise.COLUMN_NAME_ORDER, orderExercise++);
 					values = new ContentValues();
-					values.put(ContractWorkoutDay.COLUMN_NAME_NAME, "Wednesday - Tricpes, Biceps & Forearms");
+					values.put(ContractWorkoutDay.COLUMN_NAME_NAME, "Wednesday - Triceps, Biceps & Forearms");
 					values.put(ContractWorkoutDay.COLUMN_NAME_COMPLETED, false);
 					values.put(ContractWorkoutDay.COLUMN_NAME_DAY_OF_WEEK, 2);
 					values.put(ContractWorkoutDay.COLUMN_NAME_EXTERN_ID, newRowWeekId);
@@ -373,14 +373,6 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 						db.insert(ContractExercise.TABLE_NAME, "null", values);
 						values.put(ContractExercise.COLUMN_NAME_ORDER, orderExercise++);
 						values.put(ContractExercise.COLUMN_NAME_REST, "120");
-						values.put(ContractExercise.COLUMN_NAME_NAME, "Incline Barbell Bench Press");
-						db.insert(ContractExercise.TABLE_NAME, "null", values);
-						values.put(ContractExercise.COLUMN_NAME_ORDER, orderExercise++);
-						values.put(ContractExercise.COLUMN_NAME_REST, "180");
-						db.insert(ContractExercise.TABLE_NAME, "null", values);
-						values.put(ContractExercise.COLUMN_NAME_ORDER, orderExercise++);
-						values.put(ContractExercise.COLUMN_NAME_REST, "120");
-						values.put(ContractExercise.COLUMN_NAME_REPRANGE, "8 to 12");
 						values.put(ContractExercise.COLUMN_NAME_NAME, "Pec Deck Or Cable Crossovers");
 						db.insert(ContractExercise.TABLE_NAME, "null", values);
 						values.put(ContractExercise.COLUMN_NAME_ORDER, orderExercise++);
@@ -388,7 +380,15 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 						db.insert(ContractExercise.TABLE_NAME, "null", values);
 						values.put(ContractExercise.COLUMN_NAME_ORDER, orderExercise++);
 						values.put(ContractExercise.COLUMN_NAME_REST, "120");
+						values.put(ContractExercise.COLUMN_NAME_REPRANGE, "8 to 12");
 						values.put(ContractExercise.COLUMN_NAME_NAME, "Deep Dips");
+						db.insert(ContractExercise.TABLE_NAME, "null", values);
+						values.put(ContractExercise.COLUMN_NAME_ORDER, orderExercise++);
+						values.put(ContractExercise.COLUMN_NAME_REST, "180");
+						db.insert(ContractExercise.TABLE_NAME, "null", values);
+						values.put(ContractExercise.COLUMN_NAME_ORDER, orderExercise++);
+						values.put(ContractExercise.COLUMN_NAME_REST, "120");
+						values.put(ContractExercise.COLUMN_NAME_NAME, "Incline Barbell Bench Press");
 						db.insert(ContractExercise.TABLE_NAME, "null", values);
 						values.put(ContractExercise.COLUMN_NAME_ORDER, orderExercise++);
 						values.put(ContractExercise.COLUMN_NAME_REST, "180");
@@ -499,7 +499,7 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 							values.put(ContractExercise.COLUMN_NAME_REST, "180");
 							values.put(ContractExercise.COLUMN_NAME_ORDER, orderExercise++);
 							db.insert(ContractExercise.TABLE_NAME, "null", values);
-							values.put(ContractExercise.COLUMN_NAME_NAME, "Cable Bent-Over Triceps Extensions");
+							values.put(ContractExercise.COLUMN_NAME_NAME, "Tricep Cable Push Downs");
 							values.put(ContractExercise.COLUMN_NAME_REPRANGE, "8 to 12");
 							values.put(ContractExercise.COLUMN_NAME_REST, "120");
 							values.put(ContractExercise.COLUMN_NAME_ORDER, orderExercise++);
@@ -550,7 +550,7 @@ public class ProgramDbHelper extends SQLiteOpenHelper {
 						db.insert(ContractExercise.TABLE_NAME, "null", values);
 						values.put(ContractExercise.COLUMN_NAME_ORDER, orderExercise++);
 						db.insert(ContractExercise.TABLE_NAME, "null", values);
-						values.put(ContractExercise.COLUMN_NAME_NAME, "McManus Pushdown");
+						values.put(ContractExercise.COLUMN_NAME_NAME, "Cable Bent-Over Triceps Extensions");
 						values.put(ContractExercise.COLUMN_NAME_REPRANGE, "8 to 12");
 						values.put(ContractExercise.COLUMN_NAME_ORDER, orderExercise++);
 						db.insert(ContractExercise.TABLE_NAME, "null", values);
