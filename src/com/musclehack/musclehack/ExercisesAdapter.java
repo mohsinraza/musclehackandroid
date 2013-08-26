@@ -41,6 +41,8 @@ public class ExercisesAdapter extends BaseAdapter {
 	protected static Activity currentActivity = null;
 	protected static ExercisesAdapter currentAdapter = null;
 	protected final Lock _mutexExercises = new ReentrantLock(true);
+
+	protected ArrayList<SaveOnLeaveFocusAsyncTask> saveTasks;
 	
 	
 	public ExercisesAdapter(Context context,
@@ -50,6 +52,7 @@ public class ExercisesAdapter extends BaseAdapter {
 		ExercisesAdapter.currentActivity = (Activity)this.context;
 		ExercisesAdapter.currentAdapter = this;
 		this.data = data;
+		this.saveTasks = new ArrayList<SaveOnLeaveFocusAsyncTask>();
 		this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		Log.d("ExercisesAdapter", "public ExercisesAdapter(…){ end");
 	}
@@ -284,7 +287,9 @@ public class ExercisesAdapter extends BaseAdapter {
 						restText,
 						weightText,
 						nRepsText);
+
 				task.execute();
+				saveTasks.add(task);
 				/*
 				WorkoutManagerSingleton workoutManager = WorkoutManagerSingleton.getInstance();
 				Log.d("ExerciseAdapter", "exerciseId id:" + topParent.getId() +", main id:" + R.id.mainLayout);
@@ -319,26 +324,35 @@ public class ExercisesAdapter extends BaseAdapter {
 		@Override
 		protected Void doInBackground(
 				Void... datas) {
-			Log.d("SaveOnLeaveFocusAsyncTask task", "protected Void doInBackground(...) called");
 			_mutexExercises.lock();
+			Log.d("SaveOnLeaveFocusAsyncTask task", "protected Void doInBackground(...) called");
 			WorkoutManagerSingleton workoutManager = WorkoutManagerSingleton.getInstance();
 			workoutManager.setExerciceInfo(exerciseId,
 											restText,
 											weightText,
 											nRepsText);
 			workoutManager.saveLastProgram();
-			_mutexExercises.unlock();
 			Log.d("SaveOnLeaveFocusAsyncTask task", "protected Void doInBackground(...) end");
+			_mutexExercises.unlock();
 			return null;
 		}
 
 		@Override
 		protected void onPostExecute(Void nothing) { 
-			Log.d("CustomizeExerciseAdapter task", "protected void onPostExecute(...) called");
-			Log.d("CustomizeExerciseAdapter task", "protected void onPostExecute(...) end");
+			Log.d("ExerciseAdapter task", "protected void onPostExecute(...) called");
+
+			saveTasks.remove(this);
+			Log.d("ExerciseAdapter task", "protected void onPostExecute(...) end");
 		}
 	}
 	
+	public void onDestroyView(){
+		Log.d("ExerciseAdapter", "public void onDestroyView() called");
+		while(this.saveTasks.size() > 0){
+			this.saveTasks.get(0).cancel(false);
+		}
+		Log.d("ExerciseAdapter", "public void onDestroyView() end");
+	}
 	
 	
 	protected class OnRestButtonClickListener implements OnClickListener{

@@ -5,4 +5,3 @@
 - Read an epub ebook version instead of a pdf one
 - Add icons for all screen resolution
 - Check all of the best practises has been used
-- In the archives area, the loading box can never disappear

@@ -196,7 +196,7 @@ public class WorkoutManagerSingleton{
 	}
 	
 	public void selectDay(String dayName){
-		this.selectedDay = new Day(dayName, -1);;
+		this.selectedDay = new Day(dayName, -1);
 	}
 	
 	public void selectDay(Day day){
@@ -307,7 +307,7 @@ public class WorkoutManagerSingleton{
 		List<Exercice> exercices = this.dbHelper.getPreviousExercices(
 				this.selectedProgramName,
 				this.selectedWeek,
-				this.selectedDay.workoutName);
+				this.selectedDay);
 		return exercices;
 	}
 	

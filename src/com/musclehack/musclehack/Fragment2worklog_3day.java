@@ -22,6 +22,7 @@ public class Fragment2worklog_3day extends ListFragment {
 	 
 	public static String TAG_TEXT_WORKLOG = "textWorklog";
 	protected ArrayList<HashMap<String, String>> texts;
+	protected HashMap<String, Day> hashDays;
 	protected ListAdapter adapter;
 
 
@@ -30,11 +31,13 @@ public class Fragment2worklog_3day extends ListFragment {
 			Bundle savedInstanceState) {
 		Log.d("Fragment2worklog_3day", "public View onCreateView(...) called");
 		this.texts = new ArrayList<HashMap<String, String>>();
+		this.hashDays = new HashMap<String, Day>();
 		List<Day> days = WorkoutManagerSingleton.getInstance().getAvailableDays();
 		for(Day day:days){
 			HashMap<String, String> map = new HashMap<String, String>();
 			String workoutName = day.getWorkoutName();
 			map.put(TAG_TEXT_WORKLOG, workoutName);
+			this.hashDays.put(workoutName, day);
 			this.texts.add(map);
 		}
 
@@ -58,7 +61,9 @@ public class Fragment2worklog_3day extends ListFragment {
 		ListFragment newFragment = new Fragment2worklog_4exercices();
 		TextView textView = (TextView) v.findViewById(R.id.textWorklog); 
 		String clickedText = textView.getText().toString();
-		WorkoutManagerSingleton.getInstance().selectDay(clickedText);
+
+		Day selectedDay = this.hashDays.get(clickedText);
+		WorkoutManagerSingleton.getInstance().selectDay(selectedDay);
 
 		FragmentTransaction transaction = getFragmentManager().beginTransaction();
 

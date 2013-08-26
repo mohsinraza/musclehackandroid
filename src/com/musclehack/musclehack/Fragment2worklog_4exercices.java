@@ -32,7 +32,7 @@ public class Fragment2worklog_4exercices extends ListFragment {
 	public static String TAG_EXERCICE_PREV_NREPS = "exercisePrevNreps";
 	//protected ArrayList<HashMap<String, String>> texts;
 	protected ArrayList<HashMap<Integer, String>> texts;
-	protected ListAdapter adapter;
+	protected ExercisesAdapter adapter;
 
 
 	@Override
@@ -43,7 +43,8 @@ public class Fragment2worklog_4exercices extends ListFragment {
 		this.texts = new ArrayList<HashMap<Integer, String>>();
 		List<Exercice> exercises = WorkoutManagerSingleton.getInstance().getAvailableExercises();
 		Log.d("Fragment2worklog_4exercices", "exercises got");
-		List<Exercice> previousExercises = WorkoutManagerSingleton.getInstance().getPreviousExercices();
+		List<Exercice> previousExercises = WorkoutManagerSingleton.getInstance()
+				.getPreviousExercices();
 		Log.d("Fragment2worklog_4exercices", "previousExercises got");
 		int exerciseNumber = 1;
 		for(int i=0; i<exercises.size(); i++){
@@ -168,6 +169,7 @@ public class Fragment2worklog_4exercices extends ListFragment {
 	@Override
 	public void onDestroyView(){
 		Log.d("Fragment2worklog_4exercices", "public void onDestroyView() called");
+		this.adapter.onDestroyView();
 		super.onDestroyView();
 		Log.d("Fragment2worklog_4exercices", "public void onDestroyView() end");
 	}
